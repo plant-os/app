@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "164720637351",
+    "firebase_url": "https://plantos-development-225209.firebaseio.com",
+    "project_id": "plantos-development-225209",
+    "storage_bucket": "plantos-development-225209.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164720637351:android:238a9ba70c0b56d382b282",
+        "android_client_info": {
+          "package_name": "com.plantos.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164720637351-fn50eb5ujeitmhmeb7379v268aame4o3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCz97Z0t0Pzb-qHIjBqwYKQkEXawyT0ZCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164720637351-fn50eb5ujeitmhmeb7379v268aame4o3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "164720637351-40f7uhkv5omvpp910e01doo66q6fgjjs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.plantos.mobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164720637351:android:d54e39568f474db982b282",
+        "android_client_info": {
+          "package_name": "com.plantos.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164720637351-fn50eb5ujeitmhmeb7379v268aame4o3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCz97Z0t0Pzb-qHIjBqwYKQkEXawyT0ZCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164720637351-fn50eb5ujeitmhmeb7379v268aame4o3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "164720637351-40f7uhkv5omvpp910e01doo66q6fgjjs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.plantos.mobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

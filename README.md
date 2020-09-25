@@ -1,4 +1,4 @@
-# app
+# plantos
 
 A new Flutter project.
 
