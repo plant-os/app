@@ -1,28 +1,28 @@
-part of 'login_bloc.dart';
+part of 'reset_password_bloc.dart';
 
-class LoginState {
+class ResetPasswordState {
   final bool isValid;
   final bool isLoading;
   final bool isSuccess;
   final String error;
 
-  LoginState(
+  ResetPasswordState(
       {@required this.isValid,
       @required this.isLoading,
       @required this.isSuccess,
       @required this.error});
 
-  factory LoginState.initial({bool isValid}) {
-    return LoginState(
+  factory ResetPasswordState.initial({bool isValid}) {
+    return ResetPasswordState(
         isValid: isValid ?? false,
         isLoading: false,
         isSuccess: false,
         error: '');
   }
 
-  LoginState update(
+  ResetPasswordState update(
       {bool isValid, bool isLoading, bool isSuccess, String error}) {
-    return LoginState(
+    return ResetPasswordState(
         isValid: isValid ?? this.isValid,
         isLoading: isLoading ?? this.isLoading,
         isSuccess: isSuccess ?? this.isSuccess,
@@ -31,7 +31,7 @@ class LoginState {
 
   @override
   String toString() {
-    return "LoginState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}";
+    return "ResetPasswordState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}";
   }
 
   // ignore: hash_and_equals

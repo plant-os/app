@@ -13,11 +13,15 @@ class AuthService {
   }
 
   Future<bool> isLoggedIn() async {
-    FirebaseUser currentUser = await _firebaseAuth.currentUser();
+    User currentUser = _firebaseAuth.currentUser;
     return currentUser != null;
   }
 
-  Future<String> getCurrentUserId() async {
-    return (await _firebaseAuth.currentUser()).uid;
+  Future<User> getCurrentUser() async {
+    return _firebaseAuth.currentUser;
+  }
+
+  Future<void> resetPassword(String email) {
+    return _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 }

@@ -12,14 +12,18 @@ class FormButton extends StatelessWidget {
     return Container(
         margin: EdgeInsets.only(top: 14),
         child: SizedBox(
-            height: 44,
+            height: 51,
+            width: double.infinity,
             child: RaisedButton(
-              color: blueColor,
-              disabledColor: lightGreyColor,
+              color: greenColor,
+              disabledColor: whiteColor,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              child:
-                  Text(text, style: TextStyle(fontSize: 16, color: whiteColor)),
+                  borderRadius: BorderRadius.circular(15)),
+              child: Text(text,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: blackColor)),
               onPressed: onPressed,
             )));
   }
