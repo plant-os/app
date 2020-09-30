@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:plantos/src/themes/colors.dart';
 
 class FormTextField extends StatelessWidget {
   final String hintText;
@@ -20,22 +19,44 @@ class FormTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(bottom: 20),
-        child: TextField(
-            style: TextStyle(fontSize: 16, color: blackColor),
-            decoration: InputDecoration(
-                isDense: true,
-                contentPadding: EdgeInsets.symmetric(vertical: 14),
-                hintText: hintText,
-                hintStyle: TextStyle(color: greyColor),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: greyColor, width: 1.5)),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: blueColor, width: 2))),
-            controller: controller,
-            onChanged: (_) => onChanged(),
-            keyboardType: keyboardType ?? TextInputType.text,
-            readOnly: readOnly ?? false,
-            obscureText: obscureText ?? false));
+      height: 51.0,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.white,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 7.0),
+              child: TextField(
+                controller: controller,
+                cursorColor: Colors.black,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration.collapsed(
+                  focusColor: Colors.transparent,
+                  fillColor: Colors.transparent,
+                  filled: true,
+                  hoverColor: Colors.black,
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  hintText: hintText,
+                ),
+                keyboardType: keyboardType ?? TextInputType.text,
+                readOnly: readOnly ?? false,
+                obscureText: obscureText ?? false,
+                onChanged: (_) => onChanged(),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
