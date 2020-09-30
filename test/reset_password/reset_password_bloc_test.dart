@@ -42,6 +42,26 @@ void main() {
       });
 
       test(
+          "Enables the reset password button after correcting the email which was not valid",
+          () {
+        MockAuthService authService = MockAuthService();
+        ResetPasswordBloc resetPasswordBloc = ResetPasswordBloc(authService);
+        resetPasswordBloc
+            .add(ResetPasswordTextFieldChangedEvent(email: "scdsfsdfvsd.com"));
+        resetPasswordBloc
+            .add(ResetPasswordTextFieldChangedEvent(email: "aaa@bbb.com"));
+        expectLater(
+          resetPasswordBloc,
+          emitsInOrder([
+            ResetPasswordState(
+                error: "", isLoading: false, isSuccess: false, isValid: false),
+            ResetPasswordState(
+                error: "", isLoading: false, isSuccess: false, isValid: true),
+          ]),
+        );
+      });
+
+      test(
           "Once login button is clicked will validate the fields and sets the loading",
           () {
         MockAuthService authService = MockAuthService();

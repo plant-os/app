@@ -37,6 +37,75 @@ void main() {
         ]),
       );
     });
+
+    test("Does not enable the login button if the email empty", () {
+      MockAuthService authService = MockAuthService();
+      LoginBloc loginBloc = LoginBloc(authService);
+      loginBloc
+          .add(LoginTextFieldChangedEvent(email: "", password: "test1234"));
+      expectLater(
+        loginBloc,
+        emitsInOrder([
+          LoginState(
+              error: "", isLoading: false, isSuccess: false, isValid: false),
+        ]),
+      );
+    });
+
+    test("Does not enable the login button if the password is empty", () {
+      MockAuthService authService = MockAuthService();
+      LoginBloc loginBloc = LoginBloc(authService);
+      loginBloc
+          .add(LoginTextFieldChangedEvent(email: "", password: "test1234"));
+      expectLater(
+        loginBloc,
+        emitsInOrder([
+          LoginState(
+              error: "", isLoading: false, isSuccess: false, isValid: false),
+        ]),
+      );
+    });
+
+    test(
+        "Enables the login button after correcting the password which was empty",
+        () {
+      MockAuthService authService = MockAuthService();
+      LoginBloc loginBloc = LoginBloc(authService);
+      loginBloc.add(
+          LoginTextFieldChangedEvent(email: "dadas@sfds.com", password: ""));
+      loginBloc.add(LoginTextFieldChangedEvent(
+          email: "dadas@sfds.com", password: "dssadsa"));
+      expectLater(
+        loginBloc,
+        emitsInOrder([
+          LoginState(
+              error: "", isLoading: false, isSuccess: false, isValid: false),
+          LoginState(
+              error: "", isLoading: false, isSuccess: false, isValid: true),
+        ]),
+      );
+    });
+
+    test(
+        "Enables the login button after correcting the email which was not valid",
+        () {
+      MockAuthService authService = MockAuthService();
+      LoginBloc loginBloc = LoginBloc(authService);
+      loginBloc.add(LoginTextFieldChangedEvent(
+          email: "aaafgfhkg.com", password: "test1234"));
+      loginBloc.add(
+          LoginTextFieldChangedEvent(email: "aaa@bbb.com", password: "dsdsds"));
+      expectLater(
+        loginBloc,
+        emitsInOrder([
+          LoginState(
+              error: "", isLoading: false, isSuccess: false, isValid: false),
+          LoginState(
+              error: "", isLoading: false, isSuccess: false, isValid: true),
+        ]),
+      );
+    });
+
     test(
         "Once login button is clicked will validate the fields and sets the loading",
         () {
