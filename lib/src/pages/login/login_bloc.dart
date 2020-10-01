@@ -7,9 +7,7 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  AuthService authService;
-  String _email;
-  String _password;
+  final AuthService authService;
 
   LoginBloc(this.authService);
 
@@ -25,24 +23,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapTextFieldChangedToState(
       LoginTextFieldChangedEvent event) async* {
-    _email = event.email;
-    _password = event.password;
-    yield state.update(isValid: _isFormValidated());
+    yield state.update(
+        isValid: _isFormValidated(event.email, event.password),
+        email: event.email,
+        password: event.password);
   }
 
-  bool _isFormValidated() {
-    return EmailValidator.validate(_email) && _password.isNotEmpty;
+  bool _isFormValidated(email, password) {
+    return EmailValidator.validate(email) && password.isNotEmpty;
   }
 
   Stream<LoginState> _mapLoginPressedToState() async* {
     yield state.update(isLoading: true);
     try {
-      await authService.login(_email, _password);
+      await authService.login(state.email, state.password);
       yield state.update(isLoading: false, isSuccess: true);
     } catch (e) {
       print(e);
       yield state.update(isLoading: false, error: e.message);
-      yield LoginState.initial(isValid: _isFormValidated());
+      yield LoginState.initial(
+          email: state.email,
+          password: state.password,
+          isValid: _isFormValidated(state.email, state.password));
     }
   }
 }

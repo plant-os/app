@@ -20,8 +20,7 @@ class App extends StatelessWidget {
           Widget homeWidget;
           if (state is AuthUnauthenticatedState)
             homeWidget = BlocProvider<LoginBloc>(
-                create: (_) => LoginBloc(authService),
-                child: LoginPage(authService));
+                create: (_) => LoginBloc(authService), child: LoginPage());
           else if (state is AuthAuthenticatedState)
             homeWidget = BlocProvider<CropsBloc>(
                 create: (_) => CropsBloc(), child: CropsPage());

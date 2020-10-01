@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/pages/reset_password/reset_password.dart';
-import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
 import 'package:plantos/src/widgets/form_textfield.dart';
@@ -11,10 +10,6 @@ import 'package:plantos/src/pages/login/login_bloc.dart';
 import 'package:plantos/src/pages/auth/auth.dart';
 
 class LoginPage extends StatefulWidget {
-  final AuthService authService;
-
-  LoginPage(this.authService);
-
   @override
   LoginPageState createState() => LoginPageState();
 }
@@ -51,7 +46,7 @@ class LoginPageState extends State<LoginPage> {
         context,
         MaterialPageRoute(
             builder: (_) => BlocProvider<ResetPasswordBloc>(
-                create: (_) => ResetPasswordBloc(widget.authService),
+                create: (_) => ResetPasswordBloc(_loginBloc.authService),
                 child: ResetPasswordPage())));
   }
 
