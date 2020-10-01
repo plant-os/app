@@ -6,10 +6,13 @@ import 'package:plantos/src/models/crop.dart';
 class CropsService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  getCropslist() {
-    firestore.collection("crops").get().then((QuerySnapshot snapshot) {
-      snapshot.docs.forEach((f) => print('${f.data()}}'));
+  Future<List<Crop>> getCropslist() async {
+    List<Crop> crops = [];
+    var list = await firestore.collection("crops").get();
+    list.docs.forEach((crop) {
+      crops.add(Crop.fromJson(crop.data()));
     });
+    return crops;
   }
 
   addCrop() {

@@ -14,9 +14,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AuthBloc()..add(AuthStartedEvent()),
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (_, state) {
+        create: (_) => AuthBloc()..add(AuthStartedEvent()),
+        child: BlocBuilder<AuthBloc, AuthState>(builder: (_, state) {
           Widget homeWidget;
           if (state is AuthUnauthenticatedState)
             homeWidget = BlocProvider<LoginBloc>(
@@ -24,7 +23,8 @@ class App extends StatelessWidget {
                 child: LoginPage(authService));
           else if (state is AuthAuthenticatedState)
             homeWidget = BlocProvider<CropsBloc>(
-                create: (_) => CropsBloc(), child: CropsPage());
+                create: (_) => CropsBloc(authService, cropsService),
+                child: CropsPage());
           else
             homeWidget = Scaffold();
           return GestureDetector(
@@ -35,8 +35,6 @@ class App extends StatelessWidget {
                       fontFamily: 'Lato-Regular',
                       scaffoldBackgroundColor: whiteColor),
                   home: homeWidget));
-        },
-      ),
-    );
+        }));
   }
 }
