@@ -18,9 +18,17 @@ void main() {
           resetPasswordBloc,
           emitsInOrder([
             ResetPasswordState(
-                error: "", isLoading: false, isSuccess: false, isValid: false),
+                error: "",
+                isLoading: false,
+                isSuccess: false,
+                isValid: false,
+                email: ""),
             ResetPasswordState(
-                error: "", isLoading: false, isSuccess: false, isValid: true),
+                error: "",
+                isLoading: false,
+                isSuccess: false,
+                isValid: true,
+                email: "aaa@bbb.com"),
           ]),
         );
       });
@@ -36,7 +44,11 @@ void main() {
           resetPasswordBloc,
           emitsInOrder([
             ResetPasswordState(
-                error: "", isLoading: false, isSuccess: false, isValid: false),
+                error: "",
+                isLoading: false,
+                isSuccess: false,
+                isValid: false,
+                email: ""),
           ]),
         );
       });
@@ -54,9 +66,23 @@ void main() {
           resetPasswordBloc,
           emitsInOrder([
             ResetPasswordState(
-                error: "", isLoading: false, isSuccess: false, isValid: false),
+                error: "",
+                isLoading: false,
+                isSuccess: false,
+                isValid: false,
+                email: ""),
             ResetPasswordState(
-                error: "", isLoading: false, isSuccess: false, isValid: true),
+                error: "",
+                isLoading: false,
+                isSuccess: false,
+                isValid: false,
+                email: "scdsfsdfvsd.com"),
+            ResetPasswordState(
+                error: "",
+                isLoading: false,
+                isSuccess: false,
+                isValid: true,
+                email: "aaa@bbb.com"),
           ]),
         );
       });
@@ -73,13 +99,29 @@ void main() {
           resetPasswordBloc,
           emitsInOrder([
             ResetPasswordState(
-                error: "", isLoading: false, isSuccess: false, isValid: false),
+                error: "",
+                isLoading: false,
+                isSuccess: false,
+                isValid: false,
+                email: ""),
             ResetPasswordState(
-                error: "", isLoading: false, isSuccess: false, isValid: true),
+                error: "",
+                isLoading: false,
+                isSuccess: false,
+                isValid: true,
+                email: "aaa@bbb.com"),
             ResetPasswordState(
-                error: "", isLoading: true, isSuccess: false, isValid: true),
+                error: "",
+                isLoading: true,
+                isSuccess: false,
+                isValid: true,
+                email: "aaa@bbb.com"),
             ResetPasswordState(
-                error: "", isLoading: false, isSuccess: true, isValid: true),
+                error: "",
+                isLoading: false,
+                isSuccess: true,
+                isValid: true,
+                email: "aaa@bbb.com"),
           ]),
         );
       });
