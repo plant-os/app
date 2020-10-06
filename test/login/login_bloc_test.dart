@@ -16,9 +16,19 @@ void main() {
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: false),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: false,
+              email: "",
+              password: ""),
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: true),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: true,
+              email: "aaa@bbb.com",
+              password: "test1234"),
         ]),
       );
     });
@@ -33,7 +43,12 @@ void main() {
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: false),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: false,
+              email: "",
+              password: ""),
         ]),
       );
     });
@@ -47,7 +62,12 @@ void main() {
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: false),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: false,
+              email: "",
+              password: ""),
         ]),
       );
     });
@@ -55,13 +75,18 @@ void main() {
     test("Does not enable the login button if the password is empty", () {
       MockAuthService authService = MockAuthService();
       LoginBloc loginBloc = LoginBloc(authService);
-      loginBloc
-          .add(LoginTextFieldChangedEvent(email: "", password: "test1234"));
+      loginBloc.add(
+          LoginTextFieldChangedEvent(email: "aaafgfhkg.com", password: ""));
       expectLater(
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: false),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: false,
+              email: "",
+              password: ""),
         ]),
       );
     });
@@ -79,9 +104,26 @@ void main() {
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: false),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: false,
+              email: "",
+              password: ""),
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: true),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: false,
+              email: "dadas@sfds.com",
+              password: ""),
+          LoginState(
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: true,
+              email: "dadas@sfds.com",
+              password: "dssadsa"),
         ]),
       );
     });
@@ -91,17 +133,34 @@ void main() {
         () {
       MockAuthService authService = MockAuthService();
       LoginBloc loginBloc = LoginBloc(authService);
-      loginBloc.add(LoginTextFieldChangedEvent(
-          email: "aaafgfhkg.com", password: "test1234"));
+      loginBloc.add(
+          LoginTextFieldChangedEvent(email: "aaafgfhkg.com", password: ""));
       loginBloc.add(
           LoginTextFieldChangedEvent(email: "aaa@bbb.com", password: "dsdsds"));
       expectLater(
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: false),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: false,
+              email: "",
+              password: ""),
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: true),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: false,
+              email: "aaafgfhkg.com",
+              password: ""),
+          LoginState(
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: true,
+              email: "aaa@bbb.com",
+              password: "dsdsds"),
         ]),
       );
     });
@@ -118,13 +177,33 @@ void main() {
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: false),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: false,
+              email: "",
+              password: ""),
           LoginState(
-              error: "", isLoading: false, isSuccess: false, isValid: true),
+              error: "",
+              isLoading: false,
+              isSuccess: false,
+              isValid: true,
+              email: "aaa@bbb.com",
+              password: "test1234"),
           LoginState(
-              error: "", isLoading: true, isSuccess: false, isValid: true),
+              error: "",
+              isLoading: true,
+              isSuccess: false,
+              isValid: true,
+              email: "aaa@bbb.com",
+              password: "test1234"),
           LoginState(
-              error: "", isLoading: false, isSuccess: true, isValid: true),
+              error: "",
+              isLoading: false,
+              isSuccess: true,
+              isValid: true,
+              email: "aaa@bbb.com",
+              password: "test1234"),
         ]),
       );
     });
