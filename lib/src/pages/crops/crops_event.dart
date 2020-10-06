@@ -2,11 +2,20 @@ part of 'crops_bloc.dart';
 
 abstract class CropsEvent {}
 
-// class LoginTextFieldChangedEvent extends CropsEvent {
-//   final String email;
-//   final String password;
+class LoadOngoingCrops extends CropsEvent {}
 
-//   LoginTextFieldChangedEvent({@required this.email, @required this.password});
-// }
+class LoadPastCrops extends CropsEvent {}
 
-class AddCropPressedEvent extends CropsEvent {}
+class AddCrop extends CropsEvent {}
+
+class UpdateCrop extends CropsEvent {}
+
+class DeleteCrop extends CropsEvent {}
+
+class OngoingCropsUpdated extends CropsEvent {
+  final List<Crop> crops;
+
+  OngoingCropsUpdated(this.crops);
+}
+
+class PastCropsUpdated extends CropsEvent {}

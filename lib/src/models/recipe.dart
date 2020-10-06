@@ -14,13 +14,14 @@ class Recipe {
 
   Recipe.fromJson(Map<String, dynamic> json)
       : id = json['Id'],
-        company = Company.fromJson(json['Company']),
-        deviceId = json['DeviceId'],
-        deviceZone = json['DeviceZone'],
+        company =
+            json['Company'] != null ? Company.fromJson(json['Company']) : null,
+        deviceId = json['DeviceId'] ?? null,
+        deviceZone = json['DeviceZone'] ?? null,
         name = json['Name'],
-        registryId = json['RegistryId'],
-        ec = Ec.fromJson(json['EC']),
-        ph = Ph.fromJson(json["pH"]);
+        registryId = json['RegistryId'] ?? null,
+        ec = json['EC'] != null ? Ec.fromJson(json['EC']) : null,
+        ph = json['pH'] != null ? Ph.fromJson(json["pH"]) : null;
 
   Map<String, dynamic> toJson() => {
         'Id': id,
@@ -35,23 +36,23 @@ class Recipe {
 }
 
 class Ph {
-  final int min;
-  final int max;
-  final int optimal;
+  final double min;
+  final double max;
+  final double optimal;
   Ph(this.max, this.min, this.optimal);
   Ph.fromJson(Map<String, dynamic> json)
-      : min = json['Min'],
-        max = json['Max'],
-        optimal = json['Optimal'];
+      : min = (json['Min'] as num).toDouble() ?? null,
+        max = (json['Max'] as num).toDouble() ?? null,
+        optimal = (json['Optimal'] as num).toDouble() ?? null;
 }
 
 class Ec {
-  final int min;
-  final int max;
-  final int optimal;
+  final double min;
+  final double max;
+  final double optimal;
   Ec(this.max, this.min, this.optimal);
   Ec.fromJson(Map<String, dynamic> json)
-      : min = json['Min'],
-        max = json['Max'],
-        optimal = json['Optimal'];
+      : min = (json['Min'] as num).toDouble() ?? null,
+        max = (json['Max'] as num).toDouble() ?? null,
+        optimal = (json['Optimal'] as num).toDouble() ?? null;
 }

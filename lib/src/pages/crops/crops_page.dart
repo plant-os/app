@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/pages/crops/crops.dart';
 import 'package:plantos/src/themes/colors.dart';
+import 'package:rxdart/subjects.dart';
+import '../../models/crop.dart';
 
 class CropsPage extends StatefulWidget {
   @override
@@ -27,31 +30,26 @@ class _CropsPageState extends State<CropsPage>
     tabController = TabController(length: 2, vsync: this);
   }
 
-  Widget cardsContainer() {
-    // return Scaffold(
-    //   body: SingleChildScrollView(
-    //     child: Column(
-    //       children: [
-    //         cropCard(),
-    //         cropCard(),
-    //         cropCard(),
-    //         cropCard(),
-    //       ],
-    //     ),
-    //   ),
-    // );
-    return StreamBuilder(
-        stream: _cropsBloc.cropsList,
-        builder: (context, snapshot) {
-          return Scaffold(
-            body: SingleChildScrollView(
-              child: Column(children: snapshot.data.map((crop) => cropCard())),
-            ),
-          );
-        });
+  Widget cardsContainer(BehaviorSubject<List<Crop>> cropsList) {
+    return StreamBuilder<List<Crop>>(
+      stream: cropsList,
+      initialData: [],
+      builder: (context, snapshot) {
+        return Scaffold(
+          body: SingleChildScrollView(
+            child: Column(
+                children: snapshot.data
+                    .map((crop) => cropCard(
+                        crop.name, crop.startDate, crop.ec, crop.cropState))
+                    .toList()),
+          ),
+        );
+      },
+    );
   }
 
-  Widget cropCard() {
+  Widget cropCard(String cropName, Timestamp startDateTimestamp, String ec,
+      CropState cropState) {
     return Padding(
       padding: const EdgeInsets.only(left: 30.0, right: 30, top: 20),
       child: Container(
@@ -71,7 +69,7 @@ class _CropsPageState extends State<CropsPage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Day 30",
+                    "Day ${_cropsBloc.convertDate(startDateTimestamp)}",
                     style: TextStyle(fontSize: 16),
                   ),
                   Text("EC", style: TextStyle(fontSize: 16))
@@ -85,12 +83,15 @@ class _CropsPageState extends State<CropsPage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Brinjal",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    cropName,
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Text("1.6",
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold))
+                  Text(
+                    ec,
+                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  )
                 ],
               ),
             ),
@@ -100,7 +101,7 @@ class _CropsPageState extends State<CropsPage>
               child: Row(
                 children: [
                   Text(
-                    "Flowering",
+                    _cropsBloc.cropStateIndicator(cropState),
                     style: TextStyle(fontSize: 16, color: greyColor),
                   ),
                 ],
@@ -159,30 +160,49 @@ class _CropsPageState extends State<CropsPage>
                   ],
                 ),
               ),
-              SafeArea(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(top: 30.0, left: 30, right: 30),
-                  child: TabBar(
-                    unselectedLabelColor: blackColor,
-                    labelColor: blackColor,
-                    indicatorColor: blackColor,
-                    tabs: [
-                      Tab(
-                        text: "Ongoing",
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: TabBar(
+                        unselectedLabelColor: blackColor,
+                        labelColor: blackColor,
+                        indicatorColor: blackColor,
+                        tabs: [
+                          Tab(
+                            text: "Ongoing",
+                          ),
+                          Tab(
+                            text: "Past",
+                          ),
+                        ],
+                        controller: tabController,
+                        indicatorSize: TabBarIndicatorSize.tab,
                       ),
-                      Tab(
-                        text: "Past",
-                      )
-                    ],
-                    controller: tabController,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 80.0, right: 40),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.blue,
+                        radius: 20,
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: Icon(Icons.add),
+                          color: Colors.white,
+                          onPressed: () {},
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
                 child: TabBarView(
-                  children: [cardsContainer(), Text('Person')],
+                  children: [
+                    cardsContainer(_cropsBloc.cropsListOngoing),
+                    cardsContainer(_cropsBloc.cropsListPast)
+                  ],
                   controller: tabController,
                 ),
               ),
