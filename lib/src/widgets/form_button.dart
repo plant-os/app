@@ -15,8 +15,8 @@ class FormButton extends StatelessWidget {
             height: 51,
             width: double.infinity,
             child: RaisedButton(
-              color: greenColor,
-              disabledColor: whiteColor,
+              color: blueColor,
+              disabledColor: greyColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               child: Text(text,

@@ -9,8 +9,9 @@ class Recipe {
   final Company company;
   final Ph ph;
   final Ec ec;
-  Recipe(this.id, this.deviceId, this.deviceZone, this.name, this.registryId,
-      this.company, this.ec, this.ph);
+  Recipe(this.id, this.deviceZone, this.name, this.registryId, this.company,
+      this.ec, this.ph,
+      {this.deviceId});
 
   Recipe.fromJson(Map<String, dynamic> json)
       : id = json['Id'],

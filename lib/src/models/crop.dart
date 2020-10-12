@@ -4,20 +4,20 @@ import 'package:plantos/src/models/company.dart';
 import 'package:plantos/src/models/recipe.dart';
 
 class Crop {
-  final String name;
-  final String id;
-  final Company company;
-  final bool selected;
-  final List<Camera> cameras;
-  final List<Recipe> recipes;
-  final bool fertigationCrop;
-  final String ec;
-  final Timestamp startDate;
-  final CropState cropState;
-  final Schedule schedule;
+  String name;
+  String id;
+  Company company;
+  bool selected;
+  List<Camera> cameras;
+  List<Recipe> recipes;
+  bool fertigationCrop;
+  String ec;
+  Timestamp startDate;
+  CropState cropState;
+  List<Schedule> schedules;
 
   Crop(
-      this.name,
+      {this.name,
       this.id,
       this.company,
       this.cameras,
@@ -26,8 +26,8 @@ class Crop {
       this.ec,
       this.startDate,
       this.cropState,
-      this.schedule,
-      this.selected);
+      this.schedules,
+      this.selected});
 
   Crop.fromJson(Map<String, dynamic> json)
       : name = json['Name'] ?? null,
@@ -47,34 +47,39 @@ class Crop {
         cropState = json['CropState'] != null
             ? CropState.fromJson(json['CropState'])
             : null,
-        schedule = json['Schedule'] != null
-            ? Schedule.fromJson(json['Schedule'])
+        schedules = json['Schedules'] != null
+            ? List<Schedule>.from(
+                json["Schedules"].map((x) => Schedule.fromJson(x)))
             : null;
 
   Map<String, dynamic> toJson() => {
         'Name': name,
         'Id': id,
-        'Company': company,
+        'Company': company.toJson(),
         'Selected': selected,
         'Cameras': cameras,
         'Recipes': recipes,
         'FertigationCrop': fertigationCrop,
         'Ec': ec,
         'StartDate': startDate,
-        'CropState': cropState,
-        'Schedule': schedule,
+        'CropState': cropState.toJson(),
+        'Schedules': schedules.map((x) => x.toJson()).toList()
       };
 }
 
 class CropState {
-  final bool vegetative;
-  final bool budding;
-  final bool flowering;
-  final bool ripening;
-  final bool harvested;
+  bool vegetative;
+  bool budding;
+  bool flowering;
+  bool ripening;
+  bool harvested;
 
-  CropState(this.vegetative, this.budding, this.flowering, this.ripening,
-      this.harvested);
+  CropState(
+      {this.vegetative,
+      this.budding,
+      this.flowering,
+      this.ripening,
+      this.harvested});
 
   CropState.fromJson(Map<String, dynamic> json)
       : vegetative = json['Vegetative'] != null ? json['Vegetative'] : null,
@@ -93,9 +98,9 @@ class CropState {
 }
 
 class Schedule {
-  final String time;
-  final Repeat repeat;
-  final Action action;
+  Timestamp time;
+  Repeat repeat;
+  CropAction action;
 
   Schedule(this.time, this.action, this.repeat);
 
@@ -104,23 +109,23 @@ class Schedule {
         repeat =
             json['Repeat'] != null ? Repeat.fromJson(json['Repeat']) : null,
         action =
-            json['Action'] != null ? Action.fromJson(json['Action']) : null;
+            json['Action'] != null ? CropAction.fromJson(json['Action']) : null;
 
   Map<String, dynamic> toJson() => {
         'Time': time,
-        'Repeat': repeat,
-        'Action': action,
+        'Repeat': repeat.toJson(),
+        'Action': action.toJson(),
       };
 }
 
 class Repeat {
-  final bool monday;
-  final bool tuesday;
-  final bool wednesday;
-  final bool thursday;
-  final bool friday;
-  final bool saturday;
-  final bool sunday;
+  bool monday;
+  bool tuesday;
+  bool wednesday;
+  bool thursday;
+  bool friday;
+  bool saturday;
+  bool sunday;
 
   Repeat(this.monday, this.tuesday, this.wednesday, this.thursday, this.friday,
       this.saturday, this.sunday);
@@ -145,13 +150,13 @@ class Repeat {
       };
 }
 
-class Action {
-  final bool irrigation;
-  final bool fertigation;
+class CropAction {
+  bool irrigation;
+  bool fertigation;
 
-  Action(this.irrigation, this.fertigation);
+  CropAction(this.irrigation, this.fertigation);
 
-  Action.fromJson(Map<String, dynamic> json)
+  CropAction.fromJson(Map<String, dynamic> json)
       : irrigation = json['Irrigation'] ?? null,
         fertigation = json['Fertigation'] ?? null;
 
