@@ -9,7 +9,7 @@ class Camera {
   final String cropId;
   final Company company;
   final CollectionReference photos;
-  Camera(this.id, this.description, this.cropId, this.company, this.photos);
+  Camera(this.id, this.description, this.cropId, this.company, {this.photos});
 
   Camera.fromJson(Map<String, dynamic> json)
       : id = json['Id'] ?? null,

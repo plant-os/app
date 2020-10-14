@@ -3,9 +3,15 @@ import 'package:plantos/src/themes/colors.dart';
 
 class FormButton extends StatelessWidget {
   final String text;
+  final Color enabledColor;
+  final Color disbledColor;
   final Function() onPressed;
 
-  FormButton({@required this.text, @required this.onPressed});
+  FormButton(
+      {@required this.text,
+      @required this.onPressed,
+      this.disbledColor,
+      this.enabledColor});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +21,9 @@ class FormButton extends StatelessWidget {
             height: 51,
             width: double.infinity,
             child: RaisedButton(
-              color: greenColor,
-              disabledColor: whiteColor,
+              color: this.enabledColor != null ? enabledColor : blueColor,
+              disabledColor:
+                  this.disbledColor != null ? disbledColor : greyColor,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               child: Text(text,

@@ -106,6 +106,7 @@ class LoginPageState extends State<LoginPage> {
                       obscureText: true),
                   FormButton(
                       text: 'Sign in',
+                      enabledColor: greenColor,
                       onPressed: state.isValid ? _signInPressed : null),
                   SizedBox(height: 20),
                   Center(
