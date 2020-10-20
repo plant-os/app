@@ -27,6 +27,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
   }
 
   generateActionRepeats() {
+    actionRepeats = [];
     final start = DateTime.now();
     final end = DateTime.now().add(
       Duration(days: 7),
@@ -387,6 +388,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                                 );
                                 if (updatedCrop != null) {
                                   setState(() {});
+                                  generateActionRepeats();
                                 }
                               }),
                         ],

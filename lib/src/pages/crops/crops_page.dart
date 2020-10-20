@@ -240,12 +240,6 @@ class _CropsPageState extends State<CropsPage>
       builder: (context, state) {
         if (state is CropsStateDone) {
           return cropsTabViewPage(state);
-        } else if (state is CropDetailsState) {
-          return Scaffold(
-            body: Container(
-              child: Text("Crop Details Page"),
-            ),
-          );
         } else {
           return loadingPage();
         }
