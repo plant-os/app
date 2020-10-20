@@ -2,20 +2,25 @@ part of 'crops_bloc.dart';
 
 abstract class CropsEvent {}
 
-class LoadOngoingCrops extends CropsEvent {}
+class ClickAddCrop extends CropsEvent {}
 
-class LoadPastCrops extends CropsEvent {}
-
-class AddCrop extends CropsEvent {}
-
-class UpdateCrop extends CropsEvent {}
-
-class DeleteCrop extends CropsEvent {}
-
-class OngoingCropsUpdated extends CropsEvent {
-  final List<Crop> crops;
-
-  OngoingCropsUpdated(this.crops);
+class ClickUpdateCrop extends CropsEvent {
+  final Crop crop;
+  ClickUpdateCrop(this.crop);
 }
 
-class PastCropsUpdated extends CropsEvent {}
+class ClickDeleteCrop extends CropsEvent {
+  final Crop crop;
+  ClickDeleteCrop(this.crop);
+}
+
+class CropsLoaded extends CropsEvent {
+  final UserModel currentUser;
+  final List<Crop> crops;
+  CropsLoaded(this.crops, this.currentUser);
+}
+
+class ClickOnCrop extends CropsEvent {
+  final Crop crop;
+  ClickOnCrop(this.crop);
+}
