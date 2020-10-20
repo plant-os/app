@@ -12,15 +12,15 @@ class Company {
       this.city, this.country, this.postcode, this.name);
 
   Company.fromJson(Map<String, dynamic> json)
-      : name = json['Name'],
-        id = json['Id'],
-        registryId = json['RegistryId'],
-        address1 = json['Address1'],
-        address2 = json['Address2'],
-        state = json['State'],
-        city = json['City'],
-        postcode = json['Postcode'],
-        country = json['Country'];
+      : name = json['Name'] ?? null,
+        id = json['Id'] ?? null,
+        registryId = json['RegistryId'] ?? null,
+        address1 = json['Address1'] ?? null,
+        address2 = json['Address2'] ?? null,
+        state = json['State'] ?? null,
+        city = json['City'] ?? null,
+        postcode = json['Postcode'] ?? null,
+        country = json['Country'] ?? null;
 
   Map<String, dynamic> toJson() => {
         'Name': name,

@@ -1,11 +1,17 @@
 part of 'crops_bloc.dart';
 
-class CropsState {
-  final bool isValid;
+class CropStateLoading implements CropsState {}
 
-  CropsState({this.isValid});
-
-  factory CropsState.initial({bool isValid}) {
-    return CropsState(isValid: isValid ?? false);
-  }
+class CropsStateError implements CropsState {
+  final String error;
+  CropsStateError(this.error);
 }
+
+class CropsStateDone implements CropsState {
+  final List<Crop> ongoingCrops;
+  final List<Crop> pastCrops;
+  final UserModel currentUser;
+  CropsStateDone(this.ongoingCrops, this.pastCrops, this.currentUser);
+}
+
+class CropsState {}
