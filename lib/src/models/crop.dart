@@ -167,19 +167,26 @@ class CropAction {
 }
 
 class ActionRepeat {
+  String id;
   String cropId;
-  DateTime time;
+  Timestamp time;
   String action;
   bool canceled;
 
-  ActionRepeat(this.cropId, this.time, this.action, this.canceled);
+  ActionRepeat({this.id, this.cropId, this.time, this.action, this.canceled});
 
   ActionRepeat.fromJson(Map<String, dynamic> json)
-      : cropId = json['CropId'] ?? null,
+      : id = json['Id'] ?? null,
+        cropId = json['CropId'] ?? null,
         time = json['Time'] ?? null,
         canceled = json['Canceled'],
         action = json['Action'] ?? null;
 
-  Map<String, dynamic> toJson() =>
-      {'CropId': cropId, 'Time': time, 'Canceled': canceled, "Action": action};
+  Map<String, dynamic> toJson() => {
+        'Id': id,
+        'CropId': cropId,
+        'Time': time,
+        'Canceled': canceled,
+        "Action": action
+      };
 }

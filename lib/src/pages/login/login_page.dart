@@ -67,62 +67,64 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: blueColor,
-      body: BlocListener<LoginBloc, LoginState>(
-        listener: _blocListener,
-        child: BlocBuilder<LoginBloc, LoginState>(
-          builder: (_, state) => SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 30.0, right: 30, top: 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 50.0),
-                    child: Column(
-                      children: [
-                        ImageIcon(
-                          AssetImage("assets/logo.png"),
-                          color: whiteColor,
-                          size: 100,
-                        ),
-                        Text(
-                          "PlantOS",
-                          style: TextStyle(fontSize: 30, color: whiteColor),
-                        ),
-                      ],
+      body: SingleChildScrollView(
+        child: BlocListener<LoginBloc, LoginState>(
+          listener: _blocListener,
+          child: BlocBuilder<LoginBloc, LoginState>(
+            builder: (_, state) => SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 30.0, right: 30, top: 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 50.0),
+                      child: Column(
+                        children: [
+                          ImageIcon(
+                            AssetImage("assets/logo.png"),
+                            color: whiteColor,
+                            size: 100,
+                          ),
+                          Text(
+                            "PlantOS",
+                            style: TextStyle(fontSize: 30, color: whiteColor),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  FormTextField(
-                      hintText: 'Email',
-                      controller: _emailController,
-                      onChanged: _onTextFieldChanged,
-                      keyboardType: TextInputType.emailAddress),
-                  SizedBox.fromSize(size: Size.fromHeight(15.0)),
-                  FormTextField(
-                      hintText: 'Password',
-                      controller: _passwordController,
-                      onChanged: _onTextFieldChanged,
-                      obscureText: true),
-                  FormButton(
-                      text: 'Sign in',
-                      enabledColor: greenColor,
-                      onPressed: state.isValid ? _signInPressed : null),
-                  SizedBox(height: 20),
-                  Center(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () => _forgotPasswordPressed(),
-                      child: Text(
-                        "Forgot Password",
-                        style: TextStyle(
-                          color: whiteColor,
-                          fontSize: 18,
+                    FormTextField(
+                        hintText: 'Email',
+                        controller: _emailController,
+                        onChanged: _onTextFieldChanged,
+                        keyboardType: TextInputType.emailAddress),
+                    SizedBox.fromSize(size: Size.fromHeight(15.0)),
+                    FormTextField(
+                        hintText: 'Password',
+                        controller: _passwordController,
+                        onChanged: _onTextFieldChanged,
+                        obscureText: true),
+                    FormButton(
+                        text: 'Sign in',
+                        enabledColor: greenColor,
+                        onPressed: state.isValid ? _signInPressed : null),
+                    SizedBox(height: 20),
+                    Center(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => _forgotPasswordPressed(),
+                        child: Text(
+                          "Forgot Password",
+                          style: TextStyle(
+                            color: whiteColor,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

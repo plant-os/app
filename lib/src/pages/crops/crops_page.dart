@@ -51,7 +51,7 @@ class _CropsPageState extends State<CropsPage>
         MaterialPageRoute(
           builder: (_) => BlocProvider<CropDetailsBloc>(
             create: (_) => CropDetailsBloc(_cropsBloc.cropsService,
-                _cropsBloc.authService, _cropsBloc.userService),
+                _cropsBloc.authService, _cropsBloc.userService, crop),
             child: CropDetailsPage(crop),
           ),
         ),
@@ -129,36 +129,33 @@ class _CropsPageState extends State<CropsPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height / 4.8,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: Column(children: [
-                        Row(children: [
-                          Text(
-                            "Hey ${state.currentUser.name}!",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          )
-                        ]),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Your Crops",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 28),
-                              )
-                            ],
-                          ),
-                        ),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Column(children: [
+                      Row(children: [
+                        Text(
+                          "Hey ${state.currentUser.name}!",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        )
                       ]),
-                    )
-                  ],
-                ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Your Crops",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 28),
+                            )
+                          ],
+                        ),
+                      ),
+                    ]),
+                  )
+                ],
               ),
               Container(
                 child: Row(
