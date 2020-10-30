@@ -31,6 +31,8 @@ class CropsBloc extends Bloc<CropsEvent, CropsState> {
 
   void initialise() async {
     var firebaseUser = await authService.getCurrentUser();
+
+    // To get the crops belonging to the company we need the current user's company Id.
     var currentUser =
         await userService.getCurrentUserDetails(firebaseUser.email);
     cropsService.getCropslist(currentUser.company.id).listen((crops) {

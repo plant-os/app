@@ -41,7 +41,6 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
 
   Stream<EditCropState> _mapCropFieldChangedToState(
       EditCropFieldChangedEvent event) async* {
-    print(_isFormValidated(event.crop));
     yield state.update(isValid: _isFormValidated(event.crop), crop: event.crop);
   }
 

@@ -29,6 +29,31 @@ class Crop {
       this.schedules,
       this.selected});
 
+  // Return a new Crop with the given fields overwritten.
+  Crop withValues(
+      {String name,
+      String id,
+      Company company,
+      List<Camera> cameras,
+      List<Recipe> recipes,
+      bool fertigationCrop,
+      String ec,
+      Timestamp startDate,
+      CropState cropState,
+      List<Schedule> schedules,
+      bool selected}) {
+    return Crop(
+        company: company ?? this.company,
+        id: id ?? this.id,
+        name: name ?? this.name,
+        fertigationCrop: fertigationCrop ?? this.fertigationCrop,
+        ec: ec ?? this.ec,
+        startDate: startDate ?? this.startDate,
+        cropState: cropState ?? this.cropState,
+        schedules: schedules ?? this.schedules,
+        selected: selected ?? this.selected);
+  }
+
   Crop.fromJson(Map<String, dynamic> json)
       : name = json['Name'] ?? null,
         id = json['Id'] ?? null,
@@ -67,6 +92,31 @@ class Crop {
         'CropState': cropState.toJson(),
         'Schedules': schedules.map((x) => x.toJson()).toList()
       };
+
+  @override
+  String toString() {
+    return "Crop ${toJson()}";
+  }
+
+  // ignore: hash_and_equals
+  @override
+  bool operator ==(dynamic other) {
+    if (!(other is Crop)) {
+      return false;
+    }
+
+    return other.name == name &&
+        other.id == id &&
+        other.company == company &&
+        other.selected == selected &&
+        other.cameras == cameras &&
+        other.recipes == recipes &&
+        other.fertigationCrop == fertigationCrop &&
+        other.ec == ec &&
+        other.startDate == startDate &&
+        other.cropState == cropState &&
+        other.schedules == schedules;
+  }
 }
 
 class CropState {
@@ -167,19 +217,45 @@ class CropAction {
 }
 
 class ActionRepeat {
+  String id;
   String cropId;
-  DateTime time;
+  Timestamp time;
   String action;
   bool canceled;
 
-  ActionRepeat(this.cropId, this.time, this.action, this.canceled);
+  ActionRepeat({this.id, this.cropId, this.time, this.action, this.canceled});
 
   ActionRepeat.fromJson(Map<String, dynamic> json)
-      : cropId = json['CropId'] ?? null,
+      : id = json['Id'] ?? null,
+        cropId = json['CropId'] ?? null,
         time = json['Time'] ?? null,
         canceled = json['Canceled'],
         action = json['Action'] ?? null;
 
-  Map<String, dynamic> toJson() =>
-      {'CropId': cropId, 'Time': time, 'Canceled': canceled, "Action": action};
+  Map<String, dynamic> toJson() => {
+        'Id': id,
+        'CropId': cropId,
+        'Time': time,
+        'Canceled': canceled,
+        "Action": action
+      };
+
+  @override
+  String toString() {
+    return "ActionRepeat ${toJson()}";
+  }
+
+  // ignore: hash_and_equals
+  @override
+  bool operator ==(dynamic other) {
+    if (!(other is ActionRepeat)) {
+      return false;
+    }
+
+    return other.cropId == cropId &&
+        other.id == id &&
+        other.time == time &&
+        other.action == action &&
+        other.canceled == canceled;
+  }
 }

@@ -30,6 +30,26 @@ class UserModel {
         'Role': role.toJson(),
         'Email': email
       };
+
+  @override
+  String toString() {
+    return "UserModel ${toJson()}";
+  }
+
+  // ignore: hash_and_equals
+  @override
+  bool operator ==(dynamic other) {
+    if (!(other is UserModel)) {
+      return false;
+    }
+
+    return other.name == name &&
+        other.id == id &&
+        other.company == company &&
+        other.dashboard == dashboard &&
+        other.role == role &&
+        other.email == email;
+  }
 }
 
 class Dashboard {
