@@ -22,10 +22,9 @@ class CropsService {
   }
 
   addCrop(Crop crop, UserModel user) async {
-    crop.company = user.company;
-    var newCrop = await firestore.collection("crops").add(crop.toJson());
-    crop.id = newCrop.id;
-    editCrop(crop);
+    var newCrop = firestore.collection("crops").doc();
+    newCrop
+        .set(crop.withValues(company: user.company, id: newCrop.id).toJson());
   }
 
   editCrop(Crop crop) {
