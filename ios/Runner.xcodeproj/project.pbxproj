@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -72,7 +72,6 @@
 				2E2BAE78E4A2CB2973771EA7 /* Pods-Runner.release.xcconfig */,
 				591ED4BD47C05FAE5C799C7B /* Pods-Runner.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -155,6 +154,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				8BC361E2BE9740B5B87CE01A /* [CP] Embed Pods Frameworks */,
 				B885FA6F802EC8DF338A84E6 /* [CP] Copy Pods Resources */,
+				F49833CC255D2B27009338EA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -296,6 +296,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		F49833CC255D2B27009338EA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/FirebaseCrashlytics/run\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
