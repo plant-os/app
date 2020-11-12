@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:164720637351:android:238a9ba70c0b56d382b282",
+        "mobilesdk_app_id": "1:164720637351:android:1233ee083db2867882b282",
         "android_client_info": {
-          "package_name": "com.plantos.android"
+          "package_name": "com.plantos.app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "164720637351-cndmmeno88ujatna511l3k2rao8ltilp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.plantos.app",
+            "certificate_hash": "e057f7d69c18f59bba5ffbe290aa982c6b655fc4"
+          }
+        },
         {
           "client_id": "164720637351-fn50eb5ujeitmhmeb7379v268aame4o3.apps.googleusercontent.com",
           "client_type": 3
@@ -32,46 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "164720637351-40f7uhkv5omvpp910e01doo66q6fgjjs.apps.googleusercontent.com",
+              "client_id": "164720637351-4j5ao4p4h3memj9gdqsh2ec31sgnvr59.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.plantos.mobile"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:164720637351:android:d54e39568f474db982b282",
-        "android_client_info": {
-          "package_name": "com.plantos.mobile"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "164720637351-fn50eb5ujeitmhmeb7379v268aame4o3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCz97Z0t0Pzb-qHIjBqwYKQkEXawyT0ZCQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "164720637351-fn50eb5ujeitmhmeb7379v268aame4o3.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "164720637351-40f7uhkv5omvpp910e01doo66q6fgjjs.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.plantos.mobile"
+                "bundle_id": "com.plantos.ios"
               }
             }
           ]
