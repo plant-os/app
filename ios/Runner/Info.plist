@@ -16,34 +16,34 @@
 		<string>app</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
-		<key>CFBundleShortVersionString</key>
-		<string>$(FLUTTER_BUILD_NAME)</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(FLUTTER_BUILD_NAME)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true />
-		<key>UILaunchStoryboardName</key>
-		<string>LaunchScreen</string>
-		<key>UIMainStoryboardFile</key>
-		<string>Main</string>
-		<key>NSContactsUsageDescription</key>
+		<key>NSAppleMusicUsageDescription</key>
 		<string>Not used by app.</string>
 		<key>NSCalendarsUsageDescription</key>
 		<string>Not used by app.</string>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>Not used by app.</string>
-		<key>NSAppleMusicUsageDescription</key>
-		<string>Not used by app.</string>
-		<key>NSMotionUsageDescription</key>
-		<string>Not used by app.</string>
-		<key>NSSpeechRecognitionUsageDescription</key>
+		<key>NSContactsUsageDescription</key>
 		<string>Not used by app.</string>
 		<key>NSLocationAlwaysUsageDescription</key>
 		<string>Not used by app.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>Not used by app.</string>
+		<key>NSMotionUsageDescription</key>
+		<string>Not used by app.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Not used by app.</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>Not used by app.</string>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
