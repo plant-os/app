@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>164720637351-4j5ao4p4h3memj9gdqsh2ec31sgnvr59.apps.googleusercontent.com</string>
+	<string>164720637351-7dthnajirk7lhsqkfc7fqngb6e4lq33o.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.164720637351-4j5ao4p4h3memj9gdqsh2ec31sgnvr59</string>
+	<string>com.googleusercontent.apps.164720637351-7dthnajirk7lhsqkfc7fqngb6e4lq33o</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>164720637351-asgv55e9pene2jt86clm2h52dibtra56.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.plantos.ios</string>
+	<string>com.plant-os.ios</string>
 	<key>PROJECT_ID</key>
 	<string>plantos-development-225209</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:164720637351:ios:499bdf14c0ae00e382b282</string>
+	<string>1:164720637351:ios:2442bb162cef82d282b282</string>
 	<key>DATABASE_URL</key>
 	<string>https://plantos-development-225209.firebaseio.com</string>
 </dict>
