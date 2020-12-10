@@ -7,6 +7,7 @@ class FormTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool readOnly;
   final bool obscureText;
+  final bool autocorrect;
 
   FormTextField(
       {@required this.hintText,
@@ -14,7 +15,8 @@ class FormTextField extends StatelessWidget {
       @required this.onChanged,
       this.keyboardType,
       this.readOnly,
-      this.obscureText});
+      this.obscureText,
+      this.autocorrect = true});
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,7 @@ class FormTextField extends StatelessWidget {
                 keyboardType: keyboardType ?? TextInputType.text,
                 readOnly: readOnly ?? false,
                 obscureText: obscureText ?? false,
+                autocorrect: autocorrect,
                 onChanged: (_) => onChanged(),
               ),
             ),
