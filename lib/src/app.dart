@@ -35,6 +35,8 @@ class App extends StatelessWidget {
                   debugShowCheckedModeBanner: false,
                   theme: ThemeData(
                       fontFamily: 'Lato-Regular',
+                      appBarTheme:
+                          AppBarTheme().copyWith(brightness: Brightness.light),
                       scaffoldBackgroundColor: whiteColor),
                   home: homeWidget));
         }));
