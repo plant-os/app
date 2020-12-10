@@ -195,7 +195,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                                 )
                               : Text("Irrigation",
                                   style: TextStyle(color: whiteColor)),
-                          repeatsBuilder(schedule),
+                          Expanded(child: repeatsBuilder(schedule)),
                           Row(
                             children: [
                               Text(
