@@ -19,20 +19,23 @@ class App extends StatelessWidget {
         create: (_) => AuthBloc()..add(AuthStartedEvent()),
         child: BlocBuilder<AuthBloc, AuthState>(builder: (_, state) {
           Widget homeWidget;
-          if (state is AuthUnauthenticatedState)
+          if (state is AuthUnauthenticatedState) {
             homeWidget = BlocProvider<LoginBloc>(
                 create: (_) => LoginBloc(authService), child: LoginPage());
-          else if (state is AuthAuthenticatedState)
+          } else if (state is AuthAuthenticatedState) {
             homeWidget = BlocProvider<CropsBloc>(
                 create: (_) =>
                     CropsBloc(authService, cropsService, userService),
                 child: CropsPage());
-          else
+          } else if (state is AuthUninitializedState) {
             homeWidget = Scaffold();
+          } else {
+            throw new Exception("invalid auth state");
+          }
+
           return GestureDetector(
               onTap: () => FocusManager.instance.primaryFocus.unfocus(),
               child: MaterialApp(
-                  debugShowCheckedModeBanner: false,
                   theme: ThemeData(
                       fontFamily: 'Lato-Regular',
                       appBarTheme:
