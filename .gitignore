@@ -41,3 +41,11 @@ app.*.map.json
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+KEYS
+ios/Flutter/.last_build_id
+ios/Runner.app.dSYM.zip
+ios/Runner.ipa
+ios/fastlane/Preview.html
+ios/fastlane/report.xml
+key.jks

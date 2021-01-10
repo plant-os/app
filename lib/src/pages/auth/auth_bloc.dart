@@ -8,8 +8,7 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final _authService = AuthService();
 
-  @override
-  AuthState get initialState => AuthUninitializedState();
+  AuthBloc() : super(AuthUninitializedState());
 
   @override
   Stream<AuthState> mapEventToState(

@@ -79,13 +79,16 @@ class CropDetailsPageState extends State<CropDetailsPage> {
     if (schedule.repeat.sunday == true) {
       days = days + "Sun";
     }
-    return SizedBox(
-      width: 120,
-      child: Text(days,
-          style: TextStyle(
-            color: whiteColor,
-          ),
-          overflow: TextOverflow.ellipsis),
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+      child: Center(
+          child: Text(
+        days,
+        style: TextStyle(
+          color: whiteColor,
+        ),
+        overflow: TextOverflow.ellipsis,
+      )),
     );
   }
 
@@ -100,7 +103,6 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 70,
                   child: Text(
                     action.action,
                     style: TextStyle(fontSize: 15, color: blackColor),
@@ -120,11 +122,11 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                             },
                             child: CircleAvatar(
                               backgroundColor: blueColor,
-                              radius: 20,
+                              radius: 16,
                               child: Icon(
                                 Icons.done,
                                 color: Colors.white,
-                                size: 30,
+                                size: 20,
                               ),
                             ),
                           ),
@@ -132,13 +134,10 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                       )
                     : Row(
                         children: [
-                          SizedBox(
-                            width: 50,
-                            child: Text(
-                              "Cancelled",
-                              style: TextStyle(fontSize: 15, color: blackColor),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                          Text(
+                            "Cancelled",
+                            style: TextStyle(fontSize: 15, color: blackColor),
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
@@ -148,11 +147,11 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                               },
                               child: CircleAvatar(
                                 backgroundColor: Colors.red,
-                                radius: 20,
+                                radius: 16,
                                 child: Icon(
                                   Icons.clear,
                                   color: Colors.white,
-                                  size: 30,
+                                  size: 20,
                                 ),
                               ),
                             ),
@@ -167,7 +166,26 @@ class CropDetailsPageState extends State<CropDetailsPage> {
     );
   }
 
-  Widget scheduleBuilder(Schedule schedule) {
+  Widget buildSchedule(Schedule schedule) {
+    var content = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          schedule.action.fertigation ? "Fertigation" : "Irrigation",
+          style: TextStyle(color: whiteColor),
+        ),
+        Expanded(child: repeatsBuilder(schedule)),
+        Row(
+          children: [
+            Text(
+              DateFormat.jm().format(schedule.time.toDate()),
+              style: TextStyle(color: whiteColor),
+            ),
+          ],
+        ),
+      ],
+    );
+
     return Column(
       children: [
         Stack(
@@ -176,36 +194,16 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               children: [
                 Expanded(
                   child: Container(
-                    height: 50,
+                    height: 30,
                     decoration: BoxDecoration(
                         color: blueColor,
                         border: Border.all(
                           color: blueColor,
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          schedule.action.fertigation == true
-                              ? Text(
-                                  "Fertigation",
-                                  style: TextStyle(color: whiteColor),
-                                )
-                              : Text("Irrigation",
-                                  style: TextStyle(color: whiteColor)),
-                          Expanded(child: repeatsBuilder(schedule)),
-                          Row(
-                            children: [
-                              Text(
-                                DateFormat.jm().format(schedule.time.toDate()),
-                                style: TextStyle(color: whiteColor),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                      child: content,
                     ),
                   ),
                 )
@@ -228,18 +226,175 @@ class CropDetailsPageState extends State<CropDetailsPage> {
     );
   }
 
+  Widget buildCropSheet(CropDetailsStateDone state) {
+    var header = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          widget.crop.name,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+        ),
+        IconButton(
+            icon: Icon(
+              Icons.edit,
+              color: blackColor,
+            ),
+            onPressed: () async {
+              var updatedCrop = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider<EditCropBloc>(
+                    create: (_) => EditCropBloc(
+                        cropDetailsBloc.cropsService,
+                        cropDetailsBloc.authService,
+                        cropDetailsBloc.userService),
+                    child: EditCropPage(widget.crop),
+                  ),
+                ),
+              );
+              if (updatedCrop != null) {
+                cropDetailsBloc.generateActionRepeats();
+                setState(() {});
+              }
+            }),
+      ],
+    );
+
+    var overview = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            Text(
+              "EC",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              widget.crop.ec,
+              style: TextStyle(
+                  fontSize: 17, fontWeight: FontWeight.bold, color: blackColor),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Text(
+              "Start Date",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              convertDate(widget.crop.startDate),
+              style: TextStyle(
+                  fontSize: 17, fontWeight: FontWeight.bold, color: blackColor),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Text(
+              "State",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              cropStateIndicator(widget.crop.cropState),
+              style: TextStyle(
+                  fontSize: 17, fontWeight: FontWeight.bold, color: blackColor),
+            ),
+          ],
+        )
+      ],
+    );
+
+    var schedules = Column(children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Schedules",
+            style: TextStyle(
+                fontSize: 19, fontWeight: FontWeight.bold, color: blackColor),
+          )
+        ],
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      Column(
+        children: widget.crop.schedules
+            .map((schedule) => buildSchedule(schedule))
+            .toList(),
+      )
+    ]);
+
+    var actions = Column(children: [
+      Row(
+        children: [
+          Text(
+            "Upcoming Actions",
+            style: TextStyle(
+                fontSize: 19, fontWeight: FontWeight.bold, color: blackColor),
+          )
+        ],
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      state.actionRepeats.length > 0
+          ? upcomingActionsBuilder(state.actionRepeats)
+          : Center(
+              child: CircularProgressIndicator(),
+            )
+    ]);
+
+    return Column(
+      children: [
+        header,
+        SizedBox(
+          height: 30,
+        ),
+        overview,
+        SizedBox(
+          height: 30,
+        ),
+        schedules,
+        SizedBox(
+          height: 30,
+        ),
+        actions,
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CropDetailsBloc, CropDetailsState>(
       builder: (context, state) {
         if (state is CropDetailsStateDone) {
           return Scaffold(
-            backgroundColor: whiteColor,
+            // backgroundColor: whiteColor,
             appBar: AppBar(
               iconTheme: IconThemeData(
                 color: blackColor,
               ),
-              backgroundColor: whiteColor,
+              backgroundColor: Colors.white,
             ),
             body: Stack(
               children: [
@@ -254,7 +409,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                 Positioned(
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 200.0),
+                      padding: const EdgeInsets.only(top: 100.0),
                       child: Container(
                         decoration: BoxDecoration(
                             color: whiteColor,
@@ -267,167 +422,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                             )),
                         child: Padding(
                           padding: const EdgeInsets.all(30.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    widget.crop.name,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22),
-                                  ),
-                                  IconButton(
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: blackColor,
-                                      ),
-                                      onPressed: () async {
-                                        var updatedCrop = await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) =>
-                                                BlocProvider<EditCropBloc>(
-                                              create: (_) => EditCropBloc(
-                                                  cropDetailsBloc.cropsService,
-                                                  cropDetailsBloc.authService,
-                                                  cropDetailsBloc.userService),
-                                              child: EditCropPage(widget.crop),
-                                            ),
-                                          ),
-                                        );
-                                        if (updatedCrop != null) {
-                                          cropDetailsBloc
-                                              .generateActionRepeats();
-                                          setState(() {});
-                                        }
-                                      }),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "EC",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        widget.crop.ec,
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: blackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "Start Date",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        convertDate(widget.crop.startDate),
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: blackColor),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "State",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        cropStateIndicator(
-                                            widget.crop.cropState),
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: blackColor),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Schedule",
-                                    style: TextStyle(
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold,
-                                        color: blackColor),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Column(
-                                children: widget.crop.schedules
-                                    .map(
-                                        (schedule) => scheduleBuilder(schedule))
-                                    .toList(),
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Upcoming Actions",
-                                    style: TextStyle(
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold,
-                                        color: blackColor),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              state.actionRepeats.length > 0
-                                  ? upcomingActionsBuilder(state.actionRepeats)
-                                  : Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                            ],
-                          ),
+                          child: buildCropSheet(state),
                         ),
                       ),
                     ),

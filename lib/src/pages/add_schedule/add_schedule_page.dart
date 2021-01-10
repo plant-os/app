@@ -8,7 +8,7 @@ import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
 import 'package:plantos/src/widgets/form_button.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+// import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class AddSchedulePage extends StatefulWidget {
   @override
@@ -183,17 +183,16 @@ class AddSchedulePageState extends State<AddSchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: whiteColor,
         appBar: AppBar(
-          iconTheme: IconThemeData(
-            color: blackColor,
-          ),
+          // iconTheme: IconThemeData(
+          //   color: blackColor,
+          // ),
           title: Text(
             "Schedule",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 20, color: blackColor),
+            // style: TextStyle(
+            //     fontWeight: FontWeight.bold, fontSize: 20, color: blackColor),
           ),
-          backgroundColor: whiteColor,
+          // backgroundColor: whiteColor,
         ),
         body: BlocListener<AddScheduleBloc, AddScheduleState>(
             listener: _blocListener,
@@ -221,14 +220,14 @@ class AddSchedulePageState extends State<AddSchedulePage> {
                                   ),
                                   RaisedButton(
                                     onPressed: () {
-                                      DatePicker.showTimePicker(context,
-                                          showTitleActions: true,
-                                          onConfirm: (date) {
-                                        schedule.time =
-                                            Timestamp.fromDate(date);
-                                        setState(() {});
-                                        _onScheduleFieldChanged();
-                                      }, currentTime: DateTime.now());
+                                      // DatePicker.showTimePicker(context,
+                                      //     showTitleActions: true,
+                                      //     onConfirm: (date) {
+                                      //   schedule.time =
+                                      //       Timestamp.fromDate(date);
+                                      //   setState(() {});
+                                      //   _onScheduleFieldChanged();
+                                      // }, currentTime: DateTime.now());
                                     },
                                     color: whiteColor,
                                     child: Text(

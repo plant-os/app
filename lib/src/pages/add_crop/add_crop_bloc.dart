@@ -14,10 +14,8 @@ class AddCropBloc extends Bloc<AddCropEvent, AddCropState> {
   final AuthService authService;
   final UserService userService;
 
-  AddCropBloc(this.cropsService, this.authService, this.userService);
-
-  @override
-  AddCropState get initialState => AddCropState.initial();
+  AddCropBloc(this.cropsService, this.authService, this.userService)
+      : super(AddCropState.initial());
 
   @override
   Stream<AddCropState> mapEventToState(AddCropEvent event) async* {

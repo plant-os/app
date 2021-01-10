@@ -14,10 +14,8 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
   final AuthService authService;
   final UserService userService;
 
-  EditCropBloc(this.cropsService, this.authService, this.userService);
-
-  @override
-  EditCropState get initialState => EditCropState.initial();
+  EditCropBloc(this.cropsService, this.authService, this.userService)
+      : super(EditCropState.initial());
 
   @override
   Stream<EditCropState> mapEventToState(EditCropEvent event) async* {

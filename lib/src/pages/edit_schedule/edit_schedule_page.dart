@@ -8,7 +8,7 @@ import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
 import 'package:plantos/src/widgets/form_button.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+// import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class EditSchedulePage extends StatefulWidget {
   final Schedule schedule;
@@ -227,14 +227,14 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                                   ),
                                   RaisedButton(
                                     onPressed: () {
-                                      DatePicker.showTimePicker(context,
-                                          showTitleActions: true,
-                                          onConfirm: (date) {
-                                        widget.schedule.time =
-                                            Timestamp.fromDate(date);
-                                        setState(() {});
-                                        _onScheduleFieldChanged();
-                                      }, currentTime: DateTime.now());
+                                      // DatePicker.showTimePicker(context,
+                                      //     showTitleActions: true,
+                                      //     onConfirm: (date) {
+                                      //   widget.schedule.time =
+                                      //       Timestamp.fromDate(date);
+                                      //   setState(() {});
+                                      //   _onScheduleFieldChanged();
+                                      // }, currentTime: DateTime.now());
                                     },
                                     color: whiteColor,
                                     child: Text(

@@ -17,12 +17,10 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
   final Crop crop;
 
   CropDetailsBloc(
-      this.cropsService, this.authService, this.userService, this.crop) {
+      this.cropsService, this.authService, this.userService, this.crop)
+      : super(ActionsLoading()) {
     initialise();
   }
-
-  @override
-  CropDetailsState get initialState => ActionsLoading();
 
   @override
   Stream<CropDetailsState> mapEventToState(CropDetailsEvent event) async* {

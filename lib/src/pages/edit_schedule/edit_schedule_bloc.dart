@@ -9,10 +9,7 @@ part 'edit_schedule_state.dart';
 class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
   final Schedule schedule;
 
-  EditScheduleBloc(this.schedule);
-
-  @override
-  EditScheduleState get initialState => EditScheduleState.initial();
+  EditScheduleBloc(this.schedule) : super(EditScheduleState.initial());
 
   @override
   Stream<EditScheduleState> mapEventToState(EditScheduleEvent event) async* {

@@ -10,10 +10,7 @@ part 'add_schedule_state.dart';
 class AddScheduleBloc extends Bloc<AddScheduleEvent, AddScheduleState> {
   final CropsService cropsService;
 
-  AddScheduleBloc(this.cropsService);
-
-  @override
-  AddScheduleState get initialState => AddScheduleState.initial();
+  AddScheduleBloc(this.cropsService) : super(AddScheduleState.initial());
 
   @override
   Stream<AddScheduleState> mapEventToState(AddScheduleEvent event) async* {
