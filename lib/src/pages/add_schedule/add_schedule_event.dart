@@ -7,4 +7,9 @@ class ScheduleFieldChangedEvent extends AddScheduleEvent {
   ScheduleFieldChangedEvent({this.schedule});
 }
 
+class EditTimeEvent extends AddScheduleEvent {
+  final TimeOfDay time;
+  EditTimeEvent(this.time);
+}
+
 class ClickSubmitAddScheduleEvent extends AddScheduleEvent {}

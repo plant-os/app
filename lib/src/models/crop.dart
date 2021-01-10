@@ -156,6 +156,11 @@ class Schedule {
 
   Schedule(this.time, this.action, this.repeat);
 
+  Schedule copyWith({Timestamp time, CropAction action, Repeat repeat}) {
+    return new Schedule(
+        time ?? this.time, action ?? this.action, repeat ?? this.repeat);
+  }
+
   Schedule.fromJson(Map<String, dynamic> json)
       : time = json['Time'] ?? null,
         repeat =

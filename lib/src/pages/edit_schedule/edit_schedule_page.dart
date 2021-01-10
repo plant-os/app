@@ -11,21 +11,21 @@ import 'package:intl/intl.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class EditSchedulePage extends StatefulWidget {
-  final Schedule schedule;
+  final Schedule _initialSchedule;
 
-  EditSchedulePage(this.schedule);
+  EditSchedulePage(this._initialSchedule);
+
   @override
   EditSchedulePageState createState() => EditSchedulePageState();
 }
 
 class EditSchedulePageState extends State<EditSchedulePage> {
   Loading _loading;
-  EditScheduleBloc editScheduleBloc;
+  EditScheduleBloc bloc;
 
-  void _onScheduleFieldChanged() {
-    editScheduleBloc
-        .add(EditScheduleFieldChangedEvent(schedule: widget.schedule));
-  }
+  // void _onScheduleFieldChanged() {
+  //   bloc.add(EditScheduleFieldChangedEvent(schedule: widget.schedule));
+  // }
 
   void _blocListener(context, state) {
     if (state.isLoading)
@@ -39,47 +39,32 @@ class EditSchedulePageState extends State<EditSchedulePage> {
   }
 
   void _addSchedulePressed() {
-    Navigator.pop(context, editScheduleBloc.state.schedule);
-  }
-
-  void toggle(String action) {
-    if (action == "irrigation") {
-      widget.schedule.action.irrigation = true;
-      widget.schedule.action.fertigation = false;
-    } else if (action == "fertigation") {
-      widget.schedule.action.fertigation = true;
-      widget.schedule.action.irrigation = false;
-    }
-    _onScheduleFieldChanged();
+    Navigator.pop(context, bloc.state.schedule);
   }
 
   @override
   void initState() {
     super.initState();
-    editScheduleBloc = BlocProvider.of<EditScheduleBloc>(context);
+    bloc = new EditScheduleBloc(widget._initialSchedule);
   }
 
   @override
   void dispose() {
+    bloc.dispose();
     super.dispose();
   }
 
-  Widget toggleButtons() {
+  Widget toggleButtons(EditScheduleState state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         RaisedButton(
-            onPressed: () {
-              toggle("irrigation");
-              setState(() {});
-            },
+            onPressed: () => bloc.add(SetActionEvent(false)),
             child: Text(
               "Irrigation",
               style: TextStyle(color: whiteColor),
             ),
-            color: widget.schedule.action.irrigation == true
-                ? blueColor
-                : greyColor,
+            color: state.schedule.action.irrigation ? blueColor : greyColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
             )),
@@ -87,17 +72,12 @@ class EditSchedulePageState extends State<EditSchedulePage> {
           width: 20.0,
         ),
         RaisedButton(
-          onPressed: () {
-            toggle("fertigation");
-            setState(() {});
-          },
+          onPressed: () => bloc.add(SetActionEvent(true)),
           child: Text(
             "Fertigation",
             style: TextStyle(color: whiteColor),
           ),
-          color: widget.schedule.action.fertigation == true
-              ? blueColor
-              : greyColor,
+          color: state.schedule.action.fertigation ? blueColor : greyColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),
           ),
@@ -212,7 +192,7 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 30.0),
                           child: Column(children: [
-                            toggleButtons(),
+                            toggleButtons(state),
                             Padding(
                               padding: const EdgeInsets.only(top: 30.0),
                               child: Row(
@@ -226,15 +206,17 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                                         fontSize: 17),
                                   ),
                                   RaisedButton(
-                                    onPressed: () {
-                                      // DatePicker.showTimePicker(context,
-                                      //     showTitleActions: true,
-                                      //     onConfirm: (date) {
-                                      //   widget.schedule.time =
-                                      //       Timestamp.fromDate(date);
-                                      //   setState(() {});
-                                      //   _onScheduleFieldChanged();
-                                      // }, currentTime: DateTime.now());
+                                    onPressed: () async {
+                                      TimeOfDay selectedTime =
+                                          await showTimePicker(
+                                        initialTime: TimeOfDay.fromDateTime(
+                                            state.schedule.time.toDate()),
+                                        context: context,
+                                      );
+                                      // showTimePicker returns null if the user cancels the dialog.
+                                      if (selectedTime != null) {
+                                        bloc.add(EditTimeEvent(selectedTime));
+                                      }
                                     },
                                     color: whiteColor,
                                     child: Text(
@@ -312,7 +294,7 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                               size: Size.fromHeight(25.0),
                             ),
                             FormButton(
-                                text: 'Edit Schedule',
+                                text: 'Save',
                                 onPressed:
                                     state.isValid ? _addSchedulePressed : null),
                             SizedBox(height: 20),

@@ -56,7 +56,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
     return "Not Specified";
   }
 
-  Widget repeatsBuilder(Schedule schedule) {
+  static Widget repeatsBuilder(Schedule schedule) {
     String days = "";
     if (schedule.repeat.monday == true) {
       days = days + "Mon ";

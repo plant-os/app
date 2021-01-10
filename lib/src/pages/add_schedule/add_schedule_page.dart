@@ -19,10 +19,10 @@ class AddSchedulePageState extends State<AddSchedulePage> {
   Schedule schedule = Schedule(Timestamp.now(), CropAction(false, false),
       Repeat(false, false, false, false, false, false, false));
   Loading _loading;
-  AddScheduleBloc addScheduleBloc;
+  AddScheduleBloc bloc;
 
   void _onScheduleFieldChanged() {
-    addScheduleBloc.add(ScheduleFieldChangedEvent(schedule: schedule));
+    bloc.add(ScheduleFieldChangedEvent(schedule: schedule));
   }
 
   void _blocListener(context, state) {
@@ -37,7 +37,7 @@ class AddSchedulePageState extends State<AddSchedulePage> {
   }
 
   void _addSchedulePressed() {
-    Navigator.pop(context, addScheduleBloc.state.schedule);
+    Navigator.pop(context, bloc.state.schedule);
   }
 
   void toggle(String action) {
@@ -54,7 +54,7 @@ class AddSchedulePageState extends State<AddSchedulePage> {
   @override
   void initState() {
     super.initState();
-    addScheduleBloc = BlocProvider.of<AddScheduleBloc>(context);
+    bloc = BlocProvider.of<AddScheduleBloc>(context);
   }
 
   @override
@@ -219,15 +219,17 @@ class AddSchedulePageState extends State<AddSchedulePage> {
                                         fontSize: 17),
                                   ),
                                   RaisedButton(
-                                    onPressed: () {
-                                      // DatePicker.showTimePicker(context,
-                                      //     showTitleActions: true,
-                                      //     onConfirm: (date) {
-                                      //   schedule.time =
-                                      //       Timestamp.fromDate(date);
-                                      //   setState(() {});
-                                      //   _onScheduleFieldChanged();
-                                      // }, currentTime: DateTime.now());
+                                    onPressed: () async {
+                                      TimeOfDay selectedTime =
+                                          await showTimePicker(
+                                        initialTime: TimeOfDay.fromDateTime(
+                                            state.schedule.time.toDate()),
+                                        context: context,
+                                      );
+                                      // showTimePicker returns null if the user cancels the dialog.
+                                      if (selectedTime != null) {
+                                        bloc.add(EditTimeEvent(selectedTime));
+                                      }
                                     },
                                     color: whiteColor,
                                     child: Text(
