@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/crop.dart';
 import 'package:plantos/src/pages/add_schedule/add_schedule.dart';
+import 'package:plantos/src/pages/crop_details/crop_details_page.dart';
 import 'package:plantos/src/pages/edit_crop/edit_crop_bloc.dart';
 import 'package:plantos/src/pages/edit_schedule/edit_schedule.dart';
 import 'package:plantos/src/pages/edit_schedule/edit_schedule_bloc.dart';
@@ -188,7 +189,7 @@ class EditCropPageState extends State<EditCropPage> {
                                     )
                                   : Text("Irrigation",
                                       style: TextStyle(color: whiteColor)),
-                              repeatsBuilder(schedule),
+                              CropDetailsPageState.repeatsBuilder(schedule),
                               Row(
                                 children: [
                                   Text(
@@ -224,39 +225,6 @@ class EditCropPageState extends State<EditCropPage> {
             )),
         SizedBox.fromSize(size: Size.fromHeight(10.0)),
       ],
-    );
-  }
-
-  Widget repeatsBuilder(Schedule schedule) {
-    String days = "";
-    if (schedule.repeat.monday == true) {
-      days = days + "Mon ";
-    }
-    if (schedule.repeat.tuesday == true) {
-      days = days + "Tue ";
-    }
-    if (schedule.repeat.wednesday == true) {
-      days = days + "Wed ";
-    }
-    if (schedule.repeat.thursday == true) {
-      days = days + "Thur ";
-    }
-    if (schedule.repeat.friday == true) {
-      days = days + "Fri ";
-    }
-    if (schedule.repeat.saturday == true) {
-      days = days + "Sat ";
-    }
-    if (schedule.repeat.sunday == true) {
-      days = days + "Sun";
-    }
-    return SizedBox(
-      width: 120,
-      child: Text(days,
-          style: TextStyle(
-            color: whiteColor,
-          ),
-          overflow: TextOverflow.ellipsis),
     );
   }
 
@@ -456,7 +424,7 @@ class EditCropPageState extends State<EditCropPage> {
                       size: Size.fromHeight(25.0),
                     ),
                     FormButton(
-                        text: 'Edit Crop',
+                        text: 'Save',
                         onPressed: state.isValid ? _editCropPressed : null),
                     SizedBox(height: 20),
                   ]),
