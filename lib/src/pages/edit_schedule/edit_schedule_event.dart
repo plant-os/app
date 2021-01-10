@@ -17,4 +17,9 @@ class SetActionEvent extends EditScheduleEvent {
   SetActionEvent(this.isFertigation);
 }
 
+class ToggleRepeatEvent extends EditScheduleEvent {
+  final String day;
+  ToggleRepeatEvent(this.day);
+}
+
 class ClickSubmitEditScheduleEvent extends EditScheduleEvent {}

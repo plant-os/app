@@ -86,81 +86,23 @@ class EditSchedulePageState extends State<EditSchedulePage> {
     );
   }
 
-  void toggleRepeat(String day) {
-    if (day == "Monday") {
-      widget.schedule.repeat.monday = !widget.schedule.repeat.monday;
-    } else if (day == "Tuesday") {
-      widget.schedule.repeat.tuesday = !widget.schedule.repeat.tuesday;
-    } else if (day == "Wednesday") {
-      widget.schedule.repeat.wednesday = !widget.schedule.repeat.wednesday;
-    } else if (day == "Thursday") {
-      widget.schedule.repeat.thursday = !widget.schedule.repeat.thursday;
-    } else if (day == "Friday") {
-      widget.schedule.repeat.friday = !widget.schedule.repeat.friday;
-    } else if (day == "Saturday") {
-      widget.schedule.repeat.saturday = !widget.schedule.repeat.saturday;
-    } else if (day == "Sunday") {
-      widget.schedule.repeat.sunday = !widget.schedule.repeat.sunday;
-    }
-    setState(() {});
-    _onScheduleFieldChanged();
-  }
-
-  Widget repeatMaker(String day, bool indicator) {
+  Widget buildDayRow(String day, bool indicator) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Builder(builder: (context) {
-          if (day == "Monday") {
-            return Text(
-              "Every Monday",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            );
-          } else if (day == "Tuesday") {
-            return Text(
-              "Every Tuesday",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            );
-          } else if (day == "Wednesday") {
-            return Text(
-              "Every Wednesday",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            );
-          } else if (day == "Thursday") {
-            return Text(
-              "Every Thursday",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            );
-          } else if (day == "Friday") {
-            return Text(
-              "Every Friday",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            );
-          } else if (day == "Saturday") {
-            return Text(
-              "Every Saturday",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            );
-          } else if (day == "Sunday") {
-            return Text(
-              "Every Sunday",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            );
-          } else {
-            return Container();
-          }
-        }),
+        Text(
+          "Every $day",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+        ),
         CircleAvatar(
-          backgroundColor: indicator == true ? blueColor : greyColor,
+          backgroundColor: indicator ? blueColor : greyColor,
           radius: 20,
           child: IconButton(
               padding: EdgeInsets.zero,
               icon: Icon(Icons.done),
               color: Colors.white,
               iconSize: 20,
-              onPressed: () {
-                toggleRepeat(day);
-              }),
+              onPressed: () => bloc.add(ToggleRepeatEvent(day))),
         ),
       ],
     );
@@ -221,7 +163,7 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                                     color: whiteColor,
                                     child: Text(
                                       DateFormat.jm().format(
-                                          widget.schedule.time.toDate()),
+                                          bloc.state.schedule.time.toDate()),
                                       style: TextStyle(
                                           color: blueColor,
                                           fontSize: 17,
@@ -239,38 +181,38 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                repeatMaker(
-                                    "Monday", widget.schedule.repeat.monday),
+                                buildDayRow("Monday",
+                                    bloc.state.schedule.repeat.monday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                repeatMaker(
-                                    "Tuesday", widget.schedule.repeat.tuesday),
+                                buildDayRow("Tuesday",
+                                    bloc.state.schedule.repeat.tuesday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                repeatMaker("Wednesday",
-                                    widget.schedule.repeat.wednesday),
+                                buildDayRow("Wednesday",
+                                    bloc.state.schedule.repeat.wednesday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                repeatMaker("Thursday",
-                                    widget.schedule.repeat.thursday),
+                                buildDayRow("Thursday",
+                                    bloc.state.schedule.repeat.thursday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                repeatMaker(
-                                    "Friday", widget.schedule.repeat.friday),
+                                buildDayRow("Friday",
+                                    bloc.state.schedule.repeat.friday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                repeatMaker("Saturday",
-                                    widget.schedule.repeat.saturday),
+                                buildDayRow("Saturday",
+                                    bloc.state.schedule.repeat.saturday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                repeatMaker(
-                                    "Sunday", widget.schedule.repeat.sunday),
+                                buildDayRow("Sunday",
+                                    bloc.state.schedule.repeat.sunday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
