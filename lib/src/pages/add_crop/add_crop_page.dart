@@ -146,11 +146,7 @@ class AddCropPageState extends State<AddCropPage> {
               schedule = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => BlocProvider<EditScheduleBloc>(
-                      create: (_) => EditScheduleBloc(schedule),
-                      child: EditSchedulePage(schedule),
-                    ),
-                  ));
+                      builder: (_) => EditSchedulePage(schedule)));
               setState(() {});
             },
             child: Stack(

@@ -24,7 +24,7 @@ class EditScheduleState {
         error: error ?? "",
         isSuccess: isSucess ?? false,
         isLoading: isLoading ?? false,
-        isValid: isValid ?? false);
+        isValid: isValid ?? true);
   }
 
   EditScheduleState update(
@@ -44,7 +44,7 @@ class EditScheduleState {
 
   @override
   String toString() {
-    return "AddCropState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error, schedule: $schedule}";
+    return "EditScheduleState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error, schedule: $schedule}";
   }
 
   // ignore: hash_and_equals

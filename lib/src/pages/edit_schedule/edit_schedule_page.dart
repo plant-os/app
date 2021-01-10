@@ -23,10 +23,6 @@ class EditSchedulePageState extends State<EditSchedulePage> {
   Loading _loading;
   EditScheduleBloc bloc;
 
-  // void _onScheduleFieldChanged() {
-  //   bloc.add(EditScheduleFieldChangedEvent(schedule: widget.schedule));
-  // }
-
   void _blocListener(context, state) {
     if (state.isLoading)
       _loading = Loading(context);
@@ -38,8 +34,8 @@ class EditSchedulePageState extends State<EditSchedulePage> {
     }
   }
 
-  void _addSchedulePressed() {
-    Navigator.pop(context, bloc.state.schedule);
+  void _addSchedulePressed(EditScheduleState state) {
+    Navigator.pop(context, state.schedule);
   }
 
   @override
@@ -124,8 +120,10 @@ class EditSchedulePageState extends State<EditSchedulePage> {
           backgroundColor: whiteColor,
         ),
         body: BlocListener<EditScheduleBloc, EditScheduleState>(
+            value: bloc,
             listener: _blocListener,
             child: BlocBuilder<EditScheduleBloc, EditScheduleState>(
+                value: bloc,
                 builder: (_, state) => SafeArea(
                         child: SingleChildScrollView(
                       child: Padding(
@@ -162,8 +160,8 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                                     },
                                     color: whiteColor,
                                     child: Text(
-                                      DateFormat.jm().format(
-                                          bloc.state.schedule.time.toDate()),
+                                      DateFormat.jm()
+                                          .format(state.schedule.time.toDate()),
                                       style: TextStyle(
                                           color: blueColor,
                                           fontSize: 17,
@@ -181,38 +179,38 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildDayRow("Monday",
-                                    bloc.state.schedule.repeat.monday),
+                                buildDayRow(
+                                    "Monday", state.schedule.repeat.monday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                buildDayRow("Tuesday",
-                                    bloc.state.schedule.repeat.tuesday),
+                                buildDayRow(
+                                    "Tuesday", state.schedule.repeat.tuesday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
                                 buildDayRow("Wednesday",
-                                    bloc.state.schedule.repeat.wednesday),
+                                    state.schedule.repeat.wednesday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                buildDayRow("Thursday",
-                                    bloc.state.schedule.repeat.thursday),
+                                buildDayRow(
+                                    "Thursday", state.schedule.repeat.thursday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                buildDayRow("Friday",
-                                    bloc.state.schedule.repeat.friday),
+                                buildDayRow(
+                                    "Friday", state.schedule.repeat.friday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                buildDayRow("Saturday",
-                                    bloc.state.schedule.repeat.saturday),
+                                buildDayRow(
+                                    "Saturday", state.schedule.repeat.saturday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                buildDayRow("Sunday",
-                                    bloc.state.schedule.repeat.sunday),
+                                buildDayRow(
+                                    "Sunday", state.schedule.repeat.sunday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
@@ -235,11 +233,24 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                             SizedBox.fromSize(
                               size: Size.fromHeight(25.0),
                             ),
-                            FormButton(
-                                text: 'Save',
-                                onPressed:
-                                    state.isValid ? _addSchedulePressed : null),
-                            SizedBox(height: 20),
+                            RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Text("Save",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: blackColor)),
+                              onPressed: state.isValid
+                                  ? () {
+                                      if (state.isValid) {
+                                        _addSchedulePressed(state);
+                                      } else {
+                                        print("invalid");
+                                      }
+                                    }
+                                  : null,
+                            )
                           ]),
                         ),
                       ),

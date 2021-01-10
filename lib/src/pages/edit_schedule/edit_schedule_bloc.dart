@@ -13,6 +13,7 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
 
   @override
   Stream<EditScheduleState> mapEventToState(EditScheduleEvent event) async* {
+    print("handling event $event");
     if (event is EditScheduleFieldChangedEvent) {
       yield* _mapScheduleFieldChangedToState(event);
     } else if (event is EditTimeEvent) {
@@ -29,8 +30,7 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
   void dispose() {}
 
   bool _isFormValidated(CropAction action, Repeat repeat) {
-    return repeat.toJson().values.any((element) => element == true) &&
-        action.toJson().values.any((element) => element == true);
+    return true;
   }
 
   Stream<EditScheduleState> _mapScheduleFieldChangedToState(
@@ -45,8 +45,12 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
     // store the hour and minute in firestore rather than using a Timestamp.
     DateTime timeOfDay = DateTime(1970, 1, 1, time.hour, time.minute);
 
-    yield state.update(
-        schedule: state.schedule.copyWith(time: Timestamp.fromDate(timeOfDay)));
+    Schedule updated =
+        state.schedule.copyWith(time: Timestamp.fromDate(timeOfDay));
+
+    var updatedS = state.update(schedule: updated);
+
+    yield state.update(schedule: updated);
   }
 
 // FIXME(simon): This is wacky.

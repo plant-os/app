@@ -36,8 +36,8 @@ class AddSchedulePageState extends State<AddSchedulePage> {
     }
   }
 
-  void _addSchedulePressed() {
-    Navigator.pop(context, bloc.state.schedule);
+  void _addSchedulePressed(AddScheduleState state) {
+    Navigator.pop(context, state.schedule);
   }
 
   void toggle(String action) {
@@ -304,8 +304,11 @@ class AddSchedulePageState extends State<AddSchedulePage> {
                             ),
                             FormButton(
                                 text: 'Add Schedule',
-                                onPressed:
-                                    state.isValid ? _addSchedulePressed : null),
+                                onPressed: () {
+                                  if (state.isValid) {
+                                    _addSchedulePressed(state);
+                                  }
+                                }),
                             SizedBox(height: 20),
                           ]),
                         ),
