@@ -173,6 +173,9 @@ class Schedule {
         'Repeat': repeat.toJson(),
         'Action': action.toJson(),
       };
+
+  @override
+  String toString() => "Schedule{time=$time, action=$action, repeat=$repeat}";
 }
 
 class Repeat {
