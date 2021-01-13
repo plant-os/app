@@ -85,7 +85,7 @@ class EditCropPageState extends State<EditCropPage> {
     bloc.add(EditCropFieldChangedEvent(crop: widget.crop));
   }
 
-  void removeSchedule(Schedule schedule) {
+  void removeSchedule(int index, Schedule schedule) {
     widget.crop.schedules = widget.crop.schedules
         .where((cropSchedule) => schedule != cropSchedule)
         .toList();
@@ -125,20 +125,19 @@ class EditCropPageState extends State<EditCropPage> {
     }
   }
 
-  Widget scheduleBuilder(Schedule schedule) {
+  Widget scheduleBuilder(int index, Schedule schedule) {
     return Column(
       children: [
         GestureDetector(
             onTap: () async {
-              schedule = await Navigator.push(
+              var updatedSchedule = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => BlocProvider<EditScheduleBloc>(
-                      create: (_) => EditScheduleBloc(schedule),
-                      child: EditSchedulePage(schedule),
-                    ),
+                    builder: (_) => EditSchedulePage(schedule),
                   ));
-              setState(() {});
+              if (updatedSchedule != null) {
+                bloc.add(ChangeScheduleEvent(index, updatedSchedule));
+              }
             },
             child: Stack(
               children: [
@@ -185,10 +184,7 @@ class EditCropPageState extends State<EditCropPage> {
                 ),
                 Positioned(
                   child: GestureDetector(
-                    onTap: () {
-                      removeSchedule(schedule);
-                      setState(() {});
-                    },
+                    onTap: () => removeSchedule(index, schedule),
                     child: Icon(
                       Icons.cancel,
                       size: 18,
@@ -223,194 +219,200 @@ class EditCropPageState extends State<EditCropPage> {
       body: BlocListener<EditCropBloc, EditCropState>(
         listener: _blocListener,
         child: BlocBuilder<EditCropBloc, EditCropState>(
-          builder: (_, state) => SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30.0, right: 30, top: 0),
+          builder: (_, state) {
+            List<Widget> schedules = [];
+
+            for (int i = 0; i < state.crop.schedules.length; i++) {
+              schedules.add(scheduleBuilder(i, state.crop.schedules[i]));
+            }
+
+            return SafeArea(
+              child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
-                  child: Column(children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Crop Name",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
-                        SizedBox.fromSize(size: Size.fromHeight(15.0)),
-                        FormTextField(
-                          hintText: 'Brinjal',
-                          controller: _nameController,
-                          onChanged: () => _onCropFieldChanged(),
-                        ),
-                      ],
-                    ),
-                    SizedBox.fromSize(size: Size.fromHeight(25.0)),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "EC",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
-                        SizedBox.fromSize(size: Size.fromHeight(15.0)),
-                        FormTextField(
-                          hintText: '1.6',
-                          controller: _ecController,
-                          onChanged: () => _onCropFieldChanged(),
-                        ),
-                      ],
-                    ),
-                    SizedBox.fromSize(
-                      size: Size.fromHeight(25.0),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Start Date",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
-                        SizedBox.fromSize(size: Size.fromHeight(15.0)),
-                        Container(
-                          height: 51.0,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
+                  padding: const EdgeInsets.only(left: 30.0, right: 30, top: 0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 40.0),
+                    child: Column(children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Crop Name",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          SizedBox.fromSize(size: Size.fromHeight(15.0)),
+                          FormTextField(
+                            hintText: 'Brinjal',
+                            controller: _nameController,
+                            onChanged: () => _onCropFieldChanged(),
+                          ),
+                        ],
+                      ),
+                      SizedBox.fromSize(size: Size.fromHeight(25.0)),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "EC",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          SizedBox.fromSize(size: Size.fromHeight(15.0)),
+                          FormTextField(
+                            hintText: '1.6',
+                            controller: _ecController,
+                            onChanged: () => _onCropFieldChanged(),
+                          ),
+                        ],
+                      ),
+                      SizedBox.fromSize(
+                        size: Size.fromHeight(25.0),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Start Date",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          SizedBox.fromSize(size: Size.fromHeight(15.0)),
+                          Container(
+                            height: 51.0,
+                            decoration: BoxDecoration(
                                 color: Colors.white,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0))),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () => _selectDate(context, state),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 7.0),
-                                    child: Text(
-                                      DateFormat('yyyy-MM-dd').format(
-                                          state.crop.startDate.toDate()),
-                                      style: TextStyle(color: Colors.black),
+                                border: Border.all(
+                                  color: Colors.white,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0))),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () => _selectDate(context, state),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 7.0),
+                                      child: Text(
+                                        DateFormat('yyyy-MM-dd').format(
+                                            state.crop.startDate.toDate()),
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                     ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox.fromSize(
+                        size: Size.fromHeight(25.0),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Crop State",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          SizedBox.fromSize(size: Size.fromHeight(15.0)),
+                          DropdownButton<String>(
+                              value: cropStateToString(state.crop.cropState),
+                              items: <String>[
+                                'Vegetative',
+                                'Budding',
+                                'Flowering',
+                                'Ripening',
+                                'Harvested'
+                              ].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: blackColor),
+                                  ),
+                                );
+                              }).toList(),
+                              dropdownColor: blueColor,
+                              onChanged: (value) =>
+                                  bloc.add(ChangeCropStateEvent(value))),
+                        ],
+                      ),
+                      SizedBox.fromSize(
+                        size: Size.fromHeight(25.0),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Schedule",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 17),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20.0),
+                                child: CircleAvatar(
+                                  backgroundColor: blueColor,
+                                  radius: 20,
+                                  child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: Icon(Icons.add),
+                                    color: Colors.white,
+                                    iconSize: 20,
+                                    onPressed: () async {
+                                      Schedule newSchedule =
+                                          await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => EditSchedulePage(
+                                              Schedule(
+                                                  Timestamp
+                                                      .fromMillisecondsSinceEpoch(
+                                                          0),
+                                                  CropAction.of("Fertigation"),
+                                                  Repeat(
+                                                      false,
+                                                      false,
+                                                      false,
+                                                      false,
+                                                      false,
+                                                      false,
+                                                      false))),
+                                        ),
+                                      );
+                                      if (newSchedule != null) {
+                                        bloc.add(AddScheduleEvent(newSchedule));
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox.fromSize(
-                      size: Size.fromHeight(25.0),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Crop State",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
-                        SizedBox.fromSize(size: Size.fromHeight(15.0)),
-                        DropdownButton<String>(
-                            value: cropStateToString(state.crop.cropState),
-                            items: <String>[
-                              'Vegetative',
-                              'Budding',
-                              'Flowering',
-                              'Ripening',
-                              'Harvested'
-                            ].map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(color: blackColor),
-                                ),
-                              );
-                            }).toList(),
-                            dropdownColor: blueColor,
-                            onChanged: (value) =>
-                                bloc.add(ChangeCropStateEvent(value))),
-                      ],
-                    ),
-                    SizedBox.fromSize(
-                      size: Size.fromHeight(25.0),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Schedule",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 17),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: CircleAvatar(
-                                backgroundColor: blueColor,
-                                radius: 20,
-                                child: IconButton(
-                                  padding: EdgeInsets.zero,
-                                  icon: Icon(Icons.add),
-                                  color: Colors.white,
-                                  iconSize: 20,
-                                  onPressed: () async {
-                                    Schedule newSchedule = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => EditSchedulePage(
-                                            Schedule(
-                                                Timestamp
-                                                    .fromMillisecondsSinceEpoch(
-                                                        0),
-                                                CropAction.of("Fertigation"),
-                                                Repeat(
-                                                    false,
-                                                    false,
-                                                    false,
-                                                    false,
-                                                    false,
-                                                    false,
-                                                    false))),
-                                      ),
-                                    );
-                                    if (newSchedule != null) {
-                                      bloc.add(AddScheduleEvent(newSchedule));
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox.fromSize(
-                          size: Size.fromHeight(15.0),
-                        ),
-                        Column(
-                            children: widget.crop.schedules
-                                .map((schedule) => scheduleBuilder(schedule))
-                                .toList())
-                      ],
-                    ),
-                    SizedBox.fromSize(
-                      size: Size.fromHeight(25.0),
-                    ),
-                    FormButton(
-                        text: 'Save',
-                        onPressed: state.isValid ? _editCropPressed : null),
-                    SizedBox(height: 20),
-                  ]),
+                          SizedBox.fromSize(
+                            size: Size.fromHeight(15.0),
+                          ),
+                          Column(children: schedules)
+                        ],
+                      ),
+                      SizedBox.fromSize(
+                        size: Size.fromHeight(25.0),
+                      ),
+                      FormButton(
+                          text: 'Save',
+                          onPressed: state.isValid ? _editCropPressed : null),
+                      SizedBox(height: 20),
+                    ]),
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

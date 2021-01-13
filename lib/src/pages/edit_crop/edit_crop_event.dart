@@ -38,3 +38,10 @@ class AddScheduleEvent extends EditCropEvent {
 
   AddScheduleEvent(this.schedule);
 }
+
+class ChangeScheduleEvent extends EditCropEvent {
+  final int index;
+  final Schedule schedule;
+
+  ChangeScheduleEvent(this.index, this.schedule);
+}
