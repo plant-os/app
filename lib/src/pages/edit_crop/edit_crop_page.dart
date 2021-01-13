@@ -89,7 +89,7 @@ class EditCropPageState extends State<EditCropPage> {
     _onCropFieldChanged();
   }
 
-  void _blocListener(context, state) {
+  void _blocListener(BuildContext context, EditCropState state) {
     if (state.isLoading)
       _loading = Loading(context);
     else if (state.isSuccess) {
@@ -98,7 +98,7 @@ class EditCropPageState extends State<EditCropPage> {
           color: greenColor,
           context: context,
           text: 'Crop was successfully edited.');
-      Navigator.pop(context, widget.crop);
+      Navigator.pop(context, state.crop);
     } else if (state.error.isNotEmpty) {
       _loading.close();
       SnackbarWithColor(context: context, text: state.error, color: Colors.red);
