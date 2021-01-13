@@ -119,6 +119,7 @@ class Crop {
   }
 }
 
+// FIXME(simon): This should be an enum.
 class CropState {
   bool vegetative;
   bool budding;
@@ -132,6 +133,16 @@ class CropState {
       this.flowering,
       this.ripening,
       this.harvested});
+
+  /// of constructs a CropState from the given string.
+  static CropState of(String name) {
+    return CropState(
+        vegetative: name == 'Vegetative',
+        budding: name == 'Budding',
+        flowering: name == 'Flowering',
+        ripening: name == 'Ripening',
+        harvested: name == 'Harvested');
+  }
 
   CropState.fromJson(Map<String, dynamic> json)
       : vegetative = json['Vegetative'] != null ? json['Vegetative'] : null,

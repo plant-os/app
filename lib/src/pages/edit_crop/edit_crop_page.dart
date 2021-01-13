@@ -372,12 +372,8 @@ class EditCropPageState extends State<EditCropPage> {
                               );
                             }).toList(),
                             dropdownColor: blueColor,
-                            onChanged: (value) {
-                              dropDownValueString = value;
-                              toggleCropState();
-
-                              setState(() {});
-                            }),
+                            onChanged: (value) =>
+                                bloc.add(ChangeCropStateEvent(value))),
                       ],
                     ),
                     SizedBox.fromSize(

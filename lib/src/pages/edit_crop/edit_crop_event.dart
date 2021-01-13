@@ -8,3 +8,9 @@ class EditCropFieldChangedEvent extends EditCropEvent {
 }
 
 class ClickSubmitEditCropEvent extends EditCropEvent {}
+
+class ChangeCropStateEvent extends EditCropEvent {
+  final String updatedCropState;
+
+  ChangeCropStateEvent(this.updatedCropState);
+}
