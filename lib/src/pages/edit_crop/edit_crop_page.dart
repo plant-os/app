@@ -38,7 +38,6 @@ class EditCropPageState extends State<EditCropPage> {
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _ecController = TextEditingController();
-  String dropDownValueString;
   Loading _loading;
 
   @override
@@ -57,9 +56,6 @@ class EditCropPageState extends State<EditCropPage> {
     _ecController.addListener(() {
       bloc.add(ChangeEcEvent(_ecController.text));
     });
-
-    dropDownValueString =
-        dropDownValueInitializer(widget.initialCrop.cropState);
   }
 
   @override
@@ -70,7 +66,7 @@ class EditCropPageState extends State<EditCropPage> {
     super.dispose();
   }
 
-  String dropDownValueInitializer(CropState state) {
+  String cropStateToString(CropState state) {
     if (state.budding == true) {
       return "Budding";
     } else if (state.vegetative == true) {
@@ -322,7 +318,7 @@ class EditCropPageState extends State<EditCropPage> {
                         ),
                         SizedBox.fromSize(size: Size.fromHeight(15.0)),
                         DropdownButton<String>(
-                            value: dropDownValueString,
+                            value: cropStateToString(state.crop.cropState),
                             items: <String>[
                               'Vegetative',
                               'Budding',
