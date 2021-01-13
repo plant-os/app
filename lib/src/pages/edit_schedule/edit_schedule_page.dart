@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/crop.dart';
@@ -6,10 +5,11 @@ import 'package:plantos/src/pages/edit_schedule/edit_schedule_bloc.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
-import 'package:plantos/src/widgets/form_button.dart';
 import 'package:intl/intl.dart';
-// import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
+/// EditSchedulePage is a widget that optionally takes a Schedule and allows the
+/// user to edit the schedule. When the user exits this page the updated
+/// schedule is returned to the caller.
 class EditSchedulePage extends StatefulWidget {
   final Schedule _initialSchedule;
 
