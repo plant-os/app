@@ -20,3 +20,15 @@ class SetStartDateEvent extends EditCropEvent {
 
   SetStartDateEvent(this.startDate);
 }
+
+class ChangeNameEvent extends EditCropEvent {
+  final String name;
+
+  ChangeNameEvent(this.name);
+}
+
+class ChangeEcEvent extends EditCropEvent {
+  final String ec;
+
+  ChangeEcEvent(this.ec);
+}

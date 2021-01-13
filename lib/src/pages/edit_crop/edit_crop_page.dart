@@ -46,8 +46,18 @@ class EditCropPageState extends State<EditCropPage> {
     super.initState();
     bloc = new EditCropBloc(widget.cropsService, widget.authService,
         widget.userService, widget.initialCrop);
+
     _nameController.text = widget.initialCrop.name;
     _ecController.text = widget.initialCrop.ec;
+
+    _nameController.addListener(() {
+      bloc.add(ChangeNameEvent(_nameController.text));
+    });
+
+    _ecController.addListener(() {
+      bloc.add(ChangeEcEvent(_ecController.text));
+    });
+
     dropDownValueString =
         dropDownValueInitializer(widget.initialCrop.cropState);
   }
@@ -77,8 +87,6 @@ class EditCropPageState extends State<EditCropPage> {
   }
 
   void _onCropFieldChanged() {
-    widget.crop.ec = _ecController.text;
-    widget.crop.name = _nameController.text;
     bloc.add(EditCropFieldChangedEvent(crop: widget.crop));
   }
 
