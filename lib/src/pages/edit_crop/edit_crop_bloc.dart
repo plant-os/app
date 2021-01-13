@@ -23,9 +23,7 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
 
   @override
   Stream<EditCropState> mapEventToState(EditCropEvent event) async* {
-    if (event is EditCropFieldChangedEvent) {
-      yield* _mapCropFieldChangedToState(event);
-    } else if (event is ClickSubmitEditCropEvent) {
+    if (event is ClickSubmitEditCropEvent) {
       yield* _mapAddCropPressedToState(event);
     } else if (event is ChangeCropStateEvent) {
       yield* _mapChangeCropStateEventToState(event);
@@ -47,64 +45,68 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
   }
 
   bool _isFormValidated(Crop crop) {
-    return crop.name.isNotEmpty &&
-        crop.ec.isNotEmpty &&
-        crop.cropState.toJson().values.any((element) => element == true) &&
-        crop.fertigationCrop == true &&
-        crop.schedules.length > 0 &&
-        crop.startDate != null;
+    return crop.name.isNotEmpty && crop.ec.isNotEmpty && crop.startDate != null;
   }
 
   void dispose() {}
-
-  Stream<EditCropState> _mapCropFieldChangedToState(
-      EditCropFieldChangedEvent event) async* {
-    yield state.update(isValid: _isFormValidated(event.crop), crop: event.crop);
-  }
 
   Stream<EditCropState> _mapChangeScheduleEventToState(
       ChangeScheduleEvent event) async* {
     var schedules = List.from(state.crop.schedules);
     schedules[event.index] = event.schedule;
 
-    yield state.update(crop: state.crop.withValues(schedules: schedules));
+    var updatedCrop = state.crop.withValues(schedules: schedules);
+
+    yield state.update(
+        isValid: _isFormValidated(updatedCrop), crop: updatedCrop);
   }
 
   Stream<EditCropState> _mapRemoveScheduleEventToState(
       RemoveScheduleEvent event) async* {
     var schedules = List.from(state.crop.schedules);
     schedules.removeAt(event.index);
-    yield state.update(crop: state.crop.withValues(schedules: schedules));
+
+    var updatedCrop = state.crop.withValues(schedules: schedules);
+
+    yield state.update(
+        isValid: _isFormValidated(updatedCrop), crop: updatedCrop);
   }
 
   Stream<EditCropState> _mapAddScheduleEventState(
       AddScheduleEvent event) async* {
     var updatedSchedules = List.from(state.crop.schedules)..add(event.schedule);
+    var updatedCrop = state.crop.withValues(schedules: updatedSchedules);
     yield state.update(
-        crop: state.crop.withValues(schedules: updatedSchedules));
+        isValid: _isFormValidated(updatedCrop), crop: updatedCrop);
   }
 
   Stream<EditCropState> _mapChangeNameEventToState(
       ChangeNameEvent event) async* {
-    yield state.update(crop: state.crop.withValues(name: event.name));
+    var updatedCrop = state.crop.withValues(name: event.name);
+    yield state.update(
+        isValid: _isFormValidated(updatedCrop), crop: updatedCrop);
   }
 
   Stream<EditCropState> _mapChangeEcEventToState(ChangeEcEvent event) async* {
-    yield state.update(crop: state.crop.withValues(ec: event.ec));
+    var updatedCrop = state.crop.withValues(ec: event.ec);
+    yield state.update(
+        isValid: _isFormValidated(updatedCrop), crop: updatedCrop);
   }
 
   Stream<EditCropState> _mapSetStartDateEventToState(
       SetStartDateEvent event) async* {
+    var updatedCrop =
+        state.crop.withValues(startDate: Timestamp.fromDate(event.startDate));
     yield state.update(
-        crop: state.crop
-            .withValues(startDate: Timestamp.fromDate(event.startDate)));
+        isValid: _isFormValidated(updatedCrop), crop: updatedCrop);
   }
 
   Stream<EditCropState> _mapChangeCropStateEventToState(
       ChangeCropStateEvent event) async* {
+    var updatedCrop =
+        state.crop.withValues(cropState: CropState.of(event.updatedCropState));
     yield state.update(
-        crop: state.crop
-            .withValues(cropState: CropState.of(event.updatedCropState)));
+        isValid: _isFormValidated(updatedCrop), crop: updatedCrop);
   }
 
   Stream<EditCropState> _mapAddCropPressedToState(

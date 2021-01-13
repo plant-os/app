@@ -22,7 +22,6 @@ class Crop {
       this.company,
       this.cameras,
       this.recipes,
-      this.fertigationCrop,
       this.ec,
       this.startDate,
       this.cropState,
@@ -36,7 +35,6 @@ class Crop {
       Company company,
       List<Camera> cameras,
       List<Recipe> recipes,
-      bool fertigationCrop,
       String ec,
       Timestamp startDate,
       CropState cropState,
@@ -46,7 +44,6 @@ class Crop {
         company: company ?? this.company,
         id: id ?? this.id,
         name: name ?? this.name,
-        fertigationCrop: fertigationCrop ?? this.fertigationCrop,
         ec: ec ?? this.ec,
         startDate: startDate ?? this.startDate,
         cropState: cropState ?? this.cropState,
@@ -86,7 +83,7 @@ class Crop {
             cameras != null ? cameras.map((e) => e.toJson()).toList() : null,
         'Recipes':
             recipes != null ? recipes.map((e) => e.toJson()).toList() : null,
-        'FertigationCrop': fertigationCrop,
+        'FertigationCrop': true,
         'Ec': ec,
         'StartDate': startDate,
         'CropState': cropState.toJson(),
@@ -95,7 +92,7 @@ class Crop {
 
   @override
   String toString() {
-    return "Crop ${toJson()}";
+    return "Crop{${toJson()}}";
   }
 
   // ignore: hash_and_equals
@@ -111,7 +108,6 @@ class Crop {
         other.selected == selected &&
         other.cameras == cameras &&
         other.recipes == recipes &&
-        other.fertigationCrop == fertigationCrop &&
         other.ec == ec &&
         other.startDate == startDate &&
         other.cropState == cropState &&

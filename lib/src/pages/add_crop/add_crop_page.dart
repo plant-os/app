@@ -22,7 +22,6 @@ class AddCropPage extends StatefulWidget {
 class AddCropPageState extends State<AddCropPage> {
   Crop crop = Crop(
       name: "",
-      fertigationCrop: true,
       ec: "",
       cropState: CropState(
           vegetative: true,

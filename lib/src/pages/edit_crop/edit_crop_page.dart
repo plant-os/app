@@ -202,8 +202,10 @@ class EditCropPageState extends State<EditCropPage> {
         backgroundColor: whiteColor,
       ),
       body: BlocListener<EditCropBloc, EditCropState>(
+        value: bloc,
         listener: _blocListener,
         child: BlocBuilder<EditCropBloc, EditCropState>(
+          value: bloc,
           builder: (_, state) {
             List<Widget> schedules = [];
 

@@ -27,8 +27,9 @@ class CropsService {
         .set(crop.withValues(company: user.company, id: newCrop.id).toJson());
   }
 
-  editCrop(Crop crop) {
-    firestore.collection("crops").doc(crop.id).update(crop.toJson());
+  Future<void> editCrop(Crop crop) {
+    print("updating ${crop.id} => ${crop.toString()}");
+    return firestore.collection("crops").doc(crop.id).update(crop.toJson());
   }
 
   addActionToSkipped(ActionRepeat action) async {
