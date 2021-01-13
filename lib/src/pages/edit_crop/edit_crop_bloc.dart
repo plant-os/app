@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plantos/src/models/crop.dart';
 import 'dart:async';
@@ -28,6 +29,8 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
       yield* _mapAddCropPressedToState(event);
     } else if (event is ChangeCropStateEvent) {
       yield* _mapChangeCropStateEventToState(event);
+    } else if (event is SetStartDateEvent) {
+      yield* _mapSetStartDateEventToState(event);
     } else {
       throw Exception("unhandled event");
     }
@@ -47,6 +50,13 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
   Stream<EditCropState> _mapCropFieldChangedToState(
       EditCropFieldChangedEvent event) async* {
     yield state.update(isValid: _isFormValidated(event.crop), crop: event.crop);
+  }
+
+  Stream<EditCropState> _mapSetStartDateEventToState(
+      SetStartDateEvent event) async* {
+    yield state.update(
+        crop: state.crop
+            .withValues(startDate: Timestamp.fromDate(event.startDate)));
   }
 
   Stream<EditCropState> _mapChangeCropStateEventToState(

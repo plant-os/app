@@ -14,3 +14,9 @@ class ChangeCropStateEvent extends EditCropEvent {
 
   ChangeCropStateEvent(this.updatedCropState);
 }
+
+class SetStartDateEvent extends EditCropEvent {
+  final DateTime startDate;
+
+  SetStartDateEvent(this.startDate);
+}

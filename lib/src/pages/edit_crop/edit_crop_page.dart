@@ -149,18 +149,17 @@ class EditCropPageState extends State<EditCropPage> {
     bloc.add(ClickSubmitEditCropEvent());
   }
 
-  void _selectDate(BuildContext context) async {
+  void _selectDate(BuildContext context, EditCropState state) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: widget.crop.startDate.toDate(),
+      initialDate: state.crop.startDate.toDate(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
     );
-    if (picked != null && picked != widget.crop.startDate.toDate())
-      setState(() {
-        widget.crop.startDate = Timestamp.fromDate(picked);
-      });
-    _onCropFieldChanged();
+
+    if (picked != null) {
+      bloc.add(SetStartDateEvent(picked));
+    }
   }
 
   Widget scheduleBuilder(Schedule schedule) {
