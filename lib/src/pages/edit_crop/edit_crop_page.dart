@@ -23,7 +23,7 @@ class EditCropPage extends StatefulWidget {
 }
 
 class EditCropPageState extends State<EditCropPage> {
-  EditCropBloc editCropsBloc;
+  EditCropBloc bloc;
   TextEditingController _nameController = TextEditingController();
   TextEditingController _ecController = TextEditingController();
   String dropDownValueString;
@@ -48,7 +48,7 @@ class EditCropPageState extends State<EditCropPage> {
   void _onCropFieldChanged() {
     widget.crop.ec = _ecController.text;
     widget.crop.name = _nameController.text;
-    editCropsBloc.add(EditCropFieldChangedEvent(crop: widget.crop));
+    bloc.add(EditCropFieldChangedEvent(crop: widget.crop));
   }
 
   void removeSchedule(Schedule schedule) {
@@ -115,7 +115,7 @@ class EditCropPageState extends State<EditCropPage> {
   }
 
   void _editCropPressed() {
-    editCropsBloc.add(ClickSubmitEditCropEvent());
+    bloc.add(ClickSubmitEditCropEvent());
   }
 
   void _selectDate(BuildContext context) async {
@@ -135,7 +135,7 @@ class EditCropPageState extends State<EditCropPage> {
   @override
   void initState() {
     super.initState();
-    editCropsBloc = BlocProvider.of<EditCropBloc>(context);
+    bloc = BlocProvider.of<EditCropBloc>(context);
     _nameController.text = widget.crop.name;
     _ecController.text = widget.crop.ec;
     dropDownValueString = dropDownValueInitializer(widget.crop.cropState);
@@ -395,7 +395,7 @@ class EditCropPageState extends State<EditCropPage> {
                                         builder: (_) =>
                                             BlocProvider<AddScheduleBloc>(
                                           create: (_) => AddScheduleBloc(
-                                              editCropsBloc.cropsService),
+                                              bloc.cropsService),
                                           child: AddSchedulePage(),
                                         ),
                                       ),
