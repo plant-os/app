@@ -243,13 +243,11 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               var updatedCrop = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => BlocProvider<EditCropBloc>(
-                    create: (_) => EditCropBloc(
-                        cropDetailsBloc.cropsService,
-                        cropDetailsBloc.authService,
-                        cropDetailsBloc.userService),
-                    child: EditCropPage(widget.crop),
-                  ),
+                  builder: (_) => EditCropPage(
+                      cropDetailsBloc.cropsService,
+                      cropDetailsBloc.authService,
+                      cropDetailsBloc.userService,
+                      widget.crop),
                 ),
               );
               if (updatedCrop != null) {

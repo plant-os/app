@@ -7,6 +7,9 @@ import 'package:plantos/src/pages/crop_details/crop_details_page.dart';
 import 'package:plantos/src/pages/edit_crop/edit_crop_bloc.dart';
 import 'package:plantos/src/pages/edit_schedule/edit_schedule.dart';
 import 'package:plantos/src/pages/edit_schedule/edit_schedule_bloc.dart';
+import 'package:plantos/src/services/auth_service.dart';
+import 'package:plantos/src/services/crops_service.dart';
+import 'package:plantos/src/services/user_service.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
@@ -14,9 +17,17 @@ import 'package:plantos/src/widgets/form_button.dart';
 import 'package:intl/intl.dart';
 import 'package:plantos/src/widgets/form_textfield.dart';
 
+/// EditCropPage is a widget that provides the functionality for editing crop
+/// information.
 class EditCropPage extends StatefulWidget {
+  final CropsService cropsService;
+  final AuthService authService;
+  final UserService userService;
+
   final Crop crop;
-  EditCropPage(this.crop);
+
+  EditCropPage(
+      this.cropsService, this.authService, this.userService, this.crop);
 
   @override
   EditCropPageState createState() => EditCropPageState();
@@ -24,10 +35,29 @@ class EditCropPage extends StatefulWidget {
 
 class EditCropPageState extends State<EditCropPage> {
   EditCropBloc bloc;
+
   TextEditingController _nameController = TextEditingController();
   TextEditingController _ecController = TextEditingController();
   String dropDownValueString;
   Loading _loading;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = new EditCropBloc(
+        widget.cropsService, widget.authService, widget.userService);
+    _nameController.text = widget.crop.name;
+    _ecController.text = widget.crop.ec;
+    dropDownValueString = dropDownValueInitializer(widget.crop.cropState);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _ecController.dispose();
+    bloc.dispose();
+    super.dispose();
+  }
 
   String dropDownValueInitializer(CropState state) {
     if (state.budding == true) {
@@ -130,22 +160,6 @@ class EditCropPageState extends State<EditCropPage> {
         widget.crop.startDate = Timestamp.fromDate(picked);
       });
     _onCropFieldChanged();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    bloc = BlocProvider.of<EditCropBloc>(context);
-    _nameController.text = widget.crop.name;
-    _ecController.text = widget.crop.ec;
-    dropDownValueString = dropDownValueInitializer(widget.crop.cropState);
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _ecController.dispose();
-    super.dispose();
   }
 
   Widget scheduleBuilder(Schedule schedule) {
