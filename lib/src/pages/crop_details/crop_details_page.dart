@@ -17,22 +17,22 @@ class CropDetailsPage extends StatefulWidget {
 }
 
 class CropDetailsPageState extends State<CropDetailsPage> {
-  CropDetailsBloc cropDetailsBloc;
+  CropDetailsBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    cropDetailsBloc = BlocProvider.of<CropDetailsBloc>(context);
+    bloc = BlocProvider.of<CropDetailsBloc>(context);
   }
 
   @override
   void dispose() {
-    cropDetailsBloc.close();
+    bloc.close();
     super.dispose();
   }
 
   void _changeActionStatusPressed(ActionRepeat action) {
-    cropDetailsBloc.add(ClickChangeActionStatusEvent(action: action));
+    bloc.add(ClickChangeActionStatusEvent(action: action));
   }
 
   String convertDate(Timestamp startDateTimestamp) {
@@ -243,15 +243,12 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               var updatedCrop = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => EditCropPage(
-                      cropDetailsBloc.cropsService,
-                      cropDetailsBloc.authService,
-                      cropDetailsBloc.userService,
-                      widget.crop),
+                  builder: (_) => EditCropPage(bloc.cropsService,
+                      bloc.authService, bloc.userService, widget.crop),
                 ),
               );
               if (updatedCrop != null) {
-                cropDetailsBloc.generateActionRepeats();
+                bloc.generateActionRepeats();
                 setState(() {});
               }
             }),
