@@ -89,46 +89,6 @@ class EditCropPageState extends State<EditCropPage> {
     _onCropFieldChanged();
   }
 
-  void toggleCropState() {
-    if (dropDownValueString == "Vegetative") {
-      widget.crop.cropState = CropState(
-          vegetative: true,
-          budding: false,
-          flowering: false,
-          ripening: false,
-          harvested: false);
-    } else if (dropDownValueString == "Budding") {
-      widget.crop.cropState = CropState(
-          vegetative: false,
-          budding: true,
-          flowering: false,
-          ripening: false,
-          harvested: false);
-    } else if (dropDownValueString == "Flowering") {
-      widget.crop.cropState = CropState(
-          vegetative: false,
-          budding: false,
-          flowering: true,
-          ripening: false,
-          harvested: false);
-    } else if (dropDownValueString == "Ripening") {
-      widget.crop.cropState = CropState(
-          vegetative: false,
-          budding: false,
-          flowering: false,
-          ripening: true,
-          harvested: false);
-    } else if (dropDownValueString == "Harvested") {
-      widget.crop.cropState = CropState(
-          vegetative: false,
-          budding: false,
-          flowering: false,
-          ripening: false,
-          harvested: true);
-    }
-    _onCropFieldChanged();
-  }
-
   void _blocListener(context, state) {
     if (state.isLoading)
       _loading = Loading(context);
