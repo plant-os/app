@@ -8,10 +8,9 @@ import 'package:plantos/src/themes/colors.dart';
 
 import 'crop_details_bloc.dart';
 
+/// CropDetailsPage is a widget that displays the settings, schedules and
+/// upcoming actions for a particular crop.
 class CropDetailsPage extends StatefulWidget {
-  final Crop crop;
-  CropDetailsPage(this.crop);
-
   @override
   CropDetailsPageState createState() => CropDetailsPageState();
 }
@@ -23,17 +22,12 @@ class CropDetailsPageState extends State<CropDetailsPage> {
   void initState() {
     super.initState();
     bloc = BlocProvider.of<CropDetailsBloc>(context);
-    bloc.add(SetCropEvent(widget.crop));
   }
 
   @override
   void dispose() {
     bloc.close();
     super.dispose();
-  }
-
-  void _changeActionStatusPressed(ActionRepeat action) {
-    bloc.add(ClickChangeActionStatusEvent(action: action));
   }
 
   String convertDate(Timestamp startDateTimestamp) {
@@ -118,9 +112,8 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                     ? Row(
                         children: [
                           GestureDetector(
-                            onTap: () {
-                              _changeActionStatusPressed(action);
-                            },
+                            onTap: () => bloc.add(
+                                ClickChangeActionStatusEvent(action: action)),
                             child: CircleAvatar(
                               backgroundColor: blueColor,
                               radius: 16,
@@ -143,9 +136,8 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: GestureDetector(
-                              onTap: () {
-                                _changeActionStatusPressed(action);
-                              },
+                              onTap: () => bloc.add(
+                                  ClickChangeActionStatusEvent(action: action)),
                               child: CircleAvatar(
                                 backgroundColor: Colors.red,
                                 radius: 16,
@@ -217,22 +209,12 @@ class CropDetailsPageState extends State<CropDetailsPage> {
     );
   }
 
-  Widget loadingPage() {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
-    );
-  }
-
-  Widget buildCropSheet(CropDetailsStateDone state) {
+  Widget buildCropSheet(LoadedState state) {
     var header = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          widget.crop.name,
+          state.crop.name,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
         ),
         IconButton(
@@ -241,16 +223,13 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               color: blackColor,
             ),
             onPressed: () async {
-              var updatedCrop = await Navigator.push(
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => EditCropPage(bloc.cropsService,
                       bloc.authService, bloc.userService, state.crop),
                 ),
               );
-              if (updatedCrop != null) {
-                bloc.add(SetCropEvent(updatedCrop));
-              }
             }),
       ],
     );
@@ -271,7 +250,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               height: 5,
             ),
             Text(
-              widget.crop.ec,
+              state.crop.ec,
               style: TextStyle(
                   fontSize: 17, fontWeight: FontWeight.bold, color: blackColor),
             ),
@@ -290,7 +269,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               height: 5,
             ),
             Text(
-              convertDate(widget.crop.startDate),
+              convertDate(state.crop.startDate),
               style: TextStyle(
                   fontSize: 17, fontWeight: FontWeight.bold, color: blackColor),
             ),
@@ -309,7 +288,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               height: 5,
             ),
             Text(
-              cropStateIndicator(widget.crop.cropState),
+              cropStateIndicator(state.crop.cropState),
               style: TextStyle(
                   fontSize: 17, fontWeight: FontWeight.bold, color: blackColor),
             ),
@@ -333,7 +312,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
         height: 20,
       ),
       Column(
-        children: widget.crop.schedules
+        children: state.crop.schedules
             .map((schedule) => buildSchedule(schedule))
             .toList(),
       )
@@ -378,56 +357,72 @@ class CropDetailsPageState extends State<CropDetailsPage> {
     );
   }
 
+  Widget buildLoadingState(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
+
+  Widget buildLoadedState(BuildContext context, LoadedState state) {
+    return Scaffold(
+      // backgroundColor: whiteColor,
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: blackColor,
+        ),
+        backgroundColor: Colors.white,
+      ),
+      body: Stack(
+        children: [
+          Container(
+            child: Image.asset(
+              'assets/crop.jpg',
+              height: 250,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 100.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      border: Border.all(
+                        color: whiteColor,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50),
+                      )),
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: buildCropSheet(state),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CropDetailsBloc, CropDetailsState>(
       builder: (context, state) {
-        if (state is CropDetailsStateDone) {
-          return Scaffold(
-            // backgroundColor: whiteColor,
-            appBar: AppBar(
-              iconTheme: IconThemeData(
-                color: blackColor,
-              ),
-              backgroundColor: Colors.white,
-            ),
-            body: Stack(
-              children: [
-                Container(
-                  child: Image.asset(
-                    'assets/crop.jpg',
-                    height: 250,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Positioned(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 100.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: whiteColor,
-                            border: Border.all(
-                              color: whiteColor,
-                            ),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(50),
-                              topRight: Radius.circular(50),
-                            )),
-                        child: Padding(
-                          padding: const EdgeInsets.all(30.0),
-                          child: buildCropSheet(state),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+        if (state is LoadedState) {
+          return buildLoadedState(context, state);
+        } else if (state is LoadingState) {
+          return buildLoadingState(context);
         } else {
-          return loadingPage();
+          throw Exception("unhandled state");
         }
       },
     );

@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/semantics.dart';
 import 'package:plantos/src/models/crop.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
@@ -14,35 +16,73 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
   final CropsService cropsService;
   final AuthService authService;
   final UserService userService;
-  final Crop crop;
+
+  StreamSubscription cropSubscription;
+  StreamSubscription skipsSubscription;
+
+  Crop loadedCrop;
+  List<ActionRepeat> loadedSkips;
 
   CropDetailsBloc(
-      this.cropsService, this.authService, this.userService, this.crop)
-      : super(ActionsLoading()) {
-    initialise();
+      this.cropsService, this.authService, this.userService, Crop crop)
+      : super(LoadingState()) {
+    cropSubscription = cropsService
+        .get(crop.id)
+        .listen((crop) => add(CropSnapshotEvent(crop)));
+    skipsSubscription = cropsService
+        .skippedActions(crop.id)
+        .listen((skips) => add(SkipsSnapshotEvent(skips)));
   }
 
   @override
   Stream<CropDetailsState> mapEventToState(CropDetailsEvent event) async* {
-    if (event is ActionsLoaded) {
-      yield* _mapLoadActionsToState(event);
+    print("handling event $event");
+    if (event is CropSnapshotEvent) {
+      yield* _mapCropSnapshotEventToState(event);
+    } else if (event is SkipsSnapshotEvent) {
+      yield* _mapSkipsSnapshotEventToState(event);
     } else if (event is ClickChangeActionStatusEvent) {
-      yield* _mapActionStatusToState(event);
-    } else if (event is SetCropEvent) {
-      yield* _mapSetCropEventToState(event);
+      yield* _mapClickChangeActionStatusEventToState(event);
     } else {
       throw Exception("unhandled event");
     }
   }
 
-  void initialise() {
-    generateActionRepeats().then(
-      (value) {
-        add(
-          ActionsLoaded(value),
-        );
-      },
-    );
+  void dispose() {
+    cropSubscription.cancel();
+    skipsSubscription.cancel();
+  }
+
+  Stream<CropDetailsState> _mapCropSnapshotEventToState(
+      CropSnapshotEvent event) async* {
+    loadedCrop = event.crop;
+
+    if (loadedCrop != null && loadedSkips != null) {
+      yield LoadedState(
+          loadedCrop, generateActionRepeats(loadedCrop, loadedSkips));
+    }
+  }
+
+  Stream<CropDetailsState> _mapSkipsSnapshotEventToState(
+      SkipsSnapshotEvent event) async* {
+    loadedSkips = event.skips;
+
+    if (loadedCrop != null && loadedSkips != null) {
+      yield LoadedState(
+          loadedCrop, generateActionRepeats(loadedCrop, loadedSkips));
+    }
+  }
+
+  Stream<CropDetailsState> _mapClickChangeActionStatusEventToState(
+      ClickChangeActionStatusEvent event) async* {
+    if (event.action.canceled) {
+      await cropsService.deleteActionFromSkipped(event.action.id);
+    } else {
+      await cropsService.addActionToSkipped(event.action);
+    }
+    // We intentionally avoid updating the state here as we'll get back a
+    // snapshot from the database when it's actually changed via
+    // SkipsSnapshotEvent.
   }
 
   List<DateTime> generateDays() {
@@ -58,18 +98,9 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
     return days;
   }
 
-  Stream<CropDetailsState> _mapLoadActionsToState(ActionsLoaded event) async* {
-    yield CropDetailsStateDone(event.actionRepeats, crop);
-  }
-
-  Stream<CropDetailsState> _mapSetCropEventToState(SetCropEvent event) async* {
-    var actionRepeats = await generateActionRepeats();
-    yield CropDetailsStateDone(actionRepeats, event.crop);
-  }
-
-  Future<List<ActionRepeat>> generateActionRepeats() async {
+  List<ActionRepeat> generateActionRepeats(
+      Crop crop, List<ActionRepeat> skippedactionRepeats) {
     final actionRepeats = <ActionRepeat>[];
-    final skippedactionRepeats = await cropsService.skippedActions(crop.id);
     final days = generateDays();
 
     days.forEach(
@@ -265,27 +296,4 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
     actionRepeats.sort((a, b) => a.time.toDate().compareTo(b.time.toDate()));
     return actionRepeats;
   }
-
-  Stream<CropDetailsState> _mapActionStatusToState(
-      ClickChangeActionStatusEvent event) async* {
-    if (event.action.canceled == true) {
-      try {
-        await cropsService.deleteActionFromSkipped(event.action.id);
-        final actionRepeats = await generateActionRepeats();
-        yield CropDetailsStateDone(actionRepeats, crop);
-      } catch (e) {
-        print(e);
-      }
-    } else {
-      try {
-        await cropsService.addActionToSkipped(event.action);
-        final actionRepeats = await generateActionRepeats();
-        yield CropDetailsStateDone(actionRepeats, crop);
-      } catch (e) {
-        print(e);
-      }
-    }
-  }
-
-  void dispose() {}
 }

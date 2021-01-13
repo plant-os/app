@@ -2,39 +2,32 @@ part of 'crop_details_bloc.dart';
 
 class CropDetailsState {}
 
-class ActionsLoading implements CropDetailsState {
+/// LoadingState is used to indicate to the user that the page is loading from
+/// the database.
+class LoadingState implements CropDetailsState {
   @override
-  bool operator ==(dynamic other) {
-    if (!(other is ActionsLoading)) {
-      return false;
-    }
-    return other is ActionsLoading;
-  }
+  bool operator ==(dynamic other) => other is LoadingState;
 }
 
-class CropDetailsStateError implements CropDetailsState {
-  final String error;
-  CropDetailsStateError(this.error);
-}
-
-class CropDetailsStateDone implements CropDetailsState {
-  final List<ActionRepeat> actionRepeats;
+/// LoadedState is the state that contains the information that the user
+/// intends to see.
+class LoadedState implements CropDetailsState {
   final Crop crop;
+  final List<ActionRepeat> actionRepeats;
 
-  CropDetailsStateDone(this.actionRepeats, this.crop);
+  LoadedState(this.crop, this.actionRepeats);
 
   @override
-  String toString() {
-    return "CropDetailsState{actionRepeats: $actionRepeats}";
-  }
+  String toString() =>
+      "LoadedState{crop: $crop, actionRepeats: $actionRepeats}";
 
   // ignore: hash_and_equals
   @override
   bool operator ==(dynamic other) {
-    if (!(other is CropDetailsStateDone)) {
+    if (!(other is LoadedState)) {
       return false;
     }
 
-    return other.actionRepeats == actionRepeats && other.crop == crop;
+    return other.crop == crop && other.actionRepeats == actionRepeats;
   }
 }

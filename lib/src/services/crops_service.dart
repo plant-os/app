@@ -21,6 +21,13 @@ class CropsService {
         .toList());
   }
 
+  /// get returns a stream of snapshots of the given crop.
+  Stream<Crop> get(String cropId) => firestore
+      .collection("crops")
+      .doc(cropId)
+      .snapshots()
+      .map((doc) => Crop.fromJson(doc.data()));
+
   addCrop(Crop crop, UserModel user) async {
     var newCrop = firestore.collection("crops").doc();
     newCrop
@@ -46,14 +53,11 @@ class CropsService {
     await firestore.collection("skipped").doc(id).delete();
   }
 
-  Future<List<ActionRepeat>> skippedActions(String cropId) async {
-    var foundActionQuerySnapshots = await firestore
-        .collection("skipped")
-        .where('CropId', isEqualTo: cropId)
-        .get();
-    List<ActionRepeat> foundActions = foundActionQuerySnapshots.docs
-        .map((doc) => ActionRepeat.fromJson(doc.data()))
-        .toList();
-    return foundActions;
-  }
+  Stream<List<ActionRepeat>> skippedActions(String cropId) => firestore
+      .collection("skipped")
+      .where('CropId', isEqualTo: cropId)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => ActionRepeat.fromJson(doc.data()))
+          .toList());
 }

@@ -53,7 +53,7 @@ class _CropsPageState extends State<CropsPage>
           builder: (_) => BlocProvider<CropDetailsBloc>(
             create: (_) => CropDetailsBloc(_cropsBloc.cropsService,
                 _cropsBloc.authService, _cropsBloc.userService, crop),
-            child: CropDetailsPage(crop),
+            child: CropDetailsPage(),
           ),
         ),
       ),
