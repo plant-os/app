@@ -24,10 +24,10 @@ class EditCropPage extends StatefulWidget {
   final AuthService authService;
   final UserService userService;
 
-  final Crop crop;
+  final Crop initialCrop;
 
   EditCropPage(
-      this.cropsService, this.authService, this.userService, this.crop);
+      this.cropsService, this.authService, this.userService, this.initialCrop);
 
   @override
   EditCropPageState createState() => EditCropPageState();
@@ -44,11 +44,12 @@ class EditCropPageState extends State<EditCropPage> {
   @override
   void initState() {
     super.initState();
-    bloc = new EditCropBloc(
-        widget.cropsService, widget.authService, widget.userService);
-    _nameController.text = widget.crop.name;
-    _ecController.text = widget.crop.ec;
-    dropDownValueString = dropDownValueInitializer(widget.crop.cropState);
+    bloc = new EditCropBloc(widget.cropsService, widget.authService,
+        widget.userService, widget.initialCrop);
+    _nameController.text = widget.initialCrop.name;
+    _ecController.text = widget.initialCrop.ec;
+    dropDownValueString =
+        dropDownValueInitializer(widget.initialCrop.cropState);
   }
 
   @override
