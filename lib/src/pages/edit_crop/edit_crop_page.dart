@@ -289,12 +289,12 @@ class EditCropPageState extends State<EditCropPage> {
                             children: <Widget>[
                               Expanded(
                                 child: GestureDetector(
-                                  onTap: () => _selectDate(context),
+                                  onTap: () => _selectDate(context, state),
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 7.0),
                                     child: Text(
                                       DateFormat('yyyy-MM-dd').format(
-                                          widget.crop.startDate.toDate()),
+                                          state.crop.startDate.toDate()),
                                       style: TextStyle(color: Colors.black),
                                     ),
                                   ),
