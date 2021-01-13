@@ -32,3 +32,9 @@ class ChangeEcEvent extends EditCropEvent {
 
   ChangeEcEvent(this.ec);
 }
+
+class AddScheduleEvent extends EditCropEvent {
+  final Schedule schedule;
+
+  AddScheduleEvent(this.schedule);
+}

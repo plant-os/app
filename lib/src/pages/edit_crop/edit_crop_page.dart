@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/crop.dart';
-import 'package:plantos/src/pages/add_schedule/add_schedule.dart';
 import 'package:plantos/src/pages/crop_details/crop_details_page.dart';
 import 'package:plantos/src/pages/edit_crop/edit_crop_bloc.dart';
 import 'package:plantos/src/pages/edit_schedule/edit_schedule.dart';
@@ -366,19 +365,25 @@ class EditCropPageState extends State<EditCropPage> {
                                     Schedule newSchedule = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (_) =>
-                                            BlocProvider<AddScheduleBloc>(
-                                          create: (_) => AddScheduleBloc(
-                                              bloc.cropsService),
-                                          child: AddSchedulePage(),
-                                        ),
+                                        builder: (_) => EditSchedulePage(
+                                            Schedule(
+                                                Timestamp
+                                                    .fromMillisecondsSinceEpoch(
+                                                        0),
+                                                CropAction.of("Fertigation"),
+                                                Repeat(
+                                                    false,
+                                                    false,
+                                                    false,
+                                                    false,
+                                                    false,
+                                                    false,
+                                                    false))),
                                       ),
                                     );
                                     if (newSchedule != null) {
-                                      widget.crop.schedules.add(newSchedule);
-                                      _onCropFieldChanged();
+                                      bloc.add(AddScheduleEvent(newSchedule));
                                     }
-                                    setState(() {});
                                   },
                                 ),
                               ),

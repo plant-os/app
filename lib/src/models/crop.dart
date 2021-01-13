@@ -239,11 +239,16 @@ class Repeat {
       };
 }
 
+// FIXME(simon): This should be an enum.
 class CropAction {
   bool irrigation;
   bool fertigation;
 
   CropAction(this.irrigation, this.fertigation);
+
+  static CropAction of(String value) {
+    return CropAction(value == 'Irrigation', value == 'Fertigation');
+  }
 
   CropAction.fromJson(Map<String, dynamic> json)
       : irrigation = json['Irrigation'] ?? null,

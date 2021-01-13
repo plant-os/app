@@ -35,6 +35,8 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
       yield* _mapChangeNameEventToState(event);
     } else if (event is ChangeEcEvent) {
       yield* _mapChangeEcEventToState(event);
+    } else if (event is AddScheduleEvent) {
+      yield* _mapAddScheduleEventState(event);
     } else {
       throw Exception("unhandled event");
     }
@@ -54,6 +56,13 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
   Stream<EditCropState> _mapCropFieldChangedToState(
       EditCropFieldChangedEvent event) async* {
     yield state.update(isValid: _isFormValidated(event.crop), crop: event.crop);
+  }
+
+  Stream<EditCropState> _mapAddScheduleEventState(
+      AddScheduleEvent event) async* {
+    var updatedSchedules = List.from(state.crop.schedules)..add(event.schedule);
+    yield state.update(
+        crop: state.crop.withValues(schedules: updatedSchedules));
   }
 
   Stream<EditCropState> _mapChangeNameEventToState(
