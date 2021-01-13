@@ -23,6 +23,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
   void initState() {
     super.initState();
     bloc = BlocProvider.of<CropDetailsBloc>(context);
+    bloc.add(SetCropEvent(widget.crop));
   }
 
   @override
@@ -244,12 +245,11 @@ class CropDetailsPageState extends State<CropDetailsPage> {
                 context,
                 MaterialPageRoute(
                   builder: (_) => EditCropPage(bloc.cropsService,
-                      bloc.authService, bloc.userService, widget.crop),
+                      bloc.authService, bloc.userService, state.crop),
                 ),
               );
               if (updatedCrop != null) {
-                bloc.generateActionRepeats();
-                setState(() {});
+                bloc.add(SetCropEvent(updatedCrop));
               }
             }),
       ],

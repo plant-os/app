@@ -19,7 +19,10 @@ class CropDetailsStateError implements CropDetailsState {
 
 class CropDetailsStateDone implements CropDetailsState {
   final List<ActionRepeat> actionRepeats;
-  CropDetailsStateDone(this.actionRepeats);
+  final Crop crop;
+
+  CropDetailsStateDone(this.actionRepeats, this.crop);
+
   @override
   String toString() {
     return "CropDetailsState{actionRepeats: $actionRepeats}";
@@ -32,6 +35,6 @@ class CropDetailsStateDone implements CropDetailsState {
       return false;
     }
 
-    return other.actionRepeats == actionRepeats;
+    return other.actionRepeats == actionRepeats && other.crop == crop;
   }
 }

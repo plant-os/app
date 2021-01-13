@@ -28,6 +28,10 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
       yield* _mapLoadActionsToState(event);
     } else if (event is ClickChangeActionStatusEvent) {
       yield* _mapActionStatusToState(event);
+    } else if (event is SetCropEvent) {
+      yield* _mapSetCropEventToState(event);
+    } else {
+      throw Exception("unhandled event");
     }
   }
 
@@ -55,7 +59,12 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
   }
 
   Stream<CropDetailsState> _mapLoadActionsToState(ActionsLoaded event) async* {
-    yield CropDetailsStateDone(event.actionRepeats);
+    yield CropDetailsStateDone(event.actionRepeats, crop);
+  }
+
+  Stream<CropDetailsState> _mapSetCropEventToState(SetCropEvent event) async* {
+    var actionRepeats = await generateActionRepeats();
+    yield CropDetailsStateDone(actionRepeats, event.crop);
   }
 
   Future<List<ActionRepeat>> generateActionRepeats() async {
@@ -263,7 +272,7 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
       try {
         await cropsService.deleteActionFromSkipped(event.action.id);
         final actionRepeats = await generateActionRepeats();
-        yield CropDetailsStateDone(actionRepeats);
+        yield CropDetailsStateDone(actionRepeats, crop);
       } catch (e) {
         print(e);
       }
@@ -271,7 +280,7 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
       try {
         await cropsService.addActionToSkipped(event.action);
         final actionRepeats = await generateActionRepeats();
-        yield CropDetailsStateDone(actionRepeats);
+        yield CropDetailsStateDone(actionRepeats, crop);
       } catch (e) {
         print(e);
       }

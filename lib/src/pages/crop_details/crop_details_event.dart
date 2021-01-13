@@ -11,3 +11,9 @@ class ActionsLoaded extends CropDetailsEvent {
   final List<ActionRepeat> actionRepeats;
   ActionsLoaded(this.actionRepeats);
 }
+
+class SetCropEvent extends CropDetailsEvent {
+  final Crop crop;
+
+  SetCropEvent(this.crop);
+}
