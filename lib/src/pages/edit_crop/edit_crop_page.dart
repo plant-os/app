@@ -81,17 +81,6 @@ class EditCropPageState extends State<EditCropPage> {
     }
   }
 
-  void _onCropFieldChanged() {
-    bloc.add(EditCropFieldChangedEvent(crop: widget.crop));
-  }
-
-  void removeSchedule(int index, Schedule schedule) {
-    widget.crop.schedules = widget.crop.schedules
-        .where((cropSchedule) => schedule != cropSchedule)
-        .toList();
-    _onCropFieldChanged();
-  }
-
   void _blocListener(BuildContext context, EditCropState state) {
     if (state.isLoading)
       _loading = Loading(context);
@@ -106,10 +95,6 @@ class EditCropPageState extends State<EditCropPage> {
       _loading.close();
       SnackbarWithColor(context: context, text: state.error, color: Colors.red);
     }
-  }
-
-  void _editCropPressed() {
-    bloc.add(ClickSubmitEditCropEvent());
   }
 
   void _selectDate(BuildContext context, EditCropState state) async {
@@ -184,7 +169,7 @@ class EditCropPageState extends State<EditCropPage> {
                 ),
                 Positioned(
                   child: GestureDetector(
-                    onTap: () => removeSchedule(index, schedule),
+                    onTap: () => bloc.add(RemoveScheduleEvent(index)),
                     child: Icon(
                       Icons.cancel,
                       size: 18,
@@ -245,7 +230,6 @@ class EditCropPageState extends State<EditCropPage> {
                           FormTextField(
                             hintText: 'Brinjal',
                             controller: _nameController,
-                            onChanged: () => _onCropFieldChanged(),
                           ),
                         ],
                       ),
@@ -262,7 +246,6 @@ class EditCropPageState extends State<EditCropPage> {
                           FormTextField(
                             hintText: '1.6',
                             controller: _ecController,
-                            onChanged: () => _onCropFieldChanged(),
                           ),
                         ],
                       ),
@@ -405,7 +388,9 @@ class EditCropPageState extends State<EditCropPage> {
                       ),
                       FormButton(
                           text: 'Save',
-                          onPressed: state.isValid ? _editCropPressed : null),
+                          onPressed: state.isValid
+                              ? () => bloc.add(ClickSubmitEditCropEvent())
+                              : null),
                       SizedBox(height: 20),
                     ]),
                   ),

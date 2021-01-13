@@ -12,7 +12,7 @@ class FormTextField extends StatelessWidget {
   FormTextField(
       {@required this.hintText,
       @required this.controller,
-      @required this.onChanged,
+      this.onChanged,
       this.keyboardType,
       this.readOnly,
       this.obscureText,
@@ -54,7 +54,7 @@ class FormTextField extends StatelessWidget {
                 readOnly: readOnly ?? false,
                 obscureText: obscureText ?? false,
                 autocorrect: autocorrect,
-                onChanged: (_) => onChanged(),
+                onChanged: (_) => onChanged != null ? onChanged() : () {},
               ),
             ),
           )

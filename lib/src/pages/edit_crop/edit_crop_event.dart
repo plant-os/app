@@ -45,3 +45,9 @@ class ChangeScheduleEvent extends EditCropEvent {
 
   ChangeScheduleEvent(this.index, this.schedule);
 }
+
+class RemoveScheduleEvent extends EditCropEvent {
+  final int index;
+
+  RemoveScheduleEvent(this.index);
+}
