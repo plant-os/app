@@ -21,6 +21,8 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
       this.cropsService, this.authService, this.userService, this.initialCrop)
       : super(EditCropState.initial(crop: initialCrop));
 
+  void dispose() {}
+
   @override
   Stream<EditCropState> mapEventToState(EditCropEvent event) async* {
     if (event is ClickSubmitEditCropEvent) {
@@ -48,11 +50,9 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
     return crop.name.isNotEmpty && crop.ec.isNotEmpty && crop.startDate != null;
   }
 
-  void dispose() {}
-
   Stream<EditCropState> _mapChangeScheduleEventToState(
       ChangeScheduleEvent event) async* {
-    var schedules = List.from(state.crop.schedules);
+    List<Schedule> schedules = List.from(state.crop.schedules);
     schedules[event.index] = event.schedule;
 
     var updatedCrop = state.crop.withValues(schedules: schedules);
@@ -63,7 +63,7 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
 
   Stream<EditCropState> _mapRemoveScheduleEventToState(
       RemoveScheduleEvent event) async* {
-    var schedules = List.from(state.crop.schedules);
+    List<Schedule> schedules = List.from(state.crop.schedules);
     schedules.removeAt(event.index);
 
     var updatedCrop = state.crop.withValues(schedules: schedules);
@@ -74,7 +74,8 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
 
   Stream<EditCropState> _mapAddScheduleEventState(
       AddScheduleEvent event) async* {
-    var updatedSchedules = List.from(state.crop.schedules)..add(event.schedule);
+    List<Schedule> updatedSchedules = List.from(state.crop.schedules)
+      ..add(event.schedule);
     var updatedCrop = state.crop.withValues(schedules: updatedSchedules);
     yield state.update(
         isValid: _isFormValidated(updatedCrop), crop: updatedCrop);
