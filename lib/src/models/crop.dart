@@ -16,12 +16,12 @@ class Crop {
   final List<Schedule> schedules;
 
   Crop({
-    this.name,
-    this.id,
+    this.name = "",
+    this.id = "",
     this.company,
     this.cameras = const [],
     this.recipes = const [],
-    this.ec,
+    this.ec = "",
     this.startDate,
     this.cropState,
     this.schedules = const [],

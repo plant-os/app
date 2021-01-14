@@ -44,8 +44,10 @@ class EditCropPageState extends State<EditCropPage> {
     bloc = new EditCropBloc(widget.cropsService, widget.authService,
         widget.userService, widget.initialCrop);
 
-    _nameController.text = widget.initialCrop.name;
-    _ecController.text = widget.initialCrop.ec;
+    if (widget.initialCrop != null) {
+      _nameController.text = widget.initialCrop.name;
+      _ecController.text = widget.initialCrop.ec;
+    }
 
     _nameController.addListener(() {
       bloc.add(ChangeNameEvent(_nameController.text));
@@ -65,6 +67,10 @@ class EditCropPageState extends State<EditCropPage> {
   }
 
   String cropStateToString(CropState state) {
+    if (state == null) {
+      return "Vegetative";
+    }
+
     if (state.budding == true) {
       return "Budding";
     } else if (state.vegetative == true) {
@@ -99,7 +105,9 @@ class EditCropPageState extends State<EditCropPage> {
   void _selectDate(BuildContext context, EditCropState state) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: state.crop.startDate.toDate(),
+      initialDate: state.crop.startDate == null
+          ? DateTime.now()
+          : state.crop.startDate.toDate(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
     );
@@ -279,8 +287,10 @@ class EditCropPageState extends State<EditCropPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 7.0),
                                       child: Text(
-                                        DateFormat('yyyy-MM-dd').format(
-                                            state.crop.startDate.toDate()),
+                                        state.crop.startDate == null
+                                            ? "select date"
+                                            : DateFormat('yyyy-MM-dd').format(
+                                                state.crop.startDate.toDate()),
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ),

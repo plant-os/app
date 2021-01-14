@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:plantos/src/models/crop.dart';
 import 'dart:async';
@@ -20,7 +21,9 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
 
   EditCropBloc(
       this.cropsService, this.authService, this.userService, this.initialCrop)
-      : super(EditCropState.initial(crop: initialCrop));
+      : super(EditCropState.initial(
+            isValid: initialCrop != null,
+            crop: initialCrop ?? Crop(cropState: CropState.of("Vegetative"))));
 
   void dispose() {}
 
@@ -130,7 +133,8 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
       yield state.update(isLoading: false, isSuccess: true);
     } catch (e) {
       print(e);
-      yield state.update(isLoading: false, error: e.message);
+      FirebaseCrashlytics.instance.recordError(e, null);
+      yield state.update(isLoading: false, error: e.toString());
       yield EditCropState.initial(
           crop: state.crop, isValid: _isFormValidated(state.crop));
     }

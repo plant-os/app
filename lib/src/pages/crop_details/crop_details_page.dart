@@ -331,11 +331,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
       SizedBox(
         height: 20,
       ),
-      state.actionRepeats.length > 0
-          ? upcomingActionsBuilder(state.actionRepeats)
-          : Center(
-              child: CircularProgressIndicator(),
-            )
+      upcomingActionsBuilder(state.actionRepeats)
     ]);
 
     return Column(
