@@ -50,12 +50,12 @@ class LoginState {
   }
 
   // ignore: hash_and_equals
-  bool operator ==(dynamic other) {
-    return other.isValid == isValid &&
-        other.isSuccess == isSuccess &&
-        other.isLoading == isLoading &&
-        other.error == error &&
-        other.email == email &&
-        other.password == password;
-  }
+  bool operator ==(dynamic o) =>
+      o is LoginState &&
+      o.isValid == isValid &&
+      o.isSuccess == isSuccess &&
+      o.isLoading == isLoading &&
+      o.error == error &&
+      o.email == email &&
+      o.password == password;
 }

@@ -48,11 +48,11 @@ class EditScheduleState {
   }
 
   // ignore: hash_and_equals
-  bool operator ==(dynamic other) {
-    return other.isValid == isValid &&
-        other.isSuccess == isSuccess &&
-        other.isLoading == isLoading &&
-        other.error == error &&
-        other.schedule == schedule;
-  }
+  bool operator ==(dynamic o) =>
+      o is EditScheduleState &&
+      o.isValid == isValid &&
+      o.isSuccess == isSuccess &&
+      o.isLoading == isLoading &&
+      o.error == error &&
+      o.schedule == schedule;
 }

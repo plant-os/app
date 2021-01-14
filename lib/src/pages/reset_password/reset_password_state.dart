@@ -43,11 +43,11 @@ class ResetPasswordState {
   }
 
   // ignore: hash_and_equals
-  bool operator ==(dynamic other) {
-    return other.isValid == isValid &&
-        other.isSuccess == isSuccess &&
-        other.isLoading == isLoading &&
-        other.error == error &&
-        other.email == email;
-  }
+  bool operator ==(dynamic o) =>
+      o is ResetPasswordState &&
+      o.isValid == isValid &&
+      o.isSuccess == isSuccess &&
+      o.isLoading == isLoading &&
+      o.error == error &&
+      o.email == email;
 }

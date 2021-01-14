@@ -6,25 +6,37 @@ class EditCropState {
   final bool isSuccess;
   final bool isValid;
   final bool isLoading;
-  EditCropState(
-      {@required this.crop,
-      @required this.error,
-      @required this.isSuccess,
-      @required this.isLoading,
-      @required this.isValid});
 
-  factory EditCropState.initial(
-      {Crop crop, String error, bool isSucess, bool isValid, bool isLoading}) {
+  EditCropState({
+    @required this.crop,
+    @required this.error,
+    @required this.isSuccess,
+    @required this.isLoading,
+    @required this.isValid,
+  });
+
+  factory EditCropState.initial({
+    Crop crop,
+    String error,
+    bool isSucess,
+    bool isValid,
+    bool isLoading,
+  }) {
     return EditCropState(
-        crop: crop ?? null,
+        crop: crop ?? Crop(cropState: CropState.of("Vegetative")),
         error: error ?? "",
         isSuccess: isSucess ?? false,
         isLoading: isLoading ?? false,
         isValid: isValid ?? false);
   }
 
-  EditCropState update(
-      {bool isValid, bool isLoading, bool isSuccess, String error, Crop crop}) {
+  EditCropState update({
+    bool isValid,
+    bool isLoading,
+    bool isSuccess,
+    String error,
+    Crop crop,
+  }) {
     return EditCropState(
       isValid: isValid ?? this.isValid,
       isLoading: isLoading ?? this.isLoading,
@@ -40,11 +52,11 @@ class EditCropState {
   }
 
   // ignore: hash_and_equals
-  bool operator ==(dynamic other) {
-    return other.isValid == isValid &&
-        other.isSuccess == isSuccess &&
-        other.isLoading == isLoading &&
-        other.error == error &&
-        other.crop == crop;
-  }
+  bool operator ==(dynamic o) =>
+      o is EditCropState &&
+      o.isValid == isValid &&
+      o.isSuccess == isSuccess &&
+      o.isLoading == isLoading &&
+      o.error == error &&
+      o.crop == crop;
 }

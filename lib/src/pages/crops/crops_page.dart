@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantos/src/pages/add_crop/add_crop_bloc.dart';
-import 'package:plantos/src/pages/add_crop/add_crop_page.dart';
 import 'package:plantos/src/pages/crop_details/crop_details_bloc.dart';
 import 'package:plantos/src/pages/crop_details/crop_details_page.dart';
-import 'package:plantos/src/pages/crops/crops.dart';
+import 'package:plantos/src/pages/edit_crop/edit_crop_page.dart';
 import 'package:plantos/src/themes/colors.dart';
 import '../../models/crop.dart';
+import 'crops_bloc.dart';
 
 class CropsPage extends StatefulWidget {
   @override
@@ -15,8 +14,8 @@ class CropsPage extends StatefulWidget {
 
 class _CropsPageState extends State<CropsPage>
     with SingleTickerProviderStateMixin {
-  int tabIndex = 0;
   TabController tabController;
+
   CropsBloc _cropsBloc;
 
   @override
@@ -191,14 +190,11 @@ class _CropsPageState extends State<CropsPage>
                           onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => BlocProvider<AddCropBloc>(
-                                create: (_) => AddCropBloc(
+                                builder: (_) => EditCropPage(
                                     _cropsBloc.cropsService,
                                     _cropsBloc.authService,
-                                    _cropsBloc.userService),
-                                child: AddCropPage(),
-                              ),
-                            ),
+                                    _cropsBloc.userService,
+                                    null)),
                           ),
                         ),
                       ),

@@ -44,15 +44,15 @@ class AddScheduleState {
 
   @override
   String toString() {
-    return "AddCropState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error, schedule: $schedule}";
+    return "AddScheduleState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error, schedule: $schedule}";
   }
 
   // ignore: hash_and_equals
-  bool operator ==(dynamic other) {
-    return other.isValid == isValid &&
-        other.isSuccess == isSuccess &&
-        other.isLoading == isLoading &&
-        other.error == error &&
-        other.schedule == schedule;
-  }
+  bool operator ==(dynamic o) =>
+      o is AddScheduleState &&
+      o.isValid == isValid &&
+      o.isSuccess == isSuccess &&
+      o.isLoading == isLoading &&
+      o.error == error &&
+      o.schedule == schedule;
 }

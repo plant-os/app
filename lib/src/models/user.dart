@@ -38,18 +38,14 @@ class UserModel {
 
   // ignore: hash_and_equals
   @override
-  bool operator ==(dynamic other) {
-    if (!(other is UserModel)) {
-      return false;
-    }
-
-    return other.name == name &&
-        other.id == id &&
-        other.company == company &&
-        other.dashboard == dashboard &&
-        other.role == role &&
-        other.email == email;
-  }
+  bool operator ==(dynamic o) =>
+      o is UserModel &&
+      o.name == name &&
+      o.id == id &&
+      o.company == company &&
+      o.dashboard == dashboard &&
+      o.role == role &&
+      o.email == email;
 }
 
 class Dashboard {

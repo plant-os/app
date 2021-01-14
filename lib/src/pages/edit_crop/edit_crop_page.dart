@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/crop.dart';
 import 'package:plantos/src/pages/crop_details/crop_details_page.dart';
 import 'package:plantos/src/pages/edit_crop/edit_crop_bloc.dart';
-import 'package:plantos/src/pages/edit_schedule/edit_schedule.dart';
-import 'package:plantos/src/pages/edit_schedule/edit_schedule_bloc.dart';
+import 'package:plantos/src/pages/edit_schedule/edit_schedule_page.dart';
 import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/crops_service.dart';
 import 'package:plantos/src/services/user_service.dart';
@@ -82,9 +81,9 @@ class EditCropPageState extends State<EditCropPage> {
   }
 
   void _blocListener(BuildContext context, EditCropState state) {
-    if (state.isLoading)
+    if (state.isLoading) {
       _loading = Loading(context);
-    else if (state.isSuccess) {
+    } else if (state.isSuccess) {
       _loading.close();
       SnackbarWithColor(
           color: greenColor,

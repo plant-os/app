@@ -48,8 +48,6 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
     Schedule updated =
         state.schedule.copyWith(time: Timestamp.fromDate(timeOfDay));
 
-    var updatedS = state.update(schedule: updated);
-
     yield state.update(schedule: updated);
   }
 

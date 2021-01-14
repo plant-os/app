@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantos/src/pages/crops/crops.dart';
 import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/crops_service.dart';
 import 'package:plantos/src/services/user_service.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/pages/auth/auth_bloc.dart';
 import 'package:plantos/src/pages/login/login.dart';
+
+import 'pages/crops/crops_bloc.dart';
+import 'pages/crops/crops_page.dart';
 
 class App extends StatelessWidget {
   final AuthService authService = AuthService();

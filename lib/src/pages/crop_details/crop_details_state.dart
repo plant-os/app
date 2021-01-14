@@ -6,7 +6,7 @@ class CropDetailsState {}
 /// the database.
 class LoadingState implements CropDetailsState {
   @override
-  bool operator ==(dynamic other) => other is LoadingState;
+  bool operator ==(dynamic o) => o is LoadingState;
 }
 
 /// LoadedState is the state that contains the information that the user
@@ -23,11 +23,6 @@ class LoadedState implements CropDetailsState {
 
   // ignore: hash_and_equals
   @override
-  bool operator ==(dynamic other) {
-    if (!(other is LoadedState)) {
-      return false;
-    }
-
-    return other.crop == crop && other.actionRepeats == actionRepeats;
-  }
+  bool operator ==(dynamic o) =>
+      o is LoadedState && o.crop == crop && o.actionRepeats == actionRepeats;
 }

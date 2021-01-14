@@ -1,32 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:plantos/src/models/camera.dart';
 import 'package:plantos/src/models/company.dart';
 import 'package:plantos/src/models/recipe.dart';
 
 class Crop {
-  String name;
-  String id;
-  Company company;
-  bool selected;
-  List<Camera> cameras;
-  List<Recipe> recipes;
-  bool fertigationCrop;
-  String ec;
-  Timestamp startDate;
-  CropState cropState;
-  List<Schedule> schedules;
+  final String name;
+  final String id;
+  final Company company;
+  final List<Camera> cameras;
+  final List<Recipe> recipes;
+  final String ec;
+  final Timestamp startDate;
+  final CropState cropState;
+  final List<Schedule> schedules;
 
-  Crop(
-      {this.name,
-      this.id,
-      this.company,
-      this.cameras,
-      this.recipes,
-      this.ec,
-      this.startDate,
-      this.cropState,
-      this.schedules,
-      this.selected});
+  Crop({
+    this.name,
+    this.id,
+    this.company,
+    this.cameras = const [],
+    this.recipes = const [],
+    this.ec,
+    this.startDate,
+    this.cropState,
+    this.schedules = const [],
+  });
 
   // Return a new Crop with the given fields overwritten.
   Crop withValues(
@@ -47,8 +46,7 @@ class Crop {
         ec: ec ?? this.ec,
         startDate: startDate ?? this.startDate,
         cropState: cropState ?? this.cropState,
-        schedules: schedules ?? this.schedules,
-        selected: selected ?? this.selected);
+        schedules: schedules ?? this.schedules);
   }
 
   Crop.fromJson(Map<String, dynamic> json)
@@ -56,14 +54,12 @@ class Crop {
         id = json['Id'] ?? null,
         company =
             json['Company'] != null ? Company.fromJson(json['Company']) : null,
-        selected = json['Selected'],
         cameras = json['Cameras'] != null
             ? List<Camera>.from(json["Cameras"].map((x) => Camera.fromJson(x)))
             : null,
         recipes = json['Recipes'] != null
             ? List<Recipe>.from(json["Recipes"].map((x) => Recipe.fromJson(x)))
             : null,
-        fertigationCrop = json['FertigationCrop'] ?? null,
         ec = json['Ec'] ?? null,
         startDate = json['StartDate'] ?? null,
         cropState = json['CropState'] != null
@@ -77,8 +73,7 @@ class Crop {
   Map<String, dynamic> toJson() => {
         'Name': name,
         'Id': id,
-        'Company': company.toJson(),
-        'Selected': selected,
+        'Company': company == null ? null : company.toJson(),
         'Cameras':
             cameras != null ? cameras.map((e) => e.toJson()).toList() : null,
         'Recipes':
@@ -92,38 +87,33 @@ class Crop {
 
   @override
   String toString() {
-    return "Crop{${toJson()}}";
+    return "Crop${toJson()}";
   }
 
   // ignore: hash_and_equals
   @override
-  bool operator ==(dynamic other) {
-    if (!(other is Crop)) {
-      return false;
-    }
-
-    return other.name == name &&
-        other.id == id &&
-        other.company == company &&
-        other.selected == selected &&
-        other.cameras == cameras &&
-        other.recipes == recipes &&
-        other.ec == ec &&
-        other.startDate == startDate &&
-        other.cropState == cropState &&
-        other.schedules == schedules;
-  }
+  bool operator ==(dynamic o) =>
+      o is Crop &&
+      o.name == name &&
+      o.id == id &&
+      o.company == company &&
+      listEquals(o.cameras, cameras) &&
+      listEquals(o.recipes, recipes) &&
+      o.ec == ec &&
+      o.startDate == startDate &&
+      o.cropState == cropState &&
+      listEquals(o.schedules, schedules);
 }
 
 // FIXME(simon): This should be an enum.
 class CropState {
-  bool vegetative;
-  bool budding;
-  bool flowering;
-  bool ripening;
-  bool harvested;
+  bool vegetative = false;
+  bool budding = false;
+  bool flowering = false;
+  bool ripening = false;
+  bool harvested = false;
 
-  CropState(
+  CropState._(
       {this.vegetative,
       this.budding,
       this.flowering,
@@ -132,7 +122,7 @@ class CropState {
 
   /// of constructs a CropState from the given string.
   static CropState of(String name) {
-    return CropState(
+    return CropState._(
         vegetative: name == 'Vegetative',
         budding: name == 'Budding',
         flowering: name == 'Flowering',
@@ -154,6 +144,15 @@ class CropState {
         'Ripening': ripening,
         'Harvested': harvested,
       };
+
+  @override
+  bool operator ==(dynamic o) =>
+      o is CropState &&
+      vegetative == o.vegetative &&
+      budding == o.budding &&
+      flowering == o.flowering &&
+      ripening == o.ripening &&
+      harvested == o.harvested;
 }
 
 class Schedule {
@@ -183,6 +182,13 @@ class Schedule {
 
   @override
   String toString() => "Schedule{time=$time, action=$action, repeat=$repeat}";
+
+  @override
+  bool operator ==(dynamic o) =>
+      o is Schedule &&
+      time == o.time &&
+      repeat == o.repeat &&
+      action == o.action;
 }
 
 class Repeat {
@@ -233,6 +239,16 @@ class Repeat {
         'Saturday': saturday,
         'Sunday': sunday
       };
+
+  bool operator ==(dynamic o) =>
+      o is Repeat &&
+      monday == o.monday &&
+      tuesday == o.tuesday &&
+      wednesday == o.wednesday &&
+      thursday == o.thursday &&
+      friday == o.friday &&
+      saturday == o.saturday &&
+      sunday == o.sunday;
 }
 
 // FIXME(simon): This should be an enum.
@@ -252,6 +268,12 @@ class CropAction {
 
   Map<String, dynamic> toJson() =>
       {'Irrigation': irrigation, 'Fertigation': fertigation};
+
+  @override
+  bool operator ==(dynamic o) =>
+      o is CropAction &&
+      o.irrigation == irrigation &&
+      o.fertigation == fertigation;
 }
 
 class ActionRepeat {
@@ -285,15 +307,11 @@ class ActionRepeat {
 
   // ignore: hash_and_equals
   @override
-  bool operator ==(dynamic other) {
-    if (!(other is ActionRepeat)) {
-      return false;
-    }
-
-    return other.cropId == cropId &&
-        other.id == id &&
-        other.time == time &&
-        other.action == action &&
-        other.canceled == canceled;
-  }
+  bool operator ==(dynamic o) =>
+      o is ActionRepeat &&
+      o.cropId == cropId &&
+      o.id == id &&
+      o.time == time &&
+      o.action == action &&
+      o.canceled == canceled;
 }

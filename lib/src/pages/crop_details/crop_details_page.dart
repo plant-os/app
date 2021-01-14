@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:plantos/src/models/crop.dart';
-import 'package:plantos/src/pages/edit_crop/edit_crop.dart';
+import 'package:plantos/src/pages/edit_crop/edit_crop_page.dart';
 import 'package:plantos/src/themes/colors.dart';
 
 import 'crop_details_bloc.dart';

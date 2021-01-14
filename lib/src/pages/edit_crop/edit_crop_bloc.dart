@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/crops_service.dart';
 import 'package:plantos/src/services/user_service.dart';
+import 'package:quiver/strings.dart';
 
 part 'edit_crop_event.dart';
 part 'edit_crop_state.dart';
@@ -47,7 +48,9 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
   }
 
   bool _isFormValidated(Crop crop) {
-    return crop.name.isNotEmpty && crop.ec.isNotEmpty && crop.startDate != null;
+    return isNotBlank(crop.name) &&
+        isNotBlank(crop.ec) &&
+        crop.startDate != null;
   }
 
   Stream<EditCropState> _mapChangeScheduleEventToState(
@@ -114,7 +117,16 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
       ClickSubmitEditCropEvent event) async* {
     yield state.update(isLoading: true);
     try {
-      await cropsService.editCrop(state.crop);
+      if (initialCrop == null) {
+        var firebaseUser = await authService.getCurrentUser();
+        var currentUser =
+            await userService.getCurrentUserDetails(firebaseUser.email);
+        var cropWithCompany =
+            state.crop.withValues(company: currentUser.company);
+        await cropsService.addCrop(cropWithCompany, currentUser);
+      } else {
+        await cropsService.editCrop(state.crop);
+      }
       yield state.update(isLoading: false, isSuccess: true);
     } catch (e) {
       print(e);

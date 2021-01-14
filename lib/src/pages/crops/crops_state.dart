@@ -2,12 +2,7 @@ part of 'crops_bloc.dart';
 
 class CropStateLoading implements CropsState {
   @override
-  bool operator ==(dynamic other) {
-    if (!(other is CropStateLoading)) {
-      return false;
-    }
-    return other is CropStateLoading;
-  }
+  bool operator ==(dynamic o) => o is CropStateLoading;
 }
 
 class CropsStateError implements CropsState {
@@ -28,15 +23,11 @@ class CropsStateDone implements CropsState {
 
   // ignore: hash_and_equals
   @override
-  bool operator ==(dynamic other) {
-    if (!(other is CropsStateDone)) {
-      return false;
-    }
-
-    return other.ongoingCrops == ongoingCrops &&
-        other.pastCrops == pastCrops &&
-        other.currentUser == currentUser;
-  }
+  bool operator ==(dynamic o) =>
+      o is CropsStateDone &&
+      o.ongoingCrops == ongoingCrops &&
+      o.pastCrops == pastCrops &&
+      o.currentUser == currentUser;
 }
 
 class CropsState {}
