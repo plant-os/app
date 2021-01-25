@@ -39,3 +39,13 @@ class RemoveScheduleEvent extends EditCropEvent {
   final int index;
   RemoveScheduleEvent(this.index);
 }
+
+class DevicesLoadedEvent extends EditCropEvent {
+  final List<Device> devices;
+  DevicesLoadedEvent(this.devices);
+}
+
+class ChangeDeviceIdEvent extends EditCropEvent {
+  final String deviceId;
+  ChangeDeviceIdEvent(this.deviceId);
+}

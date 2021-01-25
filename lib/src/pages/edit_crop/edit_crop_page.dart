@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/crop.dart';
+import 'package:plantos/src/models/device.dart';
 import 'package:plantos/src/pages/crop_details/crop_details_page.dart';
 import 'package:plantos/src/pages/edit_crop/edit_crop_bloc.dart';
 import 'package:plantos/src/pages/edit_schedule/edit_schedule_page.dart';
 import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/crops_service.dart';
+import 'package:plantos/src/services/device_service.dart';
 import 'package:plantos/src/services/user_service.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/loading.dart';
@@ -42,7 +44,7 @@ class EditCropPageState extends State<EditCropPage> {
   void initState() {
     super.initState();
     bloc = new EditCropBloc(widget.cropsService, widget.authService,
-        widget.userService, widget.initialCrop);
+        widget.userService, widget.initialCrop, new DeviceService());
 
     if (widget.initialCrop != null) {
       _nameController.text = widget.initialCrop.name;
@@ -220,6 +222,12 @@ class EditCropPageState extends State<EditCropPage> {
               schedules.add(scheduleBuilder(i, state.crop.schedules[i]));
             }
 
+            // Show a loading spinner if we're waiting for the device list.
+            if (state.devices == null) {
+              return SafeArea(
+                  child: Center(child: CircularProgressIndicator()));
+            }
+
             return SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
@@ -333,6 +341,34 @@ class EditCropPageState extends State<EditCropPage> {
                               dropdownColor: blueColor,
                               onChanged: (value) =>
                                   bloc.add(ChangeCropStateEvent(value))),
+                        ],
+                      ),
+                      SizedBox.fromSize(
+                        size: Size.fromHeight(25.0),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Device",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17),
+                          ),
+                          SizedBox.fromSize(size: Size.fromHeight(15.0)),
+                          DropdownButton<String>(
+                              value: state.crop.sensorDeviceId,
+                              items: state.devices.map((Device value) {
+                                return DropdownMenuItem<String>(
+                                  value: value.id,
+                                  child: Text(
+                                    value.description ?? "plantOS Device",
+                                    style: TextStyle(color: blackColor),
+                                  ),
+                                );
+                              }).toList(),
+                              dropdownColor: blueColor,
+                              onChanged: (value) =>
+                                  bloc.add(ChangeDeviceIdEvent(value))),
                         ],
                       ),
                       SizedBox.fromSize(

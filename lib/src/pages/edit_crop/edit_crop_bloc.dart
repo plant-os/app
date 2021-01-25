@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:plantos/src/models/crop.dart';
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plantos/src/models/device.dart';
 import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/crops_service.dart';
+import 'package:plantos/src/services/device_service.dart';
 import 'package:plantos/src/services/user_service.dart';
 import 'package:quiver/strings.dart';
 
@@ -16,14 +18,28 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
   final CropsService cropsService;
   final AuthService authService;
   final UserService userService;
+  final DeviceService deviceService;
 
   final Crop initialCrop;
 
-  EditCropBloc(
-      this.cropsService, this.authService, this.userService, this.initialCrop)
+  EditCropBloc(this.cropsService, this.authService, this.userService,
+      this.initialCrop, this.deviceService)
       : super(EditCropState.initial(
             isValid: initialCrop != null,
-            crop: initialCrop ?? Crop(cropState: CropState.of("Vegetative"))));
+            crop: initialCrop ?? Crop(cropState: CropState.of("Vegetative")))) {
+    initialise();
+  }
+
+  void initialise() async {
+    var firebaseUser = await authService.getCurrentUser();
+
+    // To get the devices belonging to the company we need the current user's company Id.
+    var currentUser =
+        await userService.getCurrentUserDetails(firebaseUser.email);
+    deviceService
+        .list(currentUser.company.id)
+        .listen((devices) => add(DevicesLoadedEvent(devices)));
+  }
 
   void dispose() {}
 
@@ -45,6 +61,10 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
       yield* _mapChangeScheduleEventToState(event);
     } else if (event is RemoveScheduleEvent) {
       yield* _mapRemoveScheduleEventToState(event);
+    } else if (event is DevicesLoadedEvent) {
+      yield* _mapDevicesLoadedEventToState(event);
+    } else if (event is ChangeDeviceIdEvent) {
+      yield* _mapChangeDeviceIdEventToState(event);
     } else {
       throw Exception("unhandled event");
     }
@@ -54,6 +74,30 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
     return isNotBlank(crop.name) &&
         isNotBlank(crop.ec) &&
         crop.startDate != null;
+  }
+
+  Stream<EditCropState> _mapChangeDeviceIdEventToState(
+      ChangeDeviceIdEvent event) async* {
+    print("Changing device id to ${event.deviceId}");
+
+    var updatedCrop = state.crop.withValues(sensorDeviceId: event.deviceId);
+
+    yield state.update(
+        isValid: _isFormValidated(updatedCrop), crop: updatedCrop);
+  }
+
+  Stream<EditCropState> _mapDevicesLoadedEventToState(
+      DevicesLoadedEvent event) async* {
+    print("Loaded ${event.devices.length} devices");
+
+    var updatedCrop = state.crop;
+
+    // If there's no device selected then pick a default.
+    if (event.devices.isNotEmpty && isBlank(state.crop.sensorDeviceId)) {
+      updatedCrop = state.crop.withValues(sensorDeviceId: event.devices[0].id);
+    }
+
+    yield state.update(devices: event.devices, crop: updatedCrop);
   }
 
   Stream<EditCropState> _mapChangeScheduleEventToState(

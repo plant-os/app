@@ -14,6 +14,7 @@ class Crop {
   final Timestamp startDate;
   final CropState cropState;
   final List<Schedule> schedules;
+  final String sensorDeviceId;
 
   Crop({
     this.name = "",
@@ -25,28 +26,33 @@ class Crop {
     this.startDate,
     this.cropState,
     this.schedules = const [],
+    this.sensorDeviceId = "",
   });
 
   // Return a new Crop with the given fields overwritten.
-  Crop withValues(
-      {String name,
-      String id,
-      Company company,
-      List<Camera> cameras,
-      List<Recipe> recipes,
-      String ec,
-      Timestamp startDate,
-      CropState cropState,
-      List<Schedule> schedules,
-      bool selected}) {
+  Crop withValues({
+    String name,
+    String id,
+    Company company,
+    List<Camera> cameras,
+    List<Recipe> recipes,
+    String ec,
+    Timestamp startDate,
+    CropState cropState,
+    List<Schedule> schedules,
+    bool selected,
+    String sensorDeviceId,
+  }) {
     return Crop(
-        company: company ?? this.company,
-        id: id ?? this.id,
-        name: name ?? this.name,
-        ec: ec ?? this.ec,
-        startDate: startDate ?? this.startDate,
-        cropState: cropState ?? this.cropState,
-        schedules: schedules ?? this.schedules);
+      company: company ?? this.company,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      ec: ec ?? this.ec,
+      startDate: startDate ?? this.startDate,
+      cropState: cropState ?? this.cropState,
+      schedules: schedules ?? this.schedules,
+      sensorDeviceId: sensorDeviceId ?? this.sensorDeviceId,
+    );
   }
 
   Crop.fromJson(Map<String, dynamic> json)
@@ -68,7 +74,8 @@ class Crop {
         schedules = json['Schedules'] != null
             ? List<Schedule>.from(
                 json["Schedules"].map((x) => Schedule.fromJson(x)))
-            : null;
+            : null,
+        sensorDeviceId = json['SensorDeviceId'];
 
   Map<String, dynamic> toJson() => {
         'Name': name,
@@ -82,7 +89,8 @@ class Crop {
         'Ec': ec,
         'StartDate': startDate,
         'CropState': cropState.toJson(),
-        'Schedules': schedules.map((x) => x.toJson()).toList()
+        'Schedules': schedules.map((x) => x.toJson()).toList(),
+        'SensorDeviceId': sensorDeviceId,
       };
 
   @override
@@ -102,7 +110,8 @@ class Crop {
       o.ec == ec &&
       o.startDate == startDate &&
       o.cropState == cropState &&
-      listEquals(o.schedules, schedules);
+      listEquals(o.schedules, schedules) &&
+      o.sensorDeviceId == sensorDeviceId;
 }
 
 // FIXME(simon): This should be an enum.

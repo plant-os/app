@@ -8,6 +8,7 @@ class Company {
   final String city;
   final String postcode;
   final String country;
+
   Company(this.id, this.registryId, this.address1, this.address2, this.state,
       this.city, this.country, this.postcode, this.name);
 

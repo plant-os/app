@@ -2,13 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:plantos/src/models/camera.dart';
-import 'package:plantos/src/models/company.dart';
 import 'package:plantos/src/models/crop.dart';
-import 'package:plantos/src/models/recipe.dart';
 import 'package:plantos/src/pages/edit_crop/edit_crop_bloc.dart';
 import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/crops_service.dart';
+import 'package:plantos/src/services/device_service.dart';
 import 'package:plantos/src/services/user_service.dart';
 
 class MockAuthService extends Mock implements AuthService {}
@@ -16,6 +14,8 @@ class MockAuthService extends Mock implements AuthService {}
 class MockCropsService extends Mock implements CropsService {}
 
 class MockUserService extends Mock implements UserService {}
+
+class MockDeviceService extends Mock implements DeviceService {}
 
 class MockUser extends Mock implements User {}
 
@@ -38,9 +38,10 @@ void main() {
       MockAuthService authService = MockAuthService();
       MockCropsService cropsService = MockCropsService();
       MockUserService userService = MockUserService();
+      MockDeviceService deviceService = MockDeviceService();
 
-      EditCropBloc editCropBloc =
-          EditCropBloc(cropsService, authService, userService, null);
+      EditCropBloc editCropBloc = EditCropBloc(
+          cropsService, authService, userService, null, deviceService);
 
       editCropBloc.add(SetStartDateEvent(DateTime.parse("2021-01-14")));
       editCropBloc.add(ChangeNameEvent("Basil"));
@@ -59,7 +60,8 @@ void main() {
               isLoading: false,
               isSuccess: false,
               isValid: true,
-              crop: basil),
+              crop: basil,
+              devices: []),
         ),
       );
     });
