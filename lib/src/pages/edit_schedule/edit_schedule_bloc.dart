@@ -43,7 +43,7 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
   Stream<EditScheduleState> _mapEditTimeToState(TimeOfDay time) async* {
     // FIXME(simon): We shouldn't be storing year and month here. We should
     // store the hour and minute in firestore rather than using a Timestamp.
-    DateTime timeOfDay = DateTime(1970, 1, 1, time.hour, time.minute);
+    DateTime timeOfDay = DateTime(2021, 1, 1, time.hour, time.minute);
 
     Schedule updated =
         state.schedule.copyWith(time: Timestamp.fromDate(timeOfDay));
