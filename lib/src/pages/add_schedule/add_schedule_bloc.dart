@@ -26,9 +26,9 @@ class AddScheduleBloc extends Bloc<AddScheduleEvent, AddScheduleState> {
 
   void dispose() {}
 
-  bool _isFormValidated(CropAction action, Repeat repeat) {
-    return repeat.toJson().values.any((element) => element == true) &&
-        action.toJson().values.any((element) => element == true);
+  bool _isFormValidated(CropAction? action, Repeat? repeat) {
+    return repeat!.toJson().values.any((element) => element == true) &&
+        action!.toJson().values.any((element) => element == true);
   }
 
   Stream<AddScheduleState> _mapScheduleFieldChangedToState(
@@ -44,7 +44,8 @@ class AddScheduleBloc extends Bloc<AddScheduleEvent, AddScheduleState> {
     DateTime timeOfDay = DateTime(1970, 1, 1, time.hour, time.minute);
 
     yield state.update(
-        schedule: state.schedule.copyWith(time: Timestamp.fromDate(timeOfDay)));
+        schedule:
+            state.schedule!.copyWith(time: Timestamp.fromDate(timeOfDay)));
   }
 
   Stream<AddScheduleState> _mapAddSchedulePressedToState(

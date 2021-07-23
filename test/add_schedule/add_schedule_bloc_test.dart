@@ -26,7 +26,7 @@ void main() {
       );
 
       AddScheduleBloc addScheduleBloc = AddScheduleBloc(cropsService);
-      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule: schedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule));
       expectLater(
         addScheduleBloc,
         emitsInOrder([
@@ -56,7 +56,7 @@ void main() {
         Repeat(true, true, false, true, false, true, false),
       );
       AddScheduleBloc addScheduleBloc = AddScheduleBloc(cropsService);
-      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule: schedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule));
       expectLater(
         addScheduleBloc,
         emitsInOrder([
@@ -88,7 +88,7 @@ void main() {
       );
 
       AddScheduleBloc addScheduleBloc = AddScheduleBloc(cropsService);
-      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule: schedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule));
       expectLater(
         addScheduleBloc,
         emitsInOrder([
@@ -119,7 +119,7 @@ void main() {
         Repeat(false, false, false, false, false, false, false),
       );
       AddScheduleBloc addScheduleBloc = AddScheduleBloc(cropsService);
-      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule: schedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule));
       expectLater(
         addScheduleBloc,
         emitsInOrder([
@@ -157,9 +157,8 @@ void main() {
       );
 
       AddScheduleBloc addScheduleBloc = AddScheduleBloc(cropsService);
-      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule: wrongSchedule));
-      addScheduleBloc
-          .add(ScheduleFieldChangedEvent(schedule: correctedSchedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(wrongSchedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(correctedSchedule));
       expectLater(
         addScheduleBloc,
         emitsInOrder([
@@ -203,9 +202,8 @@ void main() {
       );
 
       AddScheduleBloc addScheduleBloc = AddScheduleBloc(cropsService);
-      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule: wrongSchedule));
-      addScheduleBloc
-          .add(ScheduleFieldChangedEvent(schedule: correctedSchedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(wrongSchedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(correctedSchedule));
       expectLater(
         addScheduleBloc,
         emitsInOrder([
@@ -249,9 +247,8 @@ void main() {
       );
 
       AddScheduleBloc addScheduleBloc = AddScheduleBloc(cropsService);
-      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule: wrongSchedule));
-      addScheduleBloc
-          .add(ScheduleFieldChangedEvent(schedule: correctedSchedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(wrongSchedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(correctedSchedule));
       expectLater(
         addScheduleBloc,
         emitsInOrder([
@@ -289,7 +286,7 @@ void main() {
       );
 
       AddScheduleBloc addScheduleBloc = AddScheduleBloc(cropsService);
-      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule: schedule));
+      addScheduleBloc.add(ScheduleFieldChangedEvent(schedule));
       addScheduleBloc.add(ClickSubmitAddScheduleEvent());
       expectLater(
         addScheduleBloc,

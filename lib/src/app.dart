@@ -36,8 +36,9 @@ class App extends StatelessWidget {
           }
 
           return GestureDetector(
-              onTap: () => FocusManager.instance.primaryFocus.unfocus(),
+              onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
               child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
                   theme: ThemeData(
                       fontFamily: 'Lato-Regular',
                       appBarTheme:

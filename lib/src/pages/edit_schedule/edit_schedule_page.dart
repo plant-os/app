@@ -20,16 +20,16 @@ class EditSchedulePage extends StatefulWidget {
 }
 
 class EditSchedulePageState extends State<EditSchedulePage> {
-  Loading _loading;
-  EditScheduleBloc bloc;
+  Loading? _loading;
+  late EditScheduleBloc bloc;
 
   void _blocListener(context, state) {
     if (state.isLoading)
       _loading = Loading(context);
     else if (state.isSuccess) {
-      _loading.close();
+      _loading?.close();
     } else if (state.error.isNotEmpty) {
-      _loading.close();
+      _loading?.close();
       SnackbarWithColor(context: context, text: state.error, color: Colors.red);
     }
   }
@@ -60,7 +60,7 @@ class EditSchedulePageState extends State<EditSchedulePage> {
               "Irrigation",
               style: TextStyle(color: whiteColor),
             ),
-            color: state.schedule.action.irrigation ? blueColor : greyColor,
+            color: state.schedule!.action!.irrigation ? blueColor : greyColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
             )),
@@ -73,7 +73,7 @@ class EditSchedulePageState extends State<EditSchedulePage> {
             "Fertigation",
             style: TextStyle(color: whiteColor),
           ),
-          color: state.schedule.action.fertigation ? blueColor : greyColor,
+          color: state.schedule!.action!.fertigation ? blueColor : greyColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),
           ),
@@ -120,10 +120,10 @@ class EditSchedulePageState extends State<EditSchedulePage> {
           backgroundColor: whiteColor,
         ),
         body: BlocListener<EditScheduleBloc, EditScheduleState>(
-            value: bloc,
+            bloc: bloc,
             listener: _blocListener,
             child: BlocBuilder<EditScheduleBloc, EditScheduleState>(
-                value: bloc,
+                bloc: bloc,
                 builder: (_, state) => SafeArea(
                         child: SingleChildScrollView(
                       child: Padding(
@@ -147,10 +147,10 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                                   ),
                                   RaisedButton(
                                     onPressed: () async {
-                                      TimeOfDay selectedTime =
+                                      TimeOfDay? selectedTime =
                                           await showTimePicker(
                                         initialTime: TimeOfDay.fromDateTime(
-                                            state.schedule.time.toDate()),
+                                            state.schedule!.time!.toDate()),
                                         context: context,
                                       );
                                       // showTimePicker returns null if the user cancels the dialog.
@@ -160,8 +160,8 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                                     },
                                     color: whiteColor,
                                     child: Text(
-                                      DateFormat.jm()
-                                          .format(state.schedule.time.toDate()),
+                                      DateFormat.jm().format(
+                                          state.schedule!.time!.toDate()),
                                       style: TextStyle(
                                           color: blueColor,
                                           fontSize: 17,
@@ -180,37 +180,37 @@ class EditSchedulePageState extends State<EditSchedulePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 buildDayRow(
-                                    "Monday", state.schedule.repeat.monday),
+                                    "Monday", state.schedule!.repeat!.monday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
                                 buildDayRow(
-                                    "Tuesday", state.schedule.repeat.tuesday),
+                                    "Tuesday", state.schedule!.repeat!.tuesday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
                                 buildDayRow("Wednesday",
-                                    state.schedule.repeat.wednesday),
+                                    state.schedule!.repeat!.wednesday),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                buildDayRow("Thursday",
+                                    state.schedule!.repeat!.thursday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
                                 buildDayRow(
-                                    "Thursday", state.schedule.repeat.thursday),
+                                    "Friday", state.schedule!.repeat!.friday),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                buildDayRow("Saturday",
+                                    state.schedule!.repeat!.saturday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
                                 buildDayRow(
-                                    "Friday", state.schedule.repeat.friday),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                buildDayRow(
-                                    "Saturday", state.schedule.repeat.saturday),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                buildDayRow(
-                                    "Sunday", state.schedule.repeat.sunday),
+                                    "Sunday", state.schedule!.repeat!.sunday),
                                 SizedBox(
                                   height: 10.0,
                                 ),

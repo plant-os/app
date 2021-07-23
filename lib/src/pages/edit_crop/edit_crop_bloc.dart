@@ -20,7 +20,7 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
   final UserService userService;
   final DeviceService deviceService;
 
-  final Crop initialCrop;
+  final Crop? initialCrop;
 
   EditCropBloc(this.cropsService, this.authService, this.userService,
       this.initialCrop, this.deviceService)
@@ -35,9 +35,9 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
 
     // To get the devices belonging to the company we need the current user's company Id.
     var currentUser =
-        await userService.getCurrentUserDetails(firebaseUser.email);
+        await userService.getCurrentUserDetails(firebaseUser!.email!);
     deviceService
-        .list(currentUser.company.id)
+        .list(currentUser.company!.id)
         .listen((devices) => add(DevicesLoadedEvent(devices)));
   }
 
@@ -71,8 +71,8 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
   }
 
   bool _isFormValidated(Crop crop) {
-    return isNotBlank(crop.name) &&
-        isNotBlank(crop.ec) &&
+    return isNotBlank(crop.name!) &&
+        isNotBlank(crop.ec!) &&
         crop.startDate != null;
   }
 
@@ -93,7 +93,7 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
     var updatedCrop = state.crop;
 
     // If there's no device selected then pick a default.
-    if (event.devices.isNotEmpty && isBlank(state.crop.sensorDeviceId)) {
+    if (event.devices.isNotEmpty && isBlank(state.crop.sensorDeviceId!)) {
       updatedCrop = state.crop.withValues(sensorDeviceId: event.devices[0].id);
     }
 
@@ -102,7 +102,7 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
 
   Stream<EditCropState> _mapChangeScheduleEventToState(
       ChangeScheduleEvent event) async* {
-    List<Schedule> schedules = List.from(state.crop.schedules);
+    List<Schedule> schedules = List.from(state.crop.schedules!);
     schedules[event.index] = event.schedule;
 
     var updatedCrop = state.crop.withValues(schedules: schedules);
@@ -113,7 +113,7 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
 
   Stream<EditCropState> _mapRemoveScheduleEventToState(
       RemoveScheduleEvent event) async* {
-    List<Schedule> schedules = List.from(state.crop.schedules);
+    List<Schedule> schedules = List.from(state.crop.schedules!);
     schedules.removeAt(event.index);
 
     var updatedCrop = state.crop.withValues(schedules: schedules);
@@ -124,7 +124,7 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
 
   Stream<EditCropState> _mapAddScheduleEventState(
       AddScheduleEvent event) async* {
-    List<Schedule> updatedSchedules = List.from(state.crop.schedules)
+    List<Schedule> updatedSchedules = List.from(state.crop.schedules!)
       ..add(event.schedule);
     var updatedCrop = state.crop.withValues(schedules: updatedSchedules);
     yield state.update(
@@ -167,7 +167,7 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
       if (initialCrop == null) {
         var firebaseUser = await authService.getCurrentUser();
         var currentUser =
-            await userService.getCurrentUserDetails(firebaseUser.email);
+            await userService.getCurrentUserDetails(firebaseUser!.email!);
         var cropWithCompany =
             state.crop.withValues(company: currentUser.company);
         await cropsService.addCrop(cropWithCompany, currentUser);
@@ -177,7 +177,6 @@ class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
       yield state.update(isLoading: false, isSuccess: true);
     } catch (e) {
       print(e);
-      FirebaseCrashlytics.instance.recordError(e, null);
       yield state.update(isLoading: false, error: e.toString());
       yield EditCropState.initial(
           crop: state.crop, isValid: _isFormValidated(state.crop));

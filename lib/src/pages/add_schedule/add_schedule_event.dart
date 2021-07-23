@@ -4,7 +4,7 @@ abstract class AddScheduleEvent {}
 
 class ScheduleFieldChangedEvent extends AddScheduleEvent {
   final Schedule schedule;
-  ScheduleFieldChangedEvent({this.schedule});
+  ScheduleFieldChangedEvent(this.schedule);
 }
 
 class EditTimeEvent extends AddScheduleEvent {

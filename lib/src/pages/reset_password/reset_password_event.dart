@@ -5,7 +5,7 @@ abstract class ResetPasswordEvent {}
 class ResetPasswordTextFieldChangedEvent extends ResetPasswordEvent {
   final String email;
 
-  ResetPasswordTextFieldChangedEvent({@required this.email});
+  ResetPasswordTextFieldChangedEvent({@required required this.email});
 }
 
 class ResetPasswordPressedEvent extends ResetPasswordEvent {}

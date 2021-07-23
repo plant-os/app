@@ -26,7 +26,7 @@ class CropsService {
       .collection("crops")
       .doc(cropId)
       .snapshots()
-      .map((doc) => Crop.fromJson(doc.data()));
+      .map((doc) => Crop.fromJson(doc.data()!));
 
   addCrop(Crop crop, UserModel user) async {
     var newCrop = firestore.collection("crops").doc();
@@ -36,7 +36,7 @@ class CropsService {
 
   Future<void> editCrop(Crop crop) {
     print("updating ${crop.id} => ${crop.toString()}");
-    return firestore.collection("crops").doc(crop.id).update(crop.toJson());
+    return firestore.collection("crops").doc(crop.id!).update(crop.toJson());
   }
 
   addActionToSkipped(ActionRepeat action) async {
@@ -46,7 +46,7 @@ class CropsService {
   }
 
   editActionToSkipped(ActionRepeat action) {
-    firestore.collection("skipped").doc(action.id).update(action.toJson());
+    firestore.collection("skipped").doc(action.id!).update(action.toJson());
   }
 
   deleteActionFromSkipped(String id) async {

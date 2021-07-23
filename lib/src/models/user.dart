@@ -4,9 +4,9 @@ class UserModel {
   final String id;
   final String email;
   final String name;
-  final Company company;
-  final Dashboard dashboard;
-  final Role role;
+  final Company? company;
+  final Dashboard? dashboard;
+  final Role? role;
 
   UserModel(
       this.id, this.name, this.company, this.dashboard, this.email, this.role);
@@ -25,9 +25,9 @@ class UserModel {
   Map<String, dynamic> toJson() => {
         'Name': name,
         'Id': id,
-        'Company': company.toJson(),
-        'Dashboard': dashboard.toJson(),
-        'Role': role.toJson(),
+        'Company': company!.toJson(),
+        'Dashboard': dashboard!.toJson(),
+        'Role': role!.toJson(),
         'Email': email
       };
 

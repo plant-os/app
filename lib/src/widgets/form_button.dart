@@ -3,12 +3,12 @@ import 'package:plantos/src/themes/colors.dart';
 
 class FormButton extends StatelessWidget {
   final String text;
-  final Color enabledColor;
-  final Color disbledColor;
-  final Function() onPressed;
+  final Color? enabledColor;
+  final Color? disbledColor;
+  final Function()? onPressed;
 
   FormButton(
-      {@required this.text,
+      {@required required this.text,
       @required this.onPressed,
       this.disbledColor,
       this.enabledColor});

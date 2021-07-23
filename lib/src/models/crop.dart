@@ -5,16 +5,16 @@ import 'package:plantos/src/models/company.dart';
 import 'package:plantos/src/models/recipe.dart';
 
 class Crop {
-  final String name;
-  final String id;
-  final Company company;
-  final List<Camera> cameras;
-  final List<Recipe> recipes;
-  final String ec;
-  final Timestamp startDate;
-  final CropState cropState;
-  final List<Schedule> schedules;
-  final String sensorDeviceId;
+  final String? name;
+  final String? id;
+  final Company? company;
+  final List<Camera>? cameras;
+  final List<Recipe>? recipes;
+  final String? ec;
+  final Timestamp? startDate;
+  final CropState? cropState;
+  final List<Schedule>? schedules;
+  final String? sensorDeviceId;
 
   Crop({
     this.name = "",
@@ -31,17 +31,17 @@ class Crop {
 
   // Return a new Crop with the given fields overwritten.
   Crop withValues({
-    String name,
-    String id,
-    Company company,
-    List<Camera> cameras,
-    List<Recipe> recipes,
-    String ec,
-    Timestamp startDate,
-    CropState cropState,
-    List<Schedule> schedules,
-    bool selected,
-    String sensorDeviceId,
+    String? name,
+    String? id,
+    Company? company,
+    List<Camera>? cameras,
+    List<Recipe>? recipes,
+    String? ec,
+    Timestamp? startDate,
+    CropState? cropState,
+    List<Schedule>? schedules,
+    bool? selected,
+    String? sensorDeviceId,
   }) {
     return Crop(
       company: company ?? this.company,
@@ -80,16 +80,16 @@ class Crop {
   Map<String, dynamic> toJson() => {
         'Name': name,
         'Id': id,
-        'Company': company == null ? null : company.toJson(),
+        'Company': company == null ? null : company!.toJson(),
         'Cameras':
-            cameras != null ? cameras.map((e) => e.toJson()).toList() : null,
+            cameras != null ? cameras!.map((e) => e.toJson()).toList() : null,
         'Recipes':
-            recipes != null ? recipes.map((e) => e.toJson()).toList() : null,
+            recipes != null ? recipes!.map((e) => e.toJson()).toList() : null,
         'FertigationCrop': true,
         'Ec': ec,
         'StartDate': startDate,
-        'CropState': cropState.toJson(),
-        'Schedules': schedules.map((x) => x.toJson()).toList(),
+        'CropState': cropState!.toJson(),
+        'Schedules': schedules!.map((x) => x.toJson()).toList(),
         'SensorDeviceId': sensorDeviceId,
       };
 
@@ -123,11 +123,11 @@ class CropState {
   bool harvested = false;
 
   CropState._(
-      {this.vegetative,
-      this.budding,
-      this.flowering,
-      this.ripening,
-      this.harvested});
+      {required this.vegetative,
+      required this.budding,
+      required this.flowering,
+      required this.ripening,
+      required this.harvested});
 
   /// of constructs a CropState from the given string.
   static CropState of(String name) {
@@ -165,13 +165,13 @@ class CropState {
 }
 
 class Schedule {
-  Timestamp time;
-  Repeat repeat;
-  CropAction action;
+  Timestamp? time;
+  Repeat? repeat;
+  CropAction? action;
 
   Schedule(this.time, this.action, this.repeat);
 
-  Schedule copyWith({Timestamp time, CropAction action, Repeat repeat}) {
+  Schedule copyWith({Timestamp? time, CropAction? action, Repeat? repeat}) {
     return new Schedule(
         time ?? this.time, action ?? this.action, repeat ?? this.repeat);
   }
@@ -185,8 +185,8 @@ class Schedule {
 
   Map<String, dynamic> toJson() => {
         'Time': time,
-        'Repeat': repeat.toJson(),
-        'Action': action.toJson(),
+        'Repeat': repeat!.toJson(),
+        'Action': action!.toJson(),
       };
 
   @override
@@ -213,13 +213,13 @@ class Repeat {
       this.saturday, this.sunday);
 
   Repeat copyWith(
-      {bool monday,
-      bool tuesday,
-      bool wednesday,
-      bool thursday,
-      bool friday,
-      bool saturday,
-      bool sunday}) {
+      {bool? monday,
+      bool? tuesday,
+      bool? wednesday,
+      bool? thursday,
+      bool? friday,
+      bool? saturday,
+      bool? sunday}) {
     return Repeat(
         monday ?? this.monday,
         tuesday ?? this.tuesday,
@@ -286,11 +286,11 @@ class CropAction {
 }
 
 class ActionRepeat {
-  String id;
-  String cropId;
-  Timestamp time;
-  String action;
-  bool canceled;
+  String? id;
+  String? cropId;
+  Timestamp? time;
+  String? action;
+  bool? canceled;
 
   ActionRepeat({this.id, this.cropId, this.time, this.action, this.canceled});
 

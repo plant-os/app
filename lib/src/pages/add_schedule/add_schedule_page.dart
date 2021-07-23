@@ -18,11 +18,11 @@ class AddSchedulePage extends StatefulWidget {
 class AddSchedulePageState extends State<AddSchedulePage> {
   Schedule schedule = Schedule(Timestamp.now(), CropAction(false, false),
       Repeat(false, false, false, false, false, false, false));
-  Loading _loading;
-  AddScheduleBloc bloc;
+  late Loading _loading;
+  late AddScheduleBloc bloc;
 
   void _onScheduleFieldChanged() {
-    bloc.add(ScheduleFieldChangedEvent(schedule: schedule));
+    bloc.add(ScheduleFieldChangedEvent(schedule));
   }
 
   void _blocListener(context, state) {
@@ -42,11 +42,11 @@ class AddSchedulePageState extends State<AddSchedulePage> {
 
   void toggle(String action) {
     if (action == "irrigation") {
-      schedule.action.irrigation = true;
-      schedule.action.fertigation = false;
+      schedule.action?.irrigation = true;
+      schedule.action?.fertigation = false;
     } else if (action == "fertigation") {
-      schedule.action.fertigation = true;
-      schedule.action.irrigation = false;
+      schedule.action?.fertigation = true;
+      schedule.action?.irrigation = false;
     }
     _onScheduleFieldChanged();
   }
@@ -75,7 +75,7 @@ class AddSchedulePageState extends State<AddSchedulePage> {
               "Irrigation",
               style: TextStyle(color: whiteColor),
             ),
-            color: schedule.action.irrigation == true ? blueColor : greyColor,
+            color: schedule.action?.irrigation == true ? blueColor : greyColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
             )),
@@ -91,7 +91,7 @@ class AddSchedulePageState extends State<AddSchedulePage> {
             "Fertigation",
             style: TextStyle(color: whiteColor),
           ),
-          color: schedule.action.fertigation == true ? blueColor : greyColor,
+          color: schedule.action?.fertigation == true ? blueColor : greyColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0),
           ),
@@ -102,19 +102,19 @@ class AddSchedulePageState extends State<AddSchedulePage> {
 
   void toggleRepeat(String day) {
     if (day == "Monday") {
-      schedule.repeat.monday = !schedule.repeat.monday;
+      schedule.repeat!.monday = !schedule.repeat!.monday;
     } else if (day == "Tuesday") {
-      schedule.repeat.tuesday = !schedule.repeat.tuesday;
+      schedule.repeat!.tuesday = !schedule.repeat!.tuesday;
     } else if (day == "Wednesday") {
-      schedule.repeat.wednesday = !schedule.repeat.wednesday;
+      schedule.repeat!.wednesday = !schedule.repeat!.wednesday;
     } else if (day == "Thursday") {
-      schedule.repeat.thursday = !schedule.repeat.thursday;
+      schedule.repeat!.thursday = !schedule.repeat!.thursday;
     } else if (day == "Friday") {
-      schedule.repeat.friday = !schedule.repeat.friday;
+      schedule.repeat!.friday = !schedule.repeat!.friday;
     } else if (day == "Saturday") {
-      schedule.repeat.saturday = !schedule.repeat.saturday;
+      schedule.repeat!.saturday = !schedule.repeat!.saturday;
     } else if (day == "Sunday") {
-      schedule.repeat.sunday = !schedule.repeat.sunday;
+      schedule.repeat!.sunday = !schedule.repeat!.sunday;
     }
     setState(() {});
     _onScheduleFieldChanged();
@@ -220,10 +220,10 @@ class AddSchedulePageState extends State<AddSchedulePage> {
                                   ),
                                   RaisedButton(
                                     onPressed: () async {
-                                      TimeOfDay selectedTime =
+                                      TimeOfDay? selectedTime =
                                           await showTimePicker(
                                         initialTime: TimeOfDay.fromDateTime(
-                                            state.schedule.time.toDate()),
+                                            state.schedule!.time!.toDate()),
                                         context: context,
                                       );
                                       // showTimePicker returns null if the user cancels the dialog.
@@ -234,7 +234,7 @@ class AddSchedulePageState extends State<AddSchedulePage> {
                                     color: whiteColor,
                                     child: Text(
                                       DateFormat.jm()
-                                          .format(schedule.time.toDate()),
+                                          .format(schedule.time!.toDate()),
                                       style: TextStyle(
                                           color: blueColor,
                                           fontSize: 17,
@@ -252,34 +252,35 @@ class AddSchedulePageState extends State<AddSchedulePage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                repeatMaker("Monday", schedule.repeat.monday),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                repeatMaker("Tuesday", schedule.repeat.tuesday),
+                                repeatMaker("Monday", schedule.repeat!.monday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
                                 repeatMaker(
-                                    "Wednesday", schedule.repeat.wednesday),
+                                    "Tuesday", schedule.repeat!.tuesday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
                                 repeatMaker(
-                                    "Thursday", schedule.repeat.thursday),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                repeatMaker("Friday", schedule.repeat.friday),
+                                    "Wednesday", schedule.repeat!.wednesday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
                                 repeatMaker(
-                                    "Saturday", schedule.repeat.saturday),
+                                    "Thursday", schedule.repeat!.thursday),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                repeatMaker("Sunday", schedule.repeat.sunday),
+                                repeatMaker("Friday", schedule.repeat!.friday),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                repeatMaker(
+                                    "Saturday", schedule.repeat!.saturday),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                repeatMaker("Sunday", schedule.repeat!.sunday),
                                 SizedBox(
                                   height: 10.0,
                                 ),

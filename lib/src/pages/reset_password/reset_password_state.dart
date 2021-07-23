@@ -8,13 +8,13 @@ class ResetPasswordState {
   final String email;
 
   ResetPasswordState(
-      {@required this.isValid,
-      @required this.isLoading,
-      @required this.isSuccess,
-      @required this.email,
-      @required this.error});
+      {@required required this.isValid,
+      @required required this.isLoading,
+      @required required this.isSuccess,
+      @required required this.email,
+      @required required this.error});
 
-  factory ResetPasswordState.initial({bool isValid, String email}) {
+  factory ResetPasswordState.initial({bool? isValid, String? email}) {
     return ResetPasswordState(
         isValid: isValid ?? false,
         isLoading: false,
@@ -24,11 +24,11 @@ class ResetPasswordState {
   }
 
   ResetPasswordState update(
-      {bool isValid,
-      bool isLoading,
-      bool isSuccess,
-      String error,
-      String email}) {
+      {bool? isValid,
+      bool? isLoading,
+      bool? isSuccess,
+      String? error,
+      String? email}) {
     return ResetPasswordState(
         isValid: isValid ?? this.isValid,
         isLoading: isLoading ?? this.isLoading,

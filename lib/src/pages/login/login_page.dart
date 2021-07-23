@@ -17,8 +17,8 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  Loading _loading;
-  LoginBloc _loginBloc;
+  Loading? _loading;
+  late LoginBloc _loginBloc;
 
   void _onTextFieldChanged() {
     _loginBloc.add(LoginTextFieldChangedEvent(
@@ -33,10 +33,10 @@ class LoginPageState extends State<LoginPage> {
     if (state.isLoading)
       _loading = Loading(context);
     else if (state.isSuccess) {
-      _loading.close();
+      _loading?.close();
       BlocProvider.of<AuthBloc>(context).add(AuthLoggedInEvent());
     } else if (state.error.isNotEmpty) {
-      _loading.close();
+      _loading?.close();
       SnackbarWithColor(context: context, text: state.error, color: Colors.red);
     }
   }

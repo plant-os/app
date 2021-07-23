@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:email_validator/email_validator.dart';
@@ -35,7 +36,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       await authService.login(state.email, state.password);
       yield state.update(isLoading: false, isSuccess: true);
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       print(e);
       yield state.update(isLoading: false, error: e.message);
       yield LoginState.initial(

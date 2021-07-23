@@ -14,9 +14,9 @@ class CropsPage extends StatefulWidget {
 
 class _CropsPageState extends State<CropsPage>
     with SingleTickerProviderStateMixin {
-  TabController tabController;
+  late TabController tabController;
 
-  CropsBloc _cropsBloc;
+  late CropsBloc _cropsBloc;
 
   @override
   void dispose() {
@@ -75,7 +75,7 @@ class _CropsPageState extends State<CropsPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Day ${_cropsBloc.convertDate(crop.startDate)}",
+                      "Day ${_cropsBloc.convertDate(crop.startDate!)}",
                       style: TextStyle(fontSize: 16),
                     ),
                     Text("EC", style: TextStyle(fontSize: 16))
@@ -89,13 +89,13 @@ class _CropsPageState extends State<CropsPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      crop.name,
+                      crop.name!,
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      crop.ec,
+                      crop.ec!,
                       style:
                           TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                       overflow: TextOverflow.ellipsis,
@@ -109,7 +109,7 @@ class _CropsPageState extends State<CropsPage>
                 child: Row(
                   children: [
                     Text(
-                      _cropsBloc.cropStateIndicator(crop.cropState),
+                      _cropsBloc.cropStateIndicator(crop.cropState!),
                       style: TextStyle(fontSize: 16, color: greyColor),
                     ),
                   ],

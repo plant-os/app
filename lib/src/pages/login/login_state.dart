@@ -9,15 +9,15 @@ class LoginState {
   final String password;
 
   LoginState({
-    @required this.isValid,
-    @required this.isLoading,
-    @required this.isSuccess,
-    @required this.error,
-    @required this.email,
-    @required this.password,
+    @required required this.isValid,
+    @required required this.isLoading,
+    @required required this.isSuccess,
+    @required required this.error,
+    @required required this.email,
+    @required required this.password,
   });
 
-  factory LoginState.initial({String email, String password, bool isValid}) {
+  factory LoginState.initial({String? email, String? password, bool? isValid}) {
     return LoginState(
         isValid: isValid ?? false,
         isLoading: false,
@@ -28,12 +28,12 @@ class LoginState {
   }
 
   LoginState update(
-      {bool isValid,
-      bool isLoading,
-      bool isSuccess,
-      String error,
-      String email,
-      String password}) {
+      {bool? isValid,
+      bool? isLoading,
+      bool? isSuccess,
+      String? error,
+      String? email,
+      String? password}) {
     return LoginState(
       isValid: isValid ?? this.isValid,
       isLoading: isLoading ?? this.isLoading,
