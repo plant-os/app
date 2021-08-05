@@ -149,8 +149,10 @@ class LoginPageState extends State<LoginPage> {
           Container(
               height: 40,
               child: TextButton(
-                  style:
-                      TextButton.styleFrom(backgroundColor: Color(0xFF1FAD84)),
+                  style: state.isValid
+                      ? TextButton.styleFrom(backgroundColor: Color(0xFF1FAD84))
+                      : TextButton.styleFrom(
+                          backgroundColor: Color(0xFFC4C4C4)),
                   onPressed: state.isValid
                       ? () {
                           _loginBloc.add(LoginPressedEvent());
