@@ -20,6 +20,7 @@ class App extends StatelessWidget {
     return BlocProvider(
         create: (_) => AuthBloc()..add(AuthStartedEvent()),
         child: BlocBuilder<AuthBloc, AuthState>(builder: (_, state) {
+          print("auth is now " + state.runtimeType.toString());
           Widget homeWidget;
           if (state is AuthUnauthenticatedState) {
             homeWidget = BlocProvider<LoginBloc>(

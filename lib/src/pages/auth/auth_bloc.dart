@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/services/auth_service.dart';
 
@@ -8,7 +9,14 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final _authService = AuthService();
 
-  AuthBloc() : super(AuthUninitializedState());
+  AuthBloc() : super(AuthUninitializedState()) {
+    FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    _firebaseAuth.authStateChanges().listen((event) {
+      if (event == null) {
+        add(AuthLoggedOutEvent());
+      }
+    });
+  }
 
   @override
   Stream<AuthState> mapEventToState(
