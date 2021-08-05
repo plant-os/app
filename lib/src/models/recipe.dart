@@ -4,8 +4,8 @@ class Recipe {
   final String id;
   final String? deviceId;
   final String name;
-  final String deviceZone;
-  final String registryId;
+  final String? deviceZone;
+  final String? registryId;
   final Company? company;
   final Ph? ph;
   final Ec? ec;

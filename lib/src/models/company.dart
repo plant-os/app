@@ -1,13 +1,13 @@
 class Company {
   final String id;
-  final String registryId;
-  final String name;
-  final String address1;
-  final String address2;
-  final String state;
-  final String city;
-  final String postcode;
-  final String country;
+  final String? registryId;
+  final String? name;
+  final String? address1;
+  final String? address2;
+  final String? state;
+  final String? city;
+  final String? postcode;
+  final String? country;
 
   Company(this.id, this.registryId, this.address1, this.address2, this.state,
       this.city, this.country, this.postcode, this.name);

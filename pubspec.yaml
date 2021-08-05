@@ -48,6 +48,8 @@ flutter:
   assets:
     - assets/logo.png
     - assets/crop.jpg
+    - assets/hamburger.png
+    - assets/logo/withtext.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -78,3 +80,25 @@ flutter:
     - family: Lato-Regular
       fonts:
         - asset: assets/fonts/Lato-Regular.ttf
+    - family: Work Sans
+      fonts:
+        - asset: assets/fonts/WorkSans-Regular.ttf
+        - asset: assets/fonts/WorkSans-Light.ttf
+        - asset: assets/fonts/WorkSans-ExtraBold.ttf
+        - asset: assets/fonts/WorkSans-SemiBoldItalic.ttf
+        - asset: assets/fonts/WorkSans-MediumItalic.ttf
+        - asset: assets/fonts/WorkSans-BoldItalic.ttf
+        - asset: assets/fonts/WorkSans-ExtraLight.ttf
+        - asset: assets/fonts/WorkSans-ThinItalic.ttf
+        - asset: assets/fonts/WorkSans-ExtraLightItalic.ttf
+        - asset: assets/fonts/WorkSans-Medium.ttf
+        - asset: assets/fonts/WorkSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/WorkSans-Italic.ttf
+        - asset: assets/fonts/WorkSans-BlackItalic.ttf
+        - asset: assets/fonts/WorkSans-Thin.ttf
+        - asset: assets/fonts/WorkSans-Black.ttf
+        - asset: assets/fonts/WorkSans-LightItalic.ttf
+        - asset: assets/fonts/WorkSans-ExtraBoldItalic.ttf
+        - asset: assets/fonts/WorkSans-Bold.ttf
+          # weight: 700

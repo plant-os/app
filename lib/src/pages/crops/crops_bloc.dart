@@ -66,10 +66,14 @@ class CropsBloc extends Bloc<CropsEvent, CropsState> {
   void dispose() {}
 
   Stream<CropsState> _mapLoadCropsToState(CropsLoaded event) async* {
-    var ongoingCrops =
-        event.crops.where((crop) => crop.cropState!.harvested != true).toList();
-    var pastCrops =
-        event.crops.where((crop) => crop.cropState!.harvested == true).toList();
+    var ongoingCrops = event.crops
+        .where((crop) =>
+            crop.cropState != null && crop.cropState!.harvested != true)
+        .toList();
+    var pastCrops = event.crops
+        .where((crop) =>
+            crop.cropState != null && crop.cropState!.harvested == true)
+        .toList();
     yield CropsStateDone(ongoingCrops, pastCrops, event.currentUser);
   }
 }
