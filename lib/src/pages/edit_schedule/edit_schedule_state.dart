@@ -1,24 +1,24 @@
 part of 'edit_schedule_bloc.dart';
 
 class EditScheduleState {
-  final Schedule schedule;
+  final Schedule? schedule;
   final String error;
   final bool isSuccess;
   final bool isValid;
   final bool isLoading;
   EditScheduleState(
-      {@required this.schedule,
-      @required this.error,
-      @required this.isSuccess,
-      @required this.isLoading,
-      @required this.isValid});
+      {@required required this.schedule,
+      @required required this.error,
+      @required required this.isSuccess,
+      @required required this.isLoading,
+      @required required this.isValid});
 
   factory EditScheduleState.initial(
-      {Schedule schedule,
-      String error,
-      bool isSucess,
-      bool isValid,
-      bool isLoading}) {
+      {Schedule? schedule,
+      String? error,
+      bool? isSucess,
+      bool? isValid,
+      bool? isLoading}) {
     return EditScheduleState(
         schedule: schedule ?? null,
         error: error ?? "",
@@ -28,11 +28,11 @@ class EditScheduleState {
   }
 
   EditScheduleState update(
-      {bool isValid,
-      bool isLoading,
-      bool isSuccess,
-      String error,
-      Schedule schedule}) {
+      {bool? isValid,
+      bool? isLoading,
+      bool? isSuccess,
+      String? error,
+      Schedule? schedule}) {
     return EditScheduleState(
       isValid: isValid ?? this.isValid,
       isLoading: isLoading ?? this.isLoading,

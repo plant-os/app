@@ -27,7 +27,7 @@ class Device {
 
   final String location;
 
-  final Company company;
+  final Company? company;
 
   //final DeviceType DeviceType;
 
@@ -102,7 +102,7 @@ class Device {
         'FertigationStatus': fertigationStatus,
         'Indoor': indoor,
         'Location': location,
-        'Company': company != null ? company.toJson() : null,
+        'Company': company != null ? company!.toJson() : null,
         'Active': active,
         'Demo': demo,
         'RegistryId': registryId,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:email_validator/email_validator.dart';
@@ -30,7 +31,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
     try {
       await _authService.resetPassword(state.email);
       yield state.update(isLoading: false, isSuccess: true);
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       print(e);
       yield state.update(isLoading: false, error: e.message);
     } finally {

@@ -5,7 +5,9 @@ import 'package:plantos/src/pages/crop_details/crop_details_page.dart';
 import 'package:plantos/src/pages/edit_crop/edit_crop_page.dart';
 import 'package:plantos/src/themes/colors.dart';
 import '../../models/crop.dart';
+import 'appdrawer.dart';
 import 'crops_bloc.dart';
+import 'hamburger.dart';
 
 class CropsPage extends StatefulWidget {
   @override
@@ -14,9 +16,9 @@ class CropsPage extends StatefulWidget {
 
 class _CropsPageState extends State<CropsPage>
     with SingleTickerProviderStateMixin {
-  TabController tabController;
+  late TabController tabController;
 
-  CropsBloc _cropsBloc;
+  late CropsBloc _cropsBloc;
 
   @override
   void dispose() {
@@ -75,7 +77,7 @@ class _CropsPageState extends State<CropsPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Day ${_cropsBloc.convertDate(crop.startDate)}",
+                      "Day ${_cropsBloc.convertDate(crop.startDate!)}",
                       style: TextStyle(fontSize: 16),
                     ),
                     Text("EC", style: TextStyle(fontSize: 16))
@@ -89,13 +91,13 @@ class _CropsPageState extends State<CropsPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      crop.name,
+                      crop.name!,
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      crop.ec,
+                      crop.ec!,
                       style:
                           TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                       overflow: TextOverflow.ellipsis,
@@ -109,7 +111,7 @@ class _CropsPageState extends State<CropsPage>
                 child: Row(
                   children: [
                     Text(
-                      _cropsBloc.cropStateIndicator(crop.cropState),
+                      _cropsBloc.cropStateIndicator(crop.cropState!),
                       style: TextStyle(fontSize: 16, color: greyColor),
                     ),
                   ],
@@ -122,40 +124,34 @@ class _CropsPageState extends State<CropsPage>
     );
   }
 
-  Widget cropsTabViewPage(state) {
+  Widget cropsTabViewPage(CropsStateDone state, BuildContext context) {
+    const titleTextStyle = TextStyle(
+        color: Color(0xff1D1F21),
+        fontSize: 26,
+        fontFamily: "Work Sans",
+        fontWeight: FontWeight.w600);
+
     return Scaffold(
+      backgroundColor: const Color(0xFFF9F9F9),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: const Color(0xFFF9F9F9),
+        leading: Hamburger(),
+        title: Image.asset("assets/logo/withtext.png",
+            width: 115.0, height: 27.14),
+      ),
+      drawer: AppDrawer(),
       body: SafeArea(
         child: Container(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: Column(children: [
-                      Row(children: [
-                        Text(
-                          "Hey ${state.currentUser.name}!",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        )
-                      ]),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Your Crops",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 28),
-                            )
-                          ],
-                        ),
-                      ),
-                    ]),
-                  )
-                ],
+              Padding(
+                padding: const EdgeInsets.all(21.0),
+                child: Text(
+                  "Crop Manager",
+                  style: titleTextStyle,
+                ),
               ),
               Container(
                 child: Row(
@@ -233,7 +229,7 @@ class _CropsPageState extends State<CropsPage>
     return BlocBuilder<CropsBloc, CropsState>(
       builder: (context, state) {
         if (state is CropsStateDone) {
-          return cropsTabViewPage(state);
+          return cropsTabViewPage(state, context);
         } else {
           return loadingPage();
         }

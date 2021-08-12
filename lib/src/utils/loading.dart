@@ -8,7 +8,7 @@ class Loading {
     showDialog(
         context: context,
         barrierDismissible: false,
-        child: Center(
+        builder: (context) => Center(
             child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(blueColor))));
   }

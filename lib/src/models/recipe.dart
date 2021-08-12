@@ -2,13 +2,13 @@ import 'package:plantos/src/models/company.dart';
 
 class Recipe {
   final String id;
-  final String deviceId;
+  final String? deviceId;
   final String name;
-  final String deviceZone;
-  final String registryId;
-  final Company company;
-  final Ph ph;
-  final Ec ec;
+  final String? deviceZone;
+  final String? registryId;
+  final Company? company;
+  final Ph? ph;
+  final Ec? ec;
   Recipe(this.id, this.deviceZone, this.name, this.registryId, this.company,
       this.ec, this.ph,
       {this.deviceId});
@@ -37,9 +37,9 @@ class Recipe {
 }
 
 class Ph {
-  final double min;
-  final double max;
-  final double optimal;
+  final double? min;
+  final double? max;
+  final double? optimal;
   Ph(this.max, this.min, this.optimal);
   Ph.fromJson(Map<String, dynamic> json)
       : min = (json['Min'] as num).toDouble() ?? null,
@@ -48,9 +48,9 @@ class Ph {
 }
 
 class Ec {
-  final double min;
-  final double max;
-  final double optimal;
+  final double? min;
+  final double? max;
+  final double? optimal;
   Ec(this.max, this.min, this.optimal);
   Ec.fromJson(Map<String, dynamic> json)
       : min = (json['Min'] as num).toDouble() ?? null,

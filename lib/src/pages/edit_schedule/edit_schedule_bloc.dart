@@ -36,7 +36,8 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
   Stream<EditScheduleState> _mapScheduleFieldChangedToState(
       EditScheduleFieldChangedEvent event) async* {
     yield state.update(
-        isValid: _isFormValidated(event.schedule.action, event.schedule.repeat),
+        isValid:
+            _isFormValidated(event.schedule.action!, event.schedule.repeat!),
         schedule: event.schedule);
   }
 
@@ -46,7 +47,7 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
     DateTime timeOfDay = DateTime(2021, 1, 1, time.hour, time.minute);
 
     Schedule updated =
-        state.schedule.copyWith(time: Timestamp.fromDate(timeOfDay));
+        state.schedule!.copyWith(time: Timestamp.fromDate(timeOfDay));
 
     yield state.update(schedule: updated);
   }
@@ -55,26 +56,26 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
   Repeat toggleDay(String day) {
     switch (day) {
       case "Monday":
-        return state.schedule.repeat
-            .copyWith(monday: !state.schedule.repeat.monday);
+        return state.schedule!.repeat!
+            .copyWith(monday: !state.schedule!.repeat!.monday);
       case "Tuesday":
-        return state.schedule.repeat
-            .copyWith(tuesday: !state.schedule.repeat.tuesday);
+        return state.schedule!.repeat!
+            .copyWith(tuesday: !state.schedule!.repeat!.tuesday);
       case "Wednesday":
-        return state.schedule.repeat
-            .copyWith(wednesday: !state.schedule.repeat.wednesday);
+        return state.schedule!.repeat!
+            .copyWith(wednesday: !state.schedule!.repeat!.wednesday);
       case "Thursday":
-        return state.schedule.repeat
-            .copyWith(thursday: !state.schedule.repeat.thursday);
+        return state.schedule!.repeat!
+            .copyWith(thursday: !state.schedule!.repeat!.thursday);
       case "Friday":
-        return state.schedule.repeat
-            .copyWith(friday: !state.schedule.repeat.friday);
+        return state.schedule!.repeat!
+            .copyWith(friday: !state.schedule!.repeat!.friday);
       case "Saturday":
-        return state.schedule.repeat
-            .copyWith(saturday: !state.schedule.repeat.saturday);
+        return state.schedule!.repeat!
+            .copyWith(saturday: !state.schedule!.repeat!.saturday);
       case "Sunday":
-        return state.schedule.repeat
-            .copyWith(sunday: !state.schedule.repeat.sunday);
+        return state.schedule!.repeat!
+            .copyWith(sunday: !state.schedule!.repeat!.sunday);
       default:
         throw Exception("Unhandled case");
     }
@@ -82,13 +83,13 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
 
   Stream<EditScheduleState> _mapToggleRepeatToState(String day) async* {
     yield state.update(
-        schedule: state.schedule.copyWith(repeat: toggleDay(day)));
+        schedule: state.schedule!.copyWith(repeat: toggleDay(day)));
   }
 
   Stream<EditScheduleState> _mapSetActionToState(bool isFertigation) async* {
     // FIXME(simon): Huh??
     yield state.update(
-        schedule: state.schedule
+        schedule: state.schedule!
             .copyWith(action: CropAction(!isFertigation, isFertigation)));
   }
 

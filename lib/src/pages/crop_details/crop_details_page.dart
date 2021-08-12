@@ -16,7 +16,7 @@ class CropDetailsPage extends StatefulWidget {
 }
 
 class CropDetailsPageState extends State<CropDetailsPage> {
-  CropDetailsBloc bloc;
+  late CropDetailsBloc bloc;
 
   @override
   void initState() {
@@ -53,25 +53,25 @@ class CropDetailsPageState extends State<CropDetailsPage> {
 
   static Widget repeatsBuilder(Schedule schedule) {
     String days = "";
-    if (schedule.repeat.monday == true) {
+    if (schedule.repeat!.monday == true) {
       days = days + "Mon ";
     }
-    if (schedule.repeat.tuesday == true) {
+    if (schedule.repeat!.tuesday == true) {
       days = days + "Tue ";
     }
-    if (schedule.repeat.wednesday == true) {
+    if (schedule.repeat!.wednesday == true) {
       days = days + "Wed ";
     }
-    if (schedule.repeat.thursday == true) {
+    if (schedule.repeat!.thursday == true) {
       days = days + "Thur ";
     }
-    if (schedule.repeat.friday == true) {
+    if (schedule.repeat!.friday == true) {
       days = days + "Fri ";
     }
-    if (schedule.repeat.saturday == true) {
+    if (schedule.repeat!.saturday == true) {
       days = days + "Sat ";
     }
-    if (schedule.repeat.sunday == true) {
+    if (schedule.repeat!.sunday == true) {
       days = days + "Sun";
     }
     return Padding(
@@ -99,13 +99,13 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               children: [
                 SizedBox(
                   child: Text(
-                    action.action,
+                    action.action!,
                     style: TextStyle(fontSize: 15, color: blackColor),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Text(
-                  f.format(action.time.toDate()),
+                  f.format(action.time!.toDate()),
                   style: TextStyle(fontSize: 15, color: blackColor),
                 ),
                 action.canceled == false
@@ -164,14 +164,14 @@ class CropDetailsPageState extends State<CropDetailsPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          schedule.action.fertigation ? "Fertigation" : "Irrigation",
+          schedule.action!.fertigation ? "Fertigation" : "Irrigation",
           style: TextStyle(color: whiteColor),
         ),
         Expanded(child: repeatsBuilder(schedule)),
         Row(
           children: [
             Text(
-              DateFormat.jm().format(schedule.time.toDate()),
+              DateFormat.jm().format(schedule.time!.toDate()),
               style: TextStyle(color: whiteColor),
             ),
           ],
@@ -214,7 +214,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          state.crop.name,
+          state.crop.name!,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
         ),
         IconButton(
@@ -250,7 +250,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               height: 5,
             ),
             Text(
-              state.crop.ec,
+              state.crop.ec!,
               style: TextStyle(
                   fontSize: 17, fontWeight: FontWeight.bold, color: blackColor),
             ),
@@ -269,7 +269,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               height: 5,
             ),
             Text(
-              convertDate(state.crop.startDate),
+              convertDate(state.crop.startDate!),
               style: TextStyle(
                   fontSize: 17, fontWeight: FontWeight.bold, color: blackColor),
             ),
@@ -288,7 +288,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               height: 5,
             ),
             Text(
-              cropStateIndicator(state.crop.cropState),
+              cropStateIndicator(state.crop.cropState!),
               style: TextStyle(
                   fontSize: 17, fontWeight: FontWeight.bold, color: blackColor),
             ),
@@ -312,7 +312,7 @@ class CropDetailsPageState extends State<CropDetailsPage> {
         height: 20,
       ),
       Column(
-        children: state.crop.schedules
+        children: state.crop.schedules!
             .map((schedule) => buildSchedule(schedule))
             .toList(),
       )

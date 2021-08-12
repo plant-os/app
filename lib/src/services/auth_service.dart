@@ -13,11 +13,11 @@ class AuthService {
   }
 
   Future<bool> isLoggedIn() async {
-    User currentUser = _firebaseAuth.currentUser;
+    User? currentUser = _firebaseAuth.currentUser;
     return currentUser != null;
   }
 
-  Future<User> getCurrentUser() async {
+  Future<User?> getCurrentUser() async {
     return _firebaseAuth.currentUser;
   }
 

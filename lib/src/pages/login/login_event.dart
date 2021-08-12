@@ -6,10 +6,8 @@ class LoginTextFieldChangedEvent extends LoginEvent {
   final String email;
   final String password;
 
-  LoginTextFieldChangedEvent({
-    @required this.email,
-    @required this.password
-  });
+  LoginTextFieldChangedEvent(
+      {@required required this.email, @required required this.password});
 }
 
 class LoginPressedEvent extends LoginEvent {}

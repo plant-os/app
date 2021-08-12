@@ -32,8 +32,8 @@ class CropsBloc extends Bloc<CropsEvent, CropsState> {
 
     // To get the crops belonging to the company we need the current user's company Id.
     var currentUser =
-        await userService.getCurrentUserDetails(firebaseUser.email);
-    cropsService.getCropslist(currentUser.company.id).listen((crops) {
+        await userService.getCurrentUserDetails(firebaseUser!.email!);
+    cropsService.getCropslist(currentUser.company!.id).listen((crops) {
       add(
         CropsLoaded(crops, currentUser),
       );
@@ -66,10 +66,14 @@ class CropsBloc extends Bloc<CropsEvent, CropsState> {
   void dispose() {}
 
   Stream<CropsState> _mapLoadCropsToState(CropsLoaded event) async* {
-    var ongoingCrops =
-        event.crops.where((crop) => crop.cropState.harvested != true).toList();
-    var pastCrops =
-        event.crops.where((crop) => crop.cropState.harvested == true).toList();
+    var ongoingCrops = event.crops
+        .where((crop) =>
+            crop.cropState != null && crop.cropState!.harvested != true)
+        .toList();
+    var pastCrops = event.crops
+        .where((crop) =>
+            crop.cropState != null && crop.cropState!.harvested == true)
+        .toList();
     yield CropsStateDone(ongoingCrops, pastCrops, event.currentUser);
   }
 }

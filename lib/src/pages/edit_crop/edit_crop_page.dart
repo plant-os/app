@@ -24,7 +24,7 @@ class EditCropPage extends StatefulWidget {
   final AuthService authService;
   final UserService userService;
 
-  final Crop initialCrop;
+  final Crop? initialCrop;
 
   EditCropPage(
       this.cropsService, this.authService, this.userService, this.initialCrop);
@@ -34,11 +34,11 @@ class EditCropPage extends StatefulWidget {
 }
 
 class EditCropPageState extends State<EditCropPage> {
-  EditCropBloc bloc;
+  late EditCropBloc bloc;
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _ecController = TextEditingController();
-  Loading _loading;
+  Loading? _loading;
 
   @override
   void initState() {
@@ -47,8 +47,8 @@ class EditCropPageState extends State<EditCropPage> {
         widget.userService, widget.initialCrop, new DeviceService());
 
     if (widget.initialCrop != null) {
-      _nameController.text = widget.initialCrop.name;
-      _ecController.text = widget.initialCrop.ec;
+      _nameController.text = widget.initialCrop!.name!;
+      _ecController.text = widget.initialCrop!.ec!;
     }
 
     _nameController.addListener(() {
@@ -69,10 +69,6 @@ class EditCropPageState extends State<EditCropPage> {
   }
 
   String cropStateToString(CropState state) {
-    if (state == null) {
-      return "Vegetative";
-    }
-
     if (state.budding == true) {
       return "Budding";
     } else if (state.vegetative == true) {
@@ -92,24 +88,24 @@ class EditCropPageState extends State<EditCropPage> {
     if (state.isLoading) {
       _loading = Loading(context);
     } else if (state.isSuccess) {
-      _loading.close();
+      _loading?.close();
       SnackbarWithColor(
           color: greenColor,
           context: context,
           text: 'Crop was successfully edited.');
       Navigator.pop(context, state.crop);
     } else if (state.error.isNotEmpty) {
-      _loading.close();
+      _loading?.close();
       SnackbarWithColor(context: context, text: state.error, color: Colors.red);
     }
   }
 
   void _selectDate(BuildContext context, EditCropState state) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: state.crop.startDate == null
           ? DateTime.now()
-          : state.crop.startDate.toDate(),
+          : state.crop.startDate!.toDate(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
     );
@@ -152,7 +148,7 @@ class EditCropPageState extends State<EditCropPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              schedule.action.fertigation == true
+                              schedule.action!.fertigation == true
                                   ? Text(
                                       "Fertigation",
                                       style: TextStyle(color: whiteColor),
@@ -164,7 +160,7 @@ class EditCropPageState extends State<EditCropPage> {
                                 children: [
                                   Text(
                                     DateFormat.jm()
-                                        .format(schedule.time.toDate()),
+                                        .format(schedule.time!.toDate()),
                                     style: TextStyle(color: whiteColor),
                                   ),
                                 ],
@@ -211,15 +207,15 @@ class EditCropPageState extends State<EditCropPage> {
         backgroundColor: whiteColor,
       ),
       body: BlocListener<EditCropBloc, EditCropState>(
-        value: bloc,
+        bloc: bloc,
         listener: _blocListener,
         child: BlocBuilder<EditCropBloc, EditCropState>(
-          value: bloc,
+          bloc: bloc,
           builder: (_, state) {
             List<Widget> schedules = [];
 
-            for (int i = 0; i < state.crop.schedules.length; i++) {
-              schedules.add(scheduleBuilder(i, state.crop.schedules[i]));
+            for (int i = 0; i < state.crop.schedules!.length; i++) {
+              schedules.add(scheduleBuilder(i, state.crop.schedules![i]));
             }
 
             // Show a loading spinner if we're waiting for the device list.
@@ -298,7 +294,7 @@ class EditCropPageState extends State<EditCropPage> {
                                         state.crop.startDate == null
                                             ? "select date"
                                             : DateFormat('yyyy-MM-dd').format(
-                                                state.crop.startDate.toDate()),
+                                                state.crop.startDate!.toDate()),
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ),
@@ -322,7 +318,7 @@ class EditCropPageState extends State<EditCropPage> {
                           ),
                           SizedBox.fromSize(size: Size.fromHeight(15.0)),
                           DropdownButton<String>(
-                              value: cropStateToString(state.crop.cropState),
+                              value: cropStateToString(state.crop.cropState!),
                               items: <String>[
                                 'Vegetative',
                                 'Budding',
@@ -339,8 +335,11 @@ class EditCropPageState extends State<EditCropPage> {
                                 );
                               }).toList(),
                               dropdownColor: blueColor,
-                              onChanged: (value) =>
-                                  bloc.add(ChangeCropStateEvent(value))),
+                              onChanged: (value) {
+                                if (value != null) {
+                                  bloc.add(ChangeCropStateEvent(value));
+                                }
+                              }),
                         ],
                       ),
                       SizedBox.fromSize(
@@ -357,7 +356,7 @@ class EditCropPageState extends State<EditCropPage> {
                           SizedBox.fromSize(size: Size.fromHeight(15.0)),
                           DropdownButton<String>(
                               value: state.crop.sensorDeviceId,
-                              items: state.devices.map((Device value) {
+                              items: state.devices!.map((Device value) {
                                 return DropdownMenuItem<String>(
                                   value: value.id,
                                   child: Text(
@@ -367,8 +366,11 @@ class EditCropPageState extends State<EditCropPage> {
                                 );
                               }).toList(),
                               dropdownColor: blueColor,
-                              onChanged: (value) =>
-                                  bloc.add(ChangeDeviceIdEvent(value))),
+                              onChanged: (value) {
+                                if (value != null) {
+                                  bloc.add(ChangeDeviceIdEvent(value));
+                                }
+                              }),
                         ],
                       ),
                       SizedBox.fromSize(

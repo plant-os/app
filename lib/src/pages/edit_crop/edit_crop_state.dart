@@ -7,24 +7,24 @@ class EditCropState {
   final bool isValid;
   final bool isLoading;
 
-  final List<Device> devices;
+  final List<Device>? devices;
 
   EditCropState({
-    @required this.crop,
-    @required this.error,
-    @required this.isSuccess,
-    @required this.isLoading,
-    @required this.isValid,
+    @required required this.crop,
+    this.error = "",
+    this.isSuccess = false,
+    this.isLoading = false,
+    this.isValid = false,
     @required this.devices,
   });
 
   factory EditCropState.initial({
-    Crop crop,
-    String error,
-    bool isSucess,
-    bool isValid,
-    bool isLoading,
-    List<Device> devices,
+    Crop? crop,
+    String? error,
+    bool? isSucess,
+    bool? isValid,
+    bool? isLoading,
+    List<Device>? devices,
   }) {
     return EditCropState(
         crop: crop ?? Crop(cropState: CropState.of("Vegetative")),
@@ -36,12 +36,12 @@ class EditCropState {
   }
 
   EditCropState update({
-    bool isValid,
-    bool isLoading,
-    bool isSuccess,
-    String error,
-    Crop crop,
-    List<Device> devices,
+    bool? isValid,
+    bool? isLoading,
+    bool? isSuccess,
+    String? error,
+    Crop? crop,
+    List<Device>? devices,
   }) {
     return EditCropState(
       isValid: isValid ?? this.isValid,

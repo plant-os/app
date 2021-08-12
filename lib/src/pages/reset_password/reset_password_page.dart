@@ -14,8 +14,8 @@ class ResetPasswordPage extends StatefulWidget {
 
 class ResetPasswordPageState extends State<ResetPasswordPage> {
   TextEditingController _emailController = TextEditingController();
-  Loading _loading;
-  ResetPasswordBloc _resetPasswordBloc;
+  Loading? _loading;
+  late ResetPasswordBloc _resetPasswordBloc;
 
   void _onTextFieldChanged() {
     _resetPasswordBloc
@@ -32,14 +32,14 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
     else if (state.isSuccess) {
       _emailController.text = '';
       _onTextFieldChanged();
-      _loading.close();
+      _loading?.close();
       SnackbarWithColor(
           color: greenColor,
           context: context,
           text:
               'An email has been sent. Please click the link when you get it.');
     } else if (state.error.isNotEmpty) {
-      _loading.close();
+      _loading?.close();
       SnackbarWithColor(context: context, text: state.error, color: Colors.red);
     }
   }

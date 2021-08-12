@@ -17,28 +17,12 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  Loading _loading;
-  LoginBloc _loginBloc;
+  Loading? _loading;
+  late LoginBloc _loginBloc;
 
   void _onTextFieldChanged() {
     _loginBloc.add(LoginTextFieldChangedEvent(
         email: _emailController.text, password: _passwordController.text));
-  }
-
-  void _signInPressed() {
-    _loginBloc.add(LoginPressedEvent());
-  }
-
-  void _blocListener(context, state) {
-    if (state.isLoading)
-      _loading = Loading(context);
-    else if (state.isSuccess) {
-      _loading.close();
-      BlocProvider.of<AuthBloc>(context).add(AuthLoggedInEvent());
-    } else if (state.error.isNotEmpty) {
-      _loading.close();
-      SnackbarWithColor(context: context, text: state.error, color: Colors.red);
-    }
   }
 
   void _forgotPasswordPressed() {
@@ -63,68 +47,158 @@ class LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  Widget buildContent(BuildContext context, LoginState state) {
+    const titleStyle = TextStyle(
+      color: Color(0xff28183d),
+      fontSize: 25,
+      fontFamily: "Work Sans",
+      fontWeight: FontWeight.w600,
+    );
+
+    const textStyle = TextStyle(
+        color: Color(0xff28183d),
+        fontSize: 13,
+        fontFamily: "Work Sans",
+        fontWeight: FontWeight.normal);
+
+    const textLinkStyle = TextStyle(
+        color: Color(0xff6e6e6e),
+        fontSize: 14,
+        fontFamily: "Work Sans",
+        fontWeight: FontWeight.w500);
+
+    const textLinkHighlightStyle = TextStyle(
+        color: Color(0xff1FAD84),
+        fontSize: 14,
+        fontFamily: "Work Sans",
+        fontWeight: FontWeight.w500);
+
+    const labelStyle = TextStyle(
+        color: Color(0xff28183d),
+        fontSize: 14,
+        fontFamily: "Work Sans",
+        fontWeight: FontWeight.w500);
+
+    const btnLabelStyle = TextStyle(
+        color: Color(0xffffffff),
+        fontSize: 14,
+        fontFamily: "Work Sans",
+        fontWeight: FontWeight.w500);
+
+    var textFieldDecoration = InputDecoration(
+      isCollapsed: true,
+      contentPadding: EdgeInsets.all(10),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(6)),
+      hintText: '',
+      isDense: true,
+    );
+
+    return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: Image.asset("assets/logo/withtext.png"),
+          ),
+          SizedBox(height: 43),
+          Text(
+            "Welcome back!",
+            textAlign: TextAlign.center,
+            style: titleStyle,
+          ),
+          SizedBox(height: 20),
+          Text(
+              "Please fill out the information below to connect to your account",
+              textAlign: TextAlign.center,
+              style: textStyle),
+          SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Email", style: labelStyle),
+              SizedBox(height: 9),
+              TextField(
+                controller: _emailController,
+                onChanged: (val) => _onTextFieldChanged(),
+                textAlign: TextAlign.start,
+                decoration: textFieldDecoration,
+                keyboardType: TextInputType.text,
+                autocorrect: false,
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Password", style: labelStyle),
+              SizedBox(height: 9),
+              TextField(
+                controller: _passwordController,
+                onChanged: (val) => _onTextFieldChanged(),
+                obscureText: true,
+                textAlign: TextAlign.start,
+                decoration: textFieldDecoration,
+                keyboardType: TextInputType.text,
+                autocorrect: false,
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Container(
+              height: 40,
+              child: TextButton(
+                  style: state.isValid
+                      ? TextButton.styleFrom(backgroundColor: Color(0xFF1FAD84))
+                      : TextButton.styleFrom(
+                          backgroundColor: Color(0xFFC4C4C4)),
+                  onPressed: state.isValid
+                      ? () {
+                          _loginBloc.add(LoginPressedEvent());
+                        }
+                      : null,
+                  child: Center(child: Text("Sign in", style: btnLabelStyle)))),
+          SizedBox(height: 20),
+          Center(
+            child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => _forgotPasswordPressed(),
+                child: RichText(
+                  text: TextSpan(
+                    children: const <TextSpan>[
+                      TextSpan(
+                          text: 'Forgot your password? ', style: textLinkStyle),
+                      TextSpan(text: 'Reset it', style: textLinkHighlightStyle),
+                    ],
+                  ),
+                )),
+          ),
+        ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blueColor,
       body: SingleChildScrollView(
         child: BlocListener<LoginBloc, LoginState>(
-          listener: _blocListener,
+          listener: (context, state) {
+            if (state.isLoading)
+              _loading = Loading(context);
+            else if (state.isSuccess) {
+              _loading?.close();
+              BlocProvider.of<AuthBloc>(context).add(AuthLoggedInEvent());
+            } else if (state.error.isNotEmpty) {
+              _loading?.close();
+              SnackbarWithColor(
+                  context: context, text: state.error, color: Colors.red);
+            }
+          },
           child: BlocBuilder<LoginBloc, LoginState>(
-            builder: (_, state) => SafeArea(
+            builder: (context, state) => SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(left: 30.0, right: 30, top: 0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 50.0),
-                      child: Column(
-                        children: [
-                          ImageIcon(
-                            AssetImage("assets/logo.png"),
-                            color: whiteColor,
-                            size: 100,
-                          ),
-                          Text(
-                            "PlantOS",
-                            style: TextStyle(fontSize: 30, color: whiteColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    FormTextField(
-                        hintText: 'Email',
-                        controller: _emailController,
-                        onChanged: _onTextFieldChanged,
-                        keyboardType: TextInputType.emailAddress),
-                    SizedBox.fromSize(size: Size.fromHeight(15.0)),
-                    FormTextField(
-                        hintText: 'Password',
-                        controller: _passwordController,
-                        onChanged: _onTextFieldChanged,
-                        obscureText: true),
-                    FormButton(
-                        text: 'Sign in',
-                        enabledColor: greenColor,
-                        onPressed: state.isValid ? _signInPressed : null),
-                    SizedBox(height: 20),
-                    Center(
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () => _forgotPasswordPressed(),
-                        child: Text(
-                          "Forgot Password",
-                          style: TextStyle(
-                            color: whiteColor,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                padding: const EdgeInsets.only(left: 20.0, right: 20, top: 82),
+                child: buildContent(context, state),
               ),
             ),
           ),

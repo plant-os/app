@@ -22,7 +22,7 @@ class SkipsSnapshotEvent extends CropDetailsEvent {
 
 class ClickChangeActionStatusEvent extends CropDetailsEvent {
   final ActionRepeat action;
-  ClickChangeActionStatusEvent({this.action});
+  ClickChangeActionStatusEvent({required this.action});
   @override
   String toString() => "ClickChangeActionStatusEvent{action: $action}";
 }

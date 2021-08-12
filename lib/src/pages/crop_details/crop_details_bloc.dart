@@ -15,20 +15,20 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
   final AuthService authService;
   final UserService userService;
 
-  StreamSubscription cropSubscription;
-  StreamSubscription skipsSubscription;
+  late StreamSubscription cropSubscription;
+  late StreamSubscription skipsSubscription;
 
-  Crop loadedCrop;
-  List<ActionRepeat> loadedSkips;
+  Crop? loadedCrop;
+  List<ActionRepeat>? loadedSkips;
 
   CropDetailsBloc(
       this.cropsService, this.authService, this.userService, Crop crop)
       : super(LoadingState()) {
     cropSubscription = cropsService
-        .get(crop.id)
+        .get(crop.id!)
         .listen((crop) => add(CropSnapshotEvent(crop)));
     skipsSubscription = cropsService
-        .skippedActions(crop.id)
+        .skippedActions(crop.id!)
         .listen((skips) => add(SkipsSnapshotEvent(skips)));
   }
 
@@ -57,7 +57,7 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
 
     if (loadedCrop != null && loadedSkips != null) {
       yield LoadedState(
-          loadedCrop, generateActionRepeats(loadedCrop, loadedSkips));
+          loadedCrop!, generateActionRepeats(loadedCrop!, loadedSkips!));
     }
   }
 
@@ -67,14 +67,14 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
 
     if (loadedCrop != null && loadedSkips != null) {
       yield LoadedState(
-          loadedCrop, generateActionRepeats(loadedCrop, loadedSkips));
+          loadedCrop!, generateActionRepeats(loadedCrop!, loadedSkips!));
     }
   }
 
   Stream<CropDetailsState> _mapClickChangeActionStatusEventToState(
       ClickChangeActionStatusEvent event) async* {
-    if (event.action.canceled) {
-      await cropsService.deleteActionFromSkipped(event.action.id);
+    if (event.action.canceled!) {
+      await cropsService.deleteActionFromSkipped(event.action.id!);
     } else {
       await cropsService.addActionToSkipped(event.action);
     }
@@ -104,16 +104,16 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
     days.forEach(
       (day) {
         var dayOfTHeWeek = DateFormat('EEEE').format(day);
-        crop.schedules.forEach((schedule) async {
+        crop.schedules!.forEach((schedule) async {
           if (dayOfTHeWeek == "Monday") {
-            if (schedule.repeat.monday == true) {
-              final scheduleDateTime = schedule.time.toDate();
+            if (schedule.repeat!.monday == true) {
+              final scheduleDateTime = schedule.time!.toDate();
               final time = DateTime(day.year, day.month, day.day,
                   scheduleDateTime.hour, scheduleDateTime.minute);
               var actionRepeat = ActionRepeat(
                   cropId: crop.id,
                   time: Timestamp.fromDate(time),
-                  action: schedule.action.irrigation == true
+                  action: schedule.action!.irrigation == true
                       ? "Irrigation"
                       : "Fertigation",
                   canceled: false);
@@ -132,14 +132,14 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
               }
             }
           } else if (dayOfTHeWeek == "Tuesday") {
-            if (schedule.repeat.tuesday == true) {
-              final scheduleDateTime = schedule.time.toDate();
+            if (schedule.repeat!.tuesday == true) {
+              final scheduleDateTime = schedule.time!.toDate();
               final time = DateTime(day.year, day.month, day.day,
                   scheduleDateTime.hour, scheduleDateTime.minute);
               var actionRepeat = ActionRepeat(
                   cropId: crop.id,
                   time: Timestamp.fromDate(time),
-                  action: schedule.action.irrigation == true
+                  action: schedule.action!.irrigation == true
                       ? "Irrigation"
                       : "Fertigation",
                   canceled: false);
@@ -158,14 +158,14 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
               }
             }
           } else if (dayOfTHeWeek == "Wednesday") {
-            if (schedule.repeat.wednesday == true) {
-              final scheduleDateTime = schedule.time.toDate();
+            if (schedule.repeat!.wednesday == true) {
+              final scheduleDateTime = schedule.time!.toDate();
               final time = DateTime(day.year, day.month, day.day,
                   scheduleDateTime.hour, scheduleDateTime.minute);
               var actionRepeat = ActionRepeat(
                   cropId: crop.id,
                   time: Timestamp.fromDate(time),
-                  action: schedule.action.irrigation == true
+                  action: schedule.action!.irrigation == true
                       ? "Irrigation"
                       : "Fertigation",
                   canceled: false);
@@ -184,14 +184,14 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
               }
             }
           } else if (dayOfTHeWeek == "Thursday") {
-            if (schedule.repeat.thursday == true) {
-              final scheduleDateTime = schedule.time.toDate();
+            if (schedule.repeat!.thursday == true) {
+              final scheduleDateTime = schedule.time!.toDate();
               final time = DateTime(day.year, day.month, day.day,
                   scheduleDateTime.hour, scheduleDateTime.minute);
               var actionRepeat = ActionRepeat(
                   cropId: crop.id,
                   time: Timestamp.fromDate(time),
-                  action: schedule.action.irrigation == true
+                  action: schedule.action!.irrigation == true
                       ? "Irrigation"
                       : "Fertigation",
                   canceled: false);
@@ -210,14 +210,14 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
               }
             }
           } else if (dayOfTHeWeek == "Friday") {
-            if (schedule.repeat.friday == true) {
-              final scheduleDateTime = schedule.time.toDate();
+            if (schedule.repeat!.friday == true) {
+              final scheduleDateTime = schedule.time!.toDate();
               final time = DateTime(day.year, day.month, day.day,
                   scheduleDateTime.hour, scheduleDateTime.minute);
               var actionRepeat = ActionRepeat(
                   cropId: crop.id,
                   time: Timestamp.fromDate(time),
-                  action: schedule.action.irrigation == true
+                  action: schedule.action!.irrigation == true
                       ? "Irrigation"
                       : "Fertigation",
                   canceled: false);
@@ -236,14 +236,14 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
               }
             }
           } else if (dayOfTHeWeek == "Saturday") {
-            if (schedule.repeat.saturday == true) {
-              final scheduleDateTime = schedule.time.toDate();
+            if (schedule.repeat!.saturday == true) {
+              final scheduleDateTime = schedule.time!.toDate();
               final time = DateTime(day.year, day.month, day.day,
                   scheduleDateTime.hour, scheduleDateTime.minute);
               var actionRepeat = ActionRepeat(
                   cropId: crop.id,
                   time: Timestamp.fromDate(time),
-                  action: schedule.action.irrigation == true
+                  action: schedule.action!.irrigation == true
                       ? "Irrigation"
                       : "Fertigation",
                   canceled: false);
@@ -262,14 +262,14 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
               }
             }
           } else if (dayOfTHeWeek == "Sunday") {
-            if (schedule.repeat.sunday == true) {
-              final scheduleDateTime = schedule.time.toDate();
+            if (schedule.repeat!.sunday == true) {
+              final scheduleDateTime = schedule.time!.toDate();
               final time = DateTime(day.year, day.month, day.day,
                   scheduleDateTime.hour, scheduleDateTime.minute);
               var actionRepeat = ActionRepeat(
                   cropId: crop.id,
                   time: Timestamp.fromDate(time),
-                  action: schedule.action.irrigation == true
+                  action: schedule.action!.irrigation == true
                       ? "Irrigation"
                       : "Fertigation",
                   canceled: false);
@@ -291,7 +291,7 @@ class CropDetailsBloc extends Bloc<CropDetailsEvent, CropDetailsState> {
         });
       },
     );
-    actionRepeats.sort((a, b) => a.time.toDate().compareTo(b.time.toDate()));
+    actionRepeats.sort((a, b) => a.time!.toDate().compareTo(b.time!.toDate()));
     return actionRepeats;
   }
 }

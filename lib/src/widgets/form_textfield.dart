@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 class FormTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
-  final Function() onChanged;
-  final TextInputType keyboardType;
-  final bool readOnly;
-  final bool obscureText;
+  final Function()? onChanged;
+  final TextInputType? keyboardType;
+  final bool? readOnly;
+  final bool? obscureText;
   final bool autocorrect;
 
   FormTextField(
-      {@required this.hintText,
-      @required this.controller,
+      {@required required this.hintText,
+      @required required this.controller,
       this.onChanged,
       this.keyboardType,
       this.readOnly,
@@ -54,7 +54,7 @@ class FormTextField extends StatelessWidget {
                 readOnly: readOnly ?? false,
                 obscureText: obscureText ?? false,
                 autocorrect: autocorrect,
-                onChanged: (_) => onChanged != null ? onChanged() : () {},
+                onChanged: (_) => onChanged != null ? onChanged!() : () {},
               ),
             ),
           )
