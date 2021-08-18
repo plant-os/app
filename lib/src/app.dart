@@ -7,14 +7,20 @@ import 'package:plantos/src/services/user_service.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/pages/auth/auth_bloc.dart';
 import 'package:plantos/src/pages/login/login.dart';
+import 'package:provider/provider.dart';
 
 import 'pages/crops/crops_bloc.dart';
 import 'pages/crops/crops_page.dart';
+import 'pages/program_details/program_details_bloc.dart';
+import 'pages/programs/programs_bloc.dart';
+import 'pages/programs/programs_page.dart';
+import 'services/programs_service.dart';
 
 class App extends StatelessWidget {
   final AuthService authService = AuthService();
   final CropsService cropsService = CropsService();
   final UserService userService = UserService();
+  final ProgramsService programsService = ProgramsService();
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +33,24 @@ class App extends StatelessWidget {
             homeWidget = BlocProvider<LoginBloc>(
                 create: (_) => LoginBloc(authService), child: LoginPage());
           } else if (state is AuthAuthenticatedState) {
-            homeWidget = BlocProvider<AppDrawerBloc>(
-                create: (_) => AppDrawerBloc(authService, userService),
-                child: BlocProvider<CropsBloc>(
-                    create: (_) =>
-                        CropsBloc(authService, cropsService, userService),
-                    child: CropsPage()));
+            homeWidget = Provider<AuthService>(
+                create: (context) => authService,
+                child: Provider<ProgramsService>(
+                  create: (context) => programsService,
+                  child: BlocProvider<AppDrawerBloc>(
+                    create: (_) => AppDrawerBloc(authService, userService),
+                    child: BlocProvider<ProgramsBloc>(
+                        create: (_) => ProgramsBloc(
+                            authService, userService, programsService),
+                        child: BlocProvider<ProgramDetailsBloc>(
+                            create: (_) => ProgramDetailsBloc(
+                                authService, userService, programsService),
+                            child: BlocProvider<CropsBloc>(
+                                create: (_) => CropsBloc(
+                                    authService, cropsService, userService),
+                                child: ProgramsPage()))),
+                  ),
+                ));
           } else if (state is AuthUninitializedState) {
             homeWidget = Scaffold();
           } else {
