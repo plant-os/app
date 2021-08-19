@@ -21,6 +21,30 @@ true, we make the api call using the text field values in the bloc. If the api
 call is successful we can set isLoading to false and isSuccess to true,
 otherwise we can send an error message back in the state for display.
 
+Most blocs will have a life span the same as the widget it is controlling. A
+bloc for a single task, for example, will be created and the Task widget will
+be a child:
+
+```
+BlocProvider<TaskBloc>(
+  create: (_) => TaskBloc(scheduleId: _scheduleBloc.id),
+  child: TaskPage()
+)
+```
+
+```
+void _forgotPasswordPressed() {
+  Navigator.push(context,
+    MaterialPageRoute(builder: (_) =>
+      BlocProvider<ResetPasswordBloc>(
+        create: (_) => ResetPasswordBloc(),
+        child: ResetPasswordPage()
+      )
+    )
+  );
+}
+```
+
 ## Getting Started
 
 To run the app locally, run:
