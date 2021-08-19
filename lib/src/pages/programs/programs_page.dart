@@ -4,9 +4,9 @@ import 'package:plantos/src/models/program.dart';
 import 'package:plantos/src/pages/program_details/program_details_bloc.dart';
 import 'package:plantos/src/pages/program_details/program_details_page.dart';
 import 'package:plantos/src/services/programs_service.dart';
-import 'package:provider/provider.dart';
 
 import 'programs_bloc.dart';
+import 'widgets/create_program_dialog.dart';
 
 class ProgramsPage extends StatefulWidget {
   const ProgramsPage({Key? key}) : super(key: key);
@@ -66,13 +66,11 @@ class _ProgramsPageState extends State<ProgramsPage> {
   }
 
   Future<void> _showMyDialog() async {
-    var svc = ProgramsService();
-
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CreateProgramDialog(svc: svc);
+        return CreateProgramDialog();
       },
     );
   }

@@ -40,8 +40,7 @@ void main() {
       MockUserService userService = MockUserService();
       MockDeviceService deviceService = MockDeviceService();
 
-      EditCropBloc editCropBloc = EditCropBloc(
-          cropsService, authService, userService, null, deviceService);
+      EditCropBloc editCropBloc = EditCropBloc(null);
 
       editCropBloc.add(SetStartDateEvent(DateTime.parse("2021-01-14")));
       editCropBloc.add(ChangeNameEvent("Basil"));

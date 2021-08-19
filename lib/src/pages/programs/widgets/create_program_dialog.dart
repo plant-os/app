@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plantos/src/pages/program_details/program_details_bloc.dart';
+import 'package:plantos/src/pages/program_details/program_details_page.dart';
 import 'package:plantos/src/services/programs_service.dart';
 
 class CreateProgramDialog extends StatefulWidget {
-  final ProgramsService svc;
-
-  const CreateProgramDialog({Key? key, required ProgramsService svc})
-      : svc = svc,
-        super(key: key);
+  const CreateProgramDialog({Key? key}) : super(key: key);
 
   @override
   _CreateProgramDialogState createState() => _CreateProgramDialogState();
@@ -48,8 +47,9 @@ class _CreateProgramDialogState extends State<CreateProgramDialog> {
         TextButton(
           child: const Text('Save'),
           onPressed: () async {
+            var svc = ProgramsService();
             print("Create program with name: ${_controller.text}");
-            var ref = await widget.svc.add(_controller.text);
+            var ref = await svc.add(_controller.text);
 
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (_) => BlocProvider<ProgramDetailsBloc>(

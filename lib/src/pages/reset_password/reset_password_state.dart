@@ -5,41 +5,33 @@ class ResetPasswordState {
   final bool isLoading;
   final bool isSuccess;
   final String error;
-  final String email;
 
   ResetPasswordState(
       {@required required this.isValid,
       @required required this.isLoading,
       @required required this.isSuccess,
-      @required required this.email,
       @required required this.error});
 
-  factory ResetPasswordState.initial({bool? isValid, String? email}) {
+  factory ResetPasswordState.initial({bool? isValid}) {
     return ResetPasswordState(
         isValid: isValid ?? false,
         isLoading: false,
         isSuccess: false,
-        error: '',
-        email: email ?? '');
+        error: '');
   }
 
   ResetPasswordState update(
-      {bool? isValid,
-      bool? isLoading,
-      bool? isSuccess,
-      String? error,
-      String? email}) {
+      {bool? isValid, bool? isLoading, bool? isSuccess, String? error}) {
     return ResetPasswordState(
         isValid: isValid ?? this.isValid,
         isLoading: isLoading ?? this.isLoading,
         isSuccess: isSuccess ?? this.isSuccess,
-        email: email ?? this.email,
         error: error ?? this.error);
   }
 
   @override
   String toString() {
-    return "ResetPasswordState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}, email: $email";
+    return "ResetPasswordState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}";
   }
 
   // ignore: hash_and_equals
@@ -48,6 +40,5 @@ class ResetPasswordState {
       o.isValid == isValid &&
       o.isSuccess == isSuccess &&
       o.isLoading == isLoading &&
-      o.error == error &&
-      o.email == email;
+      o.error == error;
 }
