@@ -31,7 +31,7 @@ class App extends StatelessWidget {
           Widget homeWidget;
           if (state is AuthUnauthenticatedState) {
             homeWidget = BlocProvider<LoginBloc>(
-                create: (_) => LoginBloc(authService), child: LoginPage());
+                create: (_) => LoginBloc(), child: LoginPage());
           } else if (state is AuthAuthenticatedState) {
             homeWidget = Provider<AuthService>(
                 create: (context) => authService,
@@ -40,15 +40,11 @@ class App extends StatelessWidget {
                   child: BlocProvider<AppDrawerBloc>(
                     create: (_) => AppDrawerBloc(authService, userService),
                     child: BlocProvider<ProgramsBloc>(
-                        create: (_) => ProgramsBloc(
-                            authService, userService, programsService),
-                        child: BlocProvider<ProgramDetailsBloc>(
-                            create: (_) => ProgramDetailsBloc(
-                                authService, userService, programsService),
-                            child: BlocProvider<CropsBloc>(
-                                create: (_) => CropsBloc(
-                                    authService, cropsService, userService),
-                                child: ProgramsPage()))),
+                        create: (_) => ProgramsBloc(),
+                        child: BlocProvider<CropsBloc>(
+                            create: (_) => CropsBloc(
+                                authService, cropsService, userService),
+                            child: ProgramsPage())),
                   ),
                 ));
           } else if (state is AuthUninitializedState) {

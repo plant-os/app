@@ -11,12 +11,11 @@ part 'crops_event.dart';
 part 'crops_state.dart';
 
 class CropsBloc extends Bloc<CropsEvent, CropsState> {
-  final AuthService authService;
-  final UserService userService;
-  final CropsService cropsService;
+  AuthService authService = AuthService();
+  UserService userService = UserService();
+  CropsService cropsService = CropsService();
 
-  CropsBloc(this.authService, this.cropsService, this.userService)
-      : super(CropStateLoading()) {
+  CropsBloc() : super(CropStateLoading()) {
     initialise();
   }
 

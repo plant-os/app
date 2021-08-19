@@ -8,15 +8,20 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthService authService;
+  AuthService authService = AuthService();
 
-  LoginBloc(this.authService) : super(LoginState.initial());
+  String email = "";
+  String password = "";
+
+  LoginBloc() : super(LoginState.initial());
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginTextFieldChangedEvent)
+    if (event is LoginTextFieldChangedEvent) {
       yield* _mapTextFieldChangedToState(event);
-    else if (event is LoginPressedEvent) yield* _mapLoginPressedToState();
+    } else if (event is LoginPressedEvent) {
+      yield* _mapLoginPressedToState();
+    }
   }
 
   Stream<LoginState> _mapTextFieldChangedToState(
@@ -34,15 +39,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> _mapLoginPressedToState() async* {
     yield state.update(isLoading: true);
     try {
-      await authService.login(state.email, state.password);
+      await authService.login(email, password);
       yield state.update(isLoading: false, isSuccess: true);
     } on FirebaseAuthException catch (e) {
       print(e);
       yield state.update(isLoading: false, error: e.message);
-      yield LoginState.initial(
-          email: state.email,
-          password: state.password,
-          isValid: _isFormValidated(state.email, state.password));
+      yield LoginState.initial(isValid: _isFormValidated(email, password));
     }
   }
 }

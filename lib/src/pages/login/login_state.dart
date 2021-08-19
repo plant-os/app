@@ -5,26 +5,20 @@ class LoginState {
   final bool isLoading;
   final bool isSuccess;
   final String error;
-  final String email;
-  final String password;
 
   LoginState({
     @required required this.isValid,
     @required required this.isLoading,
     @required required this.isSuccess,
     @required required this.error,
-    @required required this.email,
-    @required required this.password,
   });
 
-  factory LoginState.initial({String? email, String? password, bool? isValid}) {
+  factory LoginState.initial({bool? isValid}) {
     return LoginState(
         isValid: isValid ?? false,
         isLoading: false,
         isSuccess: false,
-        error: '',
-        email: email ?? '',
-        password: password ?? '');
+        error: '');
   }
 
   LoginState update(
@@ -39,14 +33,12 @@ class LoginState {
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       error: error ?? this.error,
-      email: email ?? this.email,
-      password: password ?? this.password,
     );
   }
 
   @override
   String toString() {
-    return "LoginState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}, email: $email, password: $password";
+    return "LoginState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}";
   }
 
   // ignore: hash_and_equals
@@ -55,7 +47,5 @@ class LoginState {
       o.isValid == isValid &&
       o.isSuccess == isSuccess &&
       o.isLoading == isLoading &&
-      o.error == error &&
-      o.email == email &&
-      o.password == password;
+      o.error == error;
 }

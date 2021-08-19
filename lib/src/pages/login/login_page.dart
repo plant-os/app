@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/pages/reset_password/reset_password.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
-import 'package:plantos/src/widgets/form_textfield.dart';
-import 'package:plantos/src/widgets/form_button.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/pages/login/login_bloc.dart';
 import 'package:plantos/src/pages/auth/auth.dart';
@@ -26,12 +24,9 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void _forgotPasswordPressed() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => BlocProvider<ResetPasswordBloc>(
-                create: (_) => ResetPasswordBloc(_loginBloc.authService),
-                child: ResetPasswordPage())));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => BlocProvider<ResetPasswordBloc>(
+            create: (_) => ResetPasswordBloc(), child: ResetPasswordPage())));
   }
 
   @override
@@ -48,51 +43,6 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Widget buildContent(BuildContext context, LoginState state) {
-    const titleStyle = TextStyle(
-      color: Color(0xff28183d),
-      fontSize: 25,
-      fontFamily: "Work Sans",
-      fontWeight: FontWeight.w600,
-    );
-
-    const textStyle = TextStyle(
-        color: Color(0xff28183d),
-        fontSize: 13,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.normal);
-
-    const textLinkStyle = TextStyle(
-        color: Color(0xff6e6e6e),
-        fontSize: 14,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.w500);
-
-    const textLinkHighlightStyle = TextStyle(
-        color: Color(0xff1FAD84),
-        fontSize: 14,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.w500);
-
-    const labelStyle = TextStyle(
-        color: Color(0xff28183d),
-        fontSize: 14,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.w500);
-
-    const btnLabelStyle = TextStyle(
-        color: Color(0xffffffff),
-        fontSize: 14,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.w500);
-
-    var textFieldDecoration = InputDecoration(
-      isCollapsed: true,
-      contentPadding: EdgeInsets.all(10),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(6)),
-      hintText: '',
-      isDense: true,
-    );
-
     return Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -154,9 +104,7 @@ class LoginPageState extends State<LoginPage> {
                       : TextButton.styleFrom(
                           backgroundColor: Color(0xFFC4C4C4)),
                   onPressed: state.isValid
-                      ? () {
-                          _loginBloc.add(LoginPressedEvent());
-                        }
+                      ? () => _loginBloc.add(LoginPressedEvent())
                       : null,
                   child: Center(child: Text("Sign in", style: btnLabelStyle)))),
           SizedBox(height: 20),
