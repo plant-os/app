@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantos/src/pages/crops/appdrawer_bloc.dart';
+
+import 'appdrawer_bloc.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -11,12 +12,6 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   late AppDrawerBloc _bloc;
-
-  @override
-  void dispose() {
-    super.dispose();
-    _bloc.dispose();
-  }
 
   @override
   void initState() {

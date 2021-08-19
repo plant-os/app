@@ -223,11 +223,9 @@ class CropDetailsPageState extends State<CropDetailsPage> {
               color: blackColor,
             ),
             onPressed: () async {
-              await Navigator.push(
-                context,
+              await Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => EditCropPage(bloc.cropsService,
-                      bloc.authService, bloc.userService, state.crop),
+                  builder: (_) => EditCropPage(state.crop),
                 ),
               );
             }),

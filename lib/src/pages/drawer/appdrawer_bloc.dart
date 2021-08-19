@@ -8,11 +8,10 @@ part 'appdrawer_event.dart';
 part 'appdrawer_state.dart';
 
 class AppDrawerBloc extends Bloc<AppDrawerEvent, AppDrawerState> {
-  final AuthService authService;
-  final UserService userService;
+  AuthService authService = AuthService();
+  UserService userService = UserService();
 
-  AppDrawerBloc(this.authService, this.userService)
-      : super(LoadingAppDrawerState()) {
+  AppDrawerBloc() : super(LoadingAppDrawerState()) {
     initialise();
   }
 

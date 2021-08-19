@@ -6,10 +6,6 @@ import 'package:plantos/src/models/device.dart';
 import 'package:plantos/src/pages/crop_details/crop_details_page.dart';
 import 'package:plantos/src/pages/edit_crop/edit_crop_bloc.dart';
 import 'package:plantos/src/pages/edit_schedule/edit_schedule_page.dart';
-import 'package:plantos/src/services/auth_service.dart';
-import 'package:plantos/src/services/crops_service.dart';
-import 'package:plantos/src/services/device_service.dart';
-import 'package:plantos/src/services/user_service.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
@@ -20,14 +16,9 @@ import 'package:plantos/src/widgets/form_textfield.dart';
 /// EditCropPage is a widget that provides the functionality for editing crop
 /// information.
 class EditCropPage extends StatefulWidget {
-  final CropsService cropsService;
-  final AuthService authService;
-  final UserService userService;
-
   final Crop? initialCrop;
 
-  EditCropPage(
-      this.cropsService, this.authService, this.userService, this.initialCrop);
+  EditCropPage(this.initialCrop);
 
   @override
   EditCropPageState createState() => EditCropPageState();
@@ -43,8 +34,7 @@ class EditCropPageState extends State<EditCropPage> {
   @override
   void initState() {
     super.initState();
-    bloc = new EditCropBloc(widget.cropsService, widget.authService,
-        widget.userService, widget.initialCrop, new DeviceService());
+    bloc = new EditCropBloc(widget.initialCrop);
 
     if (widget.initialCrop != null) {
       _nameController.text = widget.initialCrop!.name!;

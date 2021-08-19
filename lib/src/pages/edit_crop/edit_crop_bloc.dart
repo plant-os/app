@@ -15,15 +15,14 @@ part 'edit_crop_event.dart';
 part 'edit_crop_state.dart';
 
 class EditCropBloc extends Bloc<EditCropEvent, EditCropState> {
-  final CropsService cropsService;
-  final AuthService authService;
-  final UserService userService;
-  final DeviceService deviceService;
+  CropsService cropsService = CropsService();
+  AuthService authService = AuthService();
+  UserService userService = UserService();
+  DeviceService deviceService = DeviceService();
 
   final Crop? initialCrop;
 
-  EditCropBloc(this.cropsService, this.authService, this.userService,
-      this.initialCrop, this.deviceService)
+  EditCropBloc(this.initialCrop)
       : super(EditCropState.initial(
             isValid: initialCrop != null,
             crop: initialCrop ?? Crop(cropState: CropState.of("Vegetative")))) {

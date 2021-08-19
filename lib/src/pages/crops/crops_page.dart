@@ -186,11 +186,7 @@ class _CropsPageState extends State<CropsPage>
                           onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => EditCropPage(
-                                    _cropsBloc.cropsService,
-                                    _cropsBloc.authService,
-                                    _cropsBloc.userService,
-                                    null)),
+                                builder: (_) => EditCropPage(null)),
                           ),
                         ),
                       ),
