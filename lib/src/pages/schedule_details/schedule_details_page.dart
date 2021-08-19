@@ -61,14 +61,25 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
     }
   }
 
-  void _blocListener(context, state) {
+  void _deleteTaskPressed(int index) {
+    bloc.add(ScheduleDetailsDeleteTaskEvent(index));
+  }
+
+  void _blocListener(BuildContext context, ScheduleDetailsState state) {
     if (state.isLoading)
       _loading = Loading(context);
     else if (state.isSuccess) {
       _loading?.close();
+      Navigator.of(context).pop();
     } else if (state.error.isNotEmpty) {
       _loading?.close();
       SnackbarWithColor(context: context, text: state.error, color: Colors.red);
+    } else if (state.isFetched) {
+      _nameController.text = state.initial!.name;
+      _startDayController.text = "${state.initial!.startDay}";
+
+      // Trigger a text field changed event so the bloc has the same values as the text fields we've just filled.
+      _onTextFieldChanged();
     }
   }
 
@@ -76,6 +87,7 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
   void initState() {
     super.initState();
     bloc = BlocProvider.of<ScheduleDetailsBloc>(context);
+    bloc.add(ScheduleDetailsLoadedEvent());
   }
 
   @override
@@ -94,11 +106,11 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
       SizedBox(
           height: 50,
           child: FormButton(
-              text: 'Edit',
-              onPressed: () {
-                _editTaskPressed(index, t);
-              })),
-      SizedBox(height: 50, child: FormButton(text: 'Delete', onPressed: () {})),
+              text: 'Edit', onPressed: () => _editTaskPressed(index, t))),
+      SizedBox(
+          height: 50,
+          child: FormButton(
+              text: 'Delete', onPressed: () => _deleteTaskPressed(index))),
     ]);
   }
 
@@ -136,6 +148,11 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
                               .mapIndexed((i, t) => _buildTask(t, i))
                               .toList()),
                       FormButton(text: 'Add Task', onPressed: _addTaskPressed),
+                      FormButton(
+                          text: 'Cancel',
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
                       FormButton(
                           text: 'Save',
                           onPressed: state.isValid ? _savePressed : null)

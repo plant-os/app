@@ -21,11 +21,8 @@ class ProgramsBloc extends Bloc<ProgramsEvent, ProgramsState> {
       initialise();
     } else if (event is ProgramsLoaded) {
       yield* _mapLoadProgramsToState(event);
-    } else if (event is DeleteProgramEvent) {
+    } else if (event is ProgramsDeleteEvent) {
       programsService.delete(event.programId);
-    } else if (event is EditProgramEvent) {
-    } else if (event is NewProgramEvent) {
-      // TODO: Show new program modal.
     }
   }
 

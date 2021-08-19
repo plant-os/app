@@ -10,16 +10,8 @@ class ProgramsLoaded extends ProgramsEvent {
   ProgramsLoaded(this.programs);
 }
 
-class DeleteProgramEvent extends ProgramsEvent {
+class ProgramsDeleteEvent extends ProgramsEvent {
   final String programId;
 
-  DeleteProgramEvent(this.programId);
+  ProgramsDeleteEvent(this.programId);
 }
-
-class EditProgramEvent extends ProgramsEvent {
-  final String programId;
-
-  EditProgramEvent(this.programId);
-}
-
-class NewProgramEvent extends ProgramsEvent {}

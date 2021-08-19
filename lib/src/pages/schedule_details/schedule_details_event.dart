@@ -2,6 +2,8 @@ part of 'schedule_details_bloc.dart';
 
 abstract class ScheduleDetailsEvent {}
 
+class ScheduleDetailsLoadedEvent extends ScheduleDetailsEvent {}
+
 class ScheduleDetailsTextFieldChangedEvent extends ScheduleDetailsEvent {
   final String name;
   final String startDay;
@@ -23,4 +25,10 @@ class ScheduleDetailsEditTaskEvent extends ScheduleDetailsEvent {
   final int index;
 
   ScheduleDetailsEditTaskEvent(this.task, this.index);
+}
+
+class ScheduleDetailsDeleteTaskEvent extends ScheduleDetailsEvent {
+  final int index;
+
+  ScheduleDetailsDeleteTaskEvent(this.index);
 }

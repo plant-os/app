@@ -176,16 +176,15 @@ class Schedule {
         startDay ?? this.startDay, tasks ?? this.tasks);
   }
 
+  static List<Task> parseTasks(dynamic tasks) {
+    return tasks.map<Task>((json) => Task.fromJson(json)).toList();
+  }
+
   Schedule.fromJson(String? id, Map<String, dynamic> json)
       : id = id,
         name = json['Name'] ?? "",
         startDay = json['StartDay'] ?? 0,
-        tasks = json['Tasks'] == null
-            ? []
-            : json['Tasks']
-                .map<Task>(
-                    (json) => Task.fromJson(json.cast<Map<String, dynamic>>()))
-                .toList();
+        tasks = json['Tasks'] == null ? [] : parseTasks(json['Tasks']);
 
   Map<String, dynamic> toJson() => {
         'Name': name,

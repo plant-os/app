@@ -51,9 +51,7 @@ class _ProgramsPageState extends State<ProgramsPage> {
       TextButton(
           child: Text("edit"),
           onPressed: () {
-            bloc.add(EditProgramEvent(p.id));
-
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
+            Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => BlocProvider<ProgramDetailsBloc>(
                     create: (_) => ProgramDetailsBloc(p.id, p),
                     child: ProgramDetails())));
@@ -61,7 +59,7 @@ class _ProgramsPageState extends State<ProgramsPage> {
       TextButton(
           child: Text("delete"),
           onPressed: () {
-            bloc.add(DeleteProgramEvent(p.id));
+            bloc.add(ProgramsDeleteEvent(p.id));
           }),
     ]);
   }
@@ -87,8 +85,6 @@ class _ProgramsPageState extends State<ProgramsPage> {
         ),
         TextButton(
             onPressed: () async {
-              bloc.add(NewProgramEvent());
-
               var result = await _showMyDialog();
             },
             child: Text("+ New Program"))

@@ -45,6 +45,15 @@ class ProgramsService {
         .set(s.toJson());
   }
 
+  Future<void> deleteSchedule(String programId, String scheduleId) {
+    return firestore
+        .collection("programs")
+        .doc(programId)
+        .collection("schedules")
+        .doc(scheduleId)
+        .delete();
+  }
+
   Future<void> delete(String programId) {
     return firestore.collection("programs").doc(programId).delete();
   }

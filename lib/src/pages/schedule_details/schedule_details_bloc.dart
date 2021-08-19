@@ -15,30 +15,40 @@ class ScheduleDetailsBloc
 
   final String programId;
   final String? scheduleId;
+  final Schedule? initial;
 
   String name = "";
   int startDay = 0;
   List<Task> tasks = [];
 
-  ScheduleDetailsBloc(this.programId, this.scheduleId)
+  ScheduleDetailsBloc(this.programId, this.scheduleId, this.initial)
       : super(ScheduleDetailsState.initial());
 
   @override
   Stream<ScheduleDetailsState> mapEventToState(
       ScheduleDetailsEvent event) async* {
-    if (event is ScheduleDetailsTextFieldChangedEvent) {
+    if (event is ScheduleDetailsLoadedEvent) {
+      if (initial != null) {
+        tasks = []..addAll(initial!.tasks);
+      }
+      yield state.update(
+          isFetched: initial != null,
+          initial: initial,
+          tasks: List.unmodifiable(tasks));
+    } else if (event is ScheduleDetailsTextFieldChangedEvent) {
       yield* _mapTextFieldChangedToState(event);
     } else if (event is ScheduleDetailsPressedEvent) {
       yield* _mapScheduleDetailsPressedToState();
     } else if (event is ScheduleDetailsAddTaskEvent) {
       tasks.add(event.task);
-      yield state.update(tasks: tasks);
+      yield state.update(tasks: List.unmodifiable(tasks));
     } else if (event is ScheduleDetailsEditTaskEvent) {
-      print("updating task at index ${event.index}");
-      List<Task> updated = []..addAll(tasks);
-      updated.removeAt(event.index);
-      updated.insert(event.index, event.task);
-      yield state.update(tasks: updated);
+      tasks.removeAt(event.index);
+      tasks.insert(event.index, event.task);
+      yield state.update(tasks: List.unmodifiable(tasks));
+    } else if (event is ScheduleDetailsDeleteTaskEvent) {
+      tasks.removeAt(event.index);
+      yield state.update(tasks: List.unmodifiable(tasks));
     }
   }
 
@@ -49,7 +59,7 @@ class ScheduleDetailsBloc
     if (parsedDay != null) {
       startDay = parsedDay;
     }
-    yield state.update(isValid: name.isNotEmpty);
+    yield state.update(isValid: name.isNotEmpty, isFetched: false);
   }
 
   Stream<ScheduleDetailsState> _mapScheduleDetailsPressedToState() async* {

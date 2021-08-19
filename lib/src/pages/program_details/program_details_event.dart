@@ -2,24 +2,17 @@ part of 'program_details_bloc.dart';
 
 abstract class ProgramDetailsEvent {}
 
-class LoadProgramDetailsEvent extends ProgramDetailsEvent {}
+class ProgramDetailsLoadEvent extends ProgramDetailsEvent {}
 
-class SchedulesLoaded extends ProgramDetailsEvent {
+// SchedulesLoaded is triggered whenever the schedules change.
+class ProgramDetailsSchedulesLoadedEvent extends ProgramDetailsEvent {
   final List<Schedule> schedules;
 
-  SchedulesLoaded(this.schedules);
+  ProgramDetailsSchedulesLoadedEvent(this.schedules);
 }
 
-class NewScheduleEvent extends ProgramDetailsEvent {}
+class ProgramDetailsDeleteScheduleEvent extends ProgramDetailsEvent {
+  final String scheduleId;
 
-class DeleteScheduleEvent extends ProgramDetailsEvent {
-  final String id;
-
-  DeleteScheduleEvent(this.id);
-}
-
-class EditScheduleEvent extends ProgramDetailsEvent {
-  final String id;
-
-  EditScheduleEvent(this.id);
+  ProgramDetailsDeleteScheduleEvent(this.scheduleId);
 }

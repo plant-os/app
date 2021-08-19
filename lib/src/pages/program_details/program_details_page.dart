@@ -24,7 +24,7 @@ class _ProgramDetailsState extends State<ProgramDetails> {
     bloc = BlocProvider.of<ProgramDetailsBloc>(context);
 
     // Fetch the schedules.
-    bloc.add(LoadProgramDetailsEvent());
+    bloc.add(ProgramDetailsLoadEvent());
   }
 
   Future<void> _showMyDialog(Program p) async {
@@ -32,7 +32,7 @@ class _ProgramDetailsState extends State<ProgramDetails> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (_) => BlocProvider<ScheduleDetailsBloc>(
-          create: (_) => ScheduleDetailsBloc(p.id, null),
+          create: (_) => ScheduleDetailsBloc(p.id, null, null),
           child: ScheduleDetailsPage()),
     );
   }
@@ -61,9 +61,13 @@ class _ProgramDetailsState extends State<ProgramDetails> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (_) => BlocProvider<ScheduleDetailsBloc>(
-          create: (_) => ScheduleDetailsBloc(p.id, s.id),
+          create: (_) => ScheduleDetailsBloc(p.id, s.id, s),
           child: ScheduleDetailsPage()),
     );
+  }
+
+  void _handleDeleteSchedule(Program p, Schedule s) {
+    bloc.add(ProgramDetailsDeleteScheduleEvent(s.id!));
   }
 
   Widget buildSchedule(Program p, Schedule s) {
@@ -71,12 +75,14 @@ class _ProgramDetailsState extends State<ProgramDetails> {
       Text(s.name),
       TextButton(
           child: Text("edit"), onPressed: () => _handleEditSchedule(p, s)),
-      TextButton(child: Text("delete"), onPressed: () {}),
+      TextButton(
+          child: Text("delete"), onPressed: () => _handleDeleteSchedule(p, s)),
     ]);
   }
 
   Widget schedulesList(ProgramDetailsStateDone state, BuildContext context) {
     return Scaffold(
+      appBar: AppBar(leading: BackButton()),
       body: SafeArea(
         child: Column(children: [
           SingleChildScrollView(
@@ -88,8 +94,6 @@ class _ProgramDetailsState extends State<ProgramDetails> {
           ),
           TextButton(
               onPressed: () async {
-                bloc.add(NewScheduleEvent());
-
                 var result = await _showMyDialog(state.program);
               },
               child: Text("+ New Schedule"))

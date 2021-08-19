@@ -25,19 +25,21 @@ class ProgramDetailsBloc
   Stream<ProgramDetailsState> mapEventToState(
       ProgramDetailsEvent event) async* {
     print("handling event $event");
-    if (event is LoadProgramDetailsEvent) {
+    if (event is ProgramDetailsLoadEvent) {
       programsService.listSchedules(programId).listen((event) {
-        add(SchedulesLoaded(event));
+        add(ProgramDetailsSchedulesLoadedEvent(event));
       });
-    } else if (event is SchedulesLoaded) {
+    } else if (event is ProgramDetailsSchedulesLoadedEvent) {
       yield* _mapSchedulesLoadedToState(event);
+    } else if (event is ProgramDetailsDeleteScheduleEvent) {
+      programsService.deleteSchedule(programId, event.scheduleId);
     }
   }
 
   void dispose() {}
 
   Stream<ProgramDetailsState> _mapSchedulesLoadedToState(
-      SchedulesLoaded event) async* {
+      ProgramDetailsSchedulesLoadedEvent event) async* {
     yield ProgramDetailsStateDone(initial, event.schedules);
   }
 }
