@@ -23,15 +23,18 @@ class App extends StatelessWidget {
         child: BlocBuilder<AuthBloc, AuthState>(builder: (_, state) {
           Widget homeWidget;
           if (state is AuthUnauthenticatedState) {
+            print("AuthUnauthenticatedState");
             homeWidget = BlocProvider<LoginBloc>(
                 create: (_) => LoginBloc(), child: LoginPage());
           } else if (state is AuthAuthenticatedState) {
+            print("AuthAuthenticatedState");
             homeWidget = BlocProvider<AppDrawerBloc>(
               create: (_) => AppDrawerBloc(),
               child: BlocProvider<ProgramsBloc>(
                   create: (_) => ProgramsBloc(), child: ProgramsPage()),
             );
           } else if (state is AuthUninitializedState) {
+            print("AuthUninitializedState");
             homeWidget = Scaffold();
           } else {
             throw new Exception("invalid auth state");

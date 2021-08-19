@@ -19,7 +19,6 @@ class FormButton extends StatelessWidget {
         margin: EdgeInsets.only(top: 14),
         child: SizedBox(
             height: 51,
-            width: double.infinity,
             child: RaisedButton(
               color: this.enabledColor != null ? enabledColor : blueColor,
               disabledColor:

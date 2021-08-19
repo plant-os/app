@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:plantos/src/models/crop.dart';
 import 'package:plantos/src/models/program.dart';
 
 class ProgramsService {
@@ -14,14 +15,45 @@ class ProgramsService {
             .toList());
   }
 
+  Stream<List<Schedule>> listSchedules(String programId) {
+    return firestore
+        .collection("programs")
+        .doc(programId)
+        .collection("schedules")
+        .snapshots()
+        .map((event) => event.docs
+            .map((doc) => Schedule.fromJson(doc.id, doc.data()))
+            .toList());
+  }
+
+  Future<void> addSchedule(String programId, Schedule s) {
+    print("adding schedule to /programs/$programId: $s");
+    return firestore
+        .collection("programs")
+        .doc(programId)
+        .collection("schedules")
+        .add(s.toJson());
+  }
+
+  Future<void> updateSchedule(String programId, String scheduleId, Schedule s) {
+    print("updating schedule /programs/$programId/schedules/$scheduleId: $s");
+    return firestore
+        .collection("programs")
+        .doc(programId)
+        .collection("schedules")
+        .doc(scheduleId)
+        .set(s.toJson());
+  }
+
   Future<void> delete(String programId) {
     return firestore.collection("programs").doc(programId).delete();
   }
 
-  Future<Program> add(String name) async {
-    var ref =
-        await firestore.collection("programs").add(Program("", name).toJson());
+  Future<Program> add(String companyId, String name) async {
+    var ref = await firestore
+        .collection("programs")
+        .add(Program("", name, companyId).toJson());
 
-    return Program(ref.id, name);
+    return Program(ref.id, name, companyId);
   }
 }

@@ -1,6 +1,6 @@
 part of 'programs_bloc.dart';
 
-class ProgramsState {}
+abstract class ProgramsState {}
 
 class ProgramsStateLoading implements ProgramsState {
   @override
@@ -9,16 +9,18 @@ class ProgramsStateLoading implements ProgramsState {
 
 class ProgramsStateError implements ProgramsState {
   final String error;
+
   ProgramsStateError(this.error);
 }
 
 class ProgramsStateDone implements ProgramsState {
   final List<Program> programs;
+
   ProgramsStateDone(this.programs);
 
   @override
   String toString() {
-    return "ProgramsState{programs: $programs}";
+    return "ProgramsStateDone{programs: $programs}";
   }
 
   // ignore: hash_and_equals

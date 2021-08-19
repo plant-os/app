@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plantos/src/models/crop.dart';
 import 'package:plantos/src/models/program.dart';
-import 'package:plantos/src/services/auth_service.dart';
-import 'package:plantos/src/services/programs_service.dart';
-import 'package:plantos/src/services/user_service.dart';
+import 'package:plantos/src/pages/schedule_details/schedule_details_bloc.dart';
+import 'package:plantos/src/pages/schedule_details/schedule_details_page.dart';
 
 import 'program_details_bloc.dart';
 
@@ -22,17 +22,28 @@ class _ProgramDetailsState extends State<ProgramDetails> {
     super.initState();
 
     bloc = BlocProvider.of<ProgramDetailsBloc>(context);
+
+    // Fetch the schedules.
     bloc.add(LoadProgramDetailsEvent());
+  }
+
+  Future<void> _showMyDialog(Program p) async {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (_) => BlocProvider<ScheduleDetailsBloc>(
+          create: (_) => ScheduleDetailsBloc(p.id, null),
+          child: ScheduleDetailsPage()),
+    );
   }
 
   Widget loadingPage() {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: SafeArea(
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
-    );
+    ));
   }
 
   Widget errorPage(ProgramDetailsStateError state) {
@@ -45,14 +56,21 @@ class _ProgramDetailsState extends State<ProgramDetails> {
     );
   }
 
-  Widget buildProgram(Program p) {
+  void _handleEditSchedule(Program p, Schedule s) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (_) => BlocProvider<ScheduleDetailsBloc>(
+          create: (_) => ScheduleDetailsBloc(p.id, s.id),
+          child: ScheduleDetailsPage()),
+    );
+  }
+
+  Widget buildSchedule(Program p, Schedule s) {
     return Row(children: [
-      Text(p.name),
+      Text(s.name),
       TextButton(
-          child: Text("edit"),
-          onPressed: () {
-            // TODO: Modal that edits the schedules.
-          }),
+          child: Text("edit"), onPressed: () => _handleEditSchedule(p, s)),
       TextButton(child: Text("delete"), onPressed: () {}),
     ]);
   }
@@ -60,11 +78,22 @@ class _ProgramDetailsState extends State<ProgramDetails> {
   Widget schedulesList(ProgramDetailsStateDone state, BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: state.programs.map((e) => buildProgram(e)).toList(),
+        child: Column(children: [
+          SingleChildScrollView(
+            child: Column(
+              children: state.schedules
+                  .map((e) => buildSchedule(state.program, e))
+                  .toList(),
+            ),
           ),
-        ),
+          TextButton(
+              onPressed: () async {
+                bloc.add(NewScheduleEvent());
+
+                var result = await _showMyDialog(state.program);
+              },
+              child: Text("+ New Schedule"))
+        ]),
       ),
     );
   }
@@ -74,10 +103,14 @@ class _ProgramDetailsState extends State<ProgramDetails> {
     return BlocBuilder<ProgramDetailsBloc, ProgramDetailsState>(
       builder: (context, state) {
         if (state is ProgramDetailsStateDone) {
+          print("ProgramDetailsStateDone");
+          print(state);
           return schedulesList(state, context);
         } else if (state is ProgramDetailsStateLoading) {
+          print("ProgramDetailsStateLoading");
           return loadingPage();
         } else if (state is ProgramDetailsStateError) {
+          print("ProgramDetailsStateError");
           return errorPage(state);
         }
         throw "Unhandled state";

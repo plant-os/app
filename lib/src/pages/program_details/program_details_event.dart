@@ -4,11 +4,13 @@ abstract class ProgramDetailsEvent {}
 
 class LoadProgramDetailsEvent extends ProgramDetailsEvent {}
 
-class ProgramDetailsLoaded extends ProgramDetailsEvent {
-  final List<Program> programs;
+class SchedulesLoaded extends ProgramDetailsEvent {
+  final List<Schedule> schedules;
 
-  ProgramDetailsLoaded(this.programs);
+  SchedulesLoaded(this.schedules);
 }
+
+class NewScheduleEvent extends ProgramDetailsEvent {}
 
 class DeleteScheduleEvent extends ProgramDetailsEvent {
   final String id;

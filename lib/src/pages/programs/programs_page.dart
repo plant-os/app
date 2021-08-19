@@ -22,6 +22,7 @@ class _ProgramsPageState extends State<ProgramsPage> {
   void initState() {
     super.initState();
     bloc = BlocProvider.of<ProgramsBloc>(context);
+    bloc.add(ProgramsInitialFetchEvent());
   }
 
   Widget loadingPage() {
@@ -99,6 +100,7 @@ class _ProgramsPageState extends State<ProgramsPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProgramsBloc, ProgramsState>(
       builder: (context, state) {
+        print("state is $state");
         if (state is ProgramsStateDone) {
           return programsList(state, context);
         } else if (state is ProgramsStateLoading) {

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:plantos/src/models/camera.dart';
 import 'package:plantos/src/models/company.dart';
 import 'package:plantos/src/models/recipe.dart';
+import 'package:plantos/src/models/task.dart';
 
 class Crop {
   final String? name;
@@ -71,10 +72,7 @@ class Crop {
         cropState = json['CropState'] != null
             ? CropState.fromJson(json['CropState'])
             : null,
-        schedules = json['Schedules'] != null
-            ? List<Schedule>.from(
-                json["Schedules"].map((x) => Schedule.fromJson(x)))
-            : null,
+        schedules = json['Schedules'] != null ? null : null,
         sensorDeviceId = json['SensorDeviceId'];
 
   Map<String, dynamic> toJson() => {
@@ -165,39 +163,47 @@ class CropState {
 }
 
 class Schedule {
-  Timestamp? time;
-  Repeat? repeat;
-  CropAction? action;
+  final String? id;
+  final String name;
+  final int startDay;
+  final List<Task> tasks;
 
-  Schedule(this.time, this.action, this.repeat);
+  Schedule(this.id, this.name, this.startDay, this.tasks);
 
-  Schedule copyWith({Timestamp? time, CropAction? action, Repeat? repeat}) {
-    return new Schedule(
-        time ?? this.time, action ?? this.action, repeat ?? this.repeat);
+  Schedule copyWith(
+      {String? id, String? name, int? startDay, List<Task>? tasks}) {
+    return new Schedule(id ?? this.id, name ?? this.name,
+        startDay ?? this.startDay, tasks ?? this.tasks);
   }
 
-  Schedule.fromJson(Map<String, dynamic> json)
-      : time = json['Time'] ?? null,
-        repeat =
-            json['Repeat'] != null ? Repeat.fromJson(json['Repeat']) : null,
-        action =
-            json['Action'] != null ? CropAction.fromJson(json['Action']) : null;
+  Schedule.fromJson(String? id, Map<String, dynamic> json)
+      : id = id,
+        name = json['Name'] ?? "",
+        startDay = json['StartDay'] ?? 0,
+        tasks = json['Tasks'] == null
+            ? []
+            : json['Tasks']
+                .map<Task>(
+                    (json) => Task.fromJson(json.cast<Map<String, dynamic>>()))
+                .toList();
 
   Map<String, dynamic> toJson() => {
-        'Time': time,
-        'Repeat': repeat!.toJson(),
-        'Action': action!.toJson(),
+        'Name': name,
+        'StartDay': startDay,
+        'Tasks': tasks.map((e) => e.toJson()).toList(),
       };
 
   @override
-  String toString() => "Schedule{time=$time, action=$action, repeat=$repeat}";
+  String toString() =>
+      "Schedule{id=$id, name=$name, startDay=$startDay, tasks=$tasks}";
 
   @override
   bool operator ==(dynamic o) =>
       o is Schedule &&
-      time == o.time &&
-      repeat == o.repeat &&
-      action == o.action;
+      id == o.id &&
+      name == o.name &&
+      startDay == o.startDay &&
+      tasks == o.tasks;
 }
 
 class Repeat {

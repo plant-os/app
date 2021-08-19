@@ -1,21 +1,39 @@
 class Task {
-  final String id;
-  final String name;
+  final int hours;
+  final int minutes;
+  final double ec;
+  final int duration;
+  final String action;
 
-  Task(this.id, this.name);
+  Task(this.hours, this.minutes, this.ec, this.duration, this.action);
 
-  Task.fromJson(String id, Map<String, dynamic> json)
-      : id = id,
-        name = json['Name'] ?? null;
+  Task.fromJson(Map<String, dynamic> json)
+      : hours = json['Hours'] as int,
+        minutes = json['Minutes'] as int,
+        ec = json['Ec'] as double,
+        duration = json['Duration'] as int,
+        action = json['Action'] as String;
 
-  Map<String, dynamic> toJson() => {'Name': name};
+  Map<String, dynamic> toJson() => {
+        'Hours': hours,
+        'Minutes': minutes,
+        'Ec': ec,
+        'Duration': duration,
+        'Action': action
+      };
 
   @override
   String toString() {
-    return "Task ${toJson()}";
+    return "Task{${toJson()}}";
   }
 
   // ignore: hash_and_equals
   @override
-  bool operator ==(dynamic o) => o is Task && o.id == id && o.name == name;
+  bool operator ==(dynamic o) =>
+      o is Task &&
+      o.hours == hours &&
+      o.minutes == minutes &&
+      o.ec == ec &&
+      o.duration == duration &&
+      o.action == action;
 }
