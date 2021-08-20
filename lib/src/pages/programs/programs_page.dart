@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/program.dart';
+import 'package:plantos/src/pages/drawer/appdrawer.dart';
 import 'package:plantos/src/pages/program_details/program_details_bloc.dart';
 import 'package:plantos/src/pages/program_details/program_details_page.dart';
-import 'package:plantos/src/services/programs_service.dart';
+import 'package:plantos/src/themes/colors.dart';
+import 'package:plantos/src/widgets/hamburger.dart';
 
 import 'programs_bloc.dart';
 import 'widgets/create_program_dialog.dart';
@@ -26,21 +28,17 @@ class _ProgramsPageState extends State<ProgramsPage> {
   }
 
   Widget loadingPage() {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+    return SafeArea(
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
 
   Widget errorPage(ProgramsStateError state) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Text(state.error),
-        ),
+    return SafeArea(
+      child: Center(
+        child: Text(state.error),
       ),
     );
   }
@@ -75,9 +73,11 @@ class _ProgramsPageState extends State<ProgramsPage> {
   }
 
   Widget programsList(ProgramsStateDone state, BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Column(children: [
+    return SafeArea(
+        child: Padding(
+      padding: standardPagePadding,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text("Programs", style: titleStyle),
         SingleChildScrollView(
           child: Column(
             children: state.programs.map((e) => buildProgram(e)).toList(),
@@ -88,24 +88,32 @@ class _ProgramsPageState extends State<ProgramsPage> {
               var result = await _showMyDialog();
             },
             child: Text("+ New Program"))
-      ])),
-    );
+      ]),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProgramsBloc, ProgramsState>(
-      builder: (context, state) {
-        print("state is $state");
-        if (state is ProgramsStateDone) {
-          return programsList(state, context);
-        } else if (state is ProgramsStateLoading) {
-          return loadingPage();
-        } else if (state is ProgramsStateError) {
-          return errorPage(state);
-        }
-        throw "Unhandled state";
-      },
+    return Scaffold(
+      appBar: AppBar(
+        leading:
+            Padding(padding: EdgeInsets.only(left: 12), child: Hamburger()),
+        title: Image.asset("assets/logo/withtext.png",
+            width: 115.0, height: 27.14),
+      ),
+      drawer: AppDrawer(),
+      body: BlocBuilder<ProgramsBloc, ProgramsState>(
+        builder: (context, state) {
+          if (state is ProgramsStateDone) {
+            return programsList(state, context);
+          } else if (state is ProgramsStateLoading) {
+            return loadingPage();
+          } else if (state is ProgramsStateError) {
+            return errorPage(state);
+          }
+          throw "Unhandled state";
+        },
+      ),
     );
   }
 }

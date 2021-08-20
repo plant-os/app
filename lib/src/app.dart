@@ -42,7 +42,10 @@ class App extends StatelessWidget {
 
           var theme = ThemeData(
             fontFamily: "Work Sans",
-            appBarTheme: AppBarTheme().copyWith(brightness: Brightness.light),
+            appBarTheme: AppBarTheme().copyWith(
+                brightness: Brightness.light,
+                backgroundColor: const Color(0xFFF9F9F9),
+                elevation: 0),
             scaffoldBackgroundColor: const Color(0xFFF9F9F9),
           );
 

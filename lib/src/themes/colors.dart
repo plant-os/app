@@ -52,3 +52,5 @@ var textFieldDecoration = InputDecoration(
   hintText: '',
   isDense: true,
 );
+
+const standardPagePadding = EdgeInsets.only(left: 20, right: 20, top: 10);
