@@ -20,13 +20,18 @@ class LoginPageState extends State<LoginPage> {
 
   void _onTextFieldChanged() {
     _loginBloc.add(LoginTextFieldChangedEvent(
-        email: _emailController.text, password: _passwordController.text));
+      email: _emailController.text,
+      password: _passwordController.text,
+    ));
   }
 
   void _forgotPasswordPressed() {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => BlocProvider<ResetPasswordBloc>(
-            create: (_) => ResetPasswordBloc(), child: ResetPasswordPage())));
+      builder: (_) => BlocProvider<ResetPasswordBloc>(
+        create: (_) => ResetPasswordBloc(),
+        child: ResetPasswordPage(),
+      ),
+    ));
   }
 
   @override
@@ -110,17 +115,18 @@ class LoginPageState extends State<LoginPage> {
           SizedBox(height: 20),
           Center(
             child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => _forgotPasswordPressed(),
-                child: RichText(
-                  text: TextSpan(
-                    children: const <TextSpan>[
-                      TextSpan(
-                          text: 'Forgot your password? ', style: textLinkStyle),
-                      TextSpan(text: 'Reset it', style: textLinkHighlightStyle),
-                    ],
-                  ),
-                )),
+              behavior: HitTestBehavior.opaque,
+              onTap: () => _forgotPasswordPressed(),
+              child: RichText(
+                text: TextSpan(
+                  children: const <TextSpan>[
+                    TextSpan(
+                        text: 'Forgot your password? ', style: textLinkStyle),
+                    TextSpan(text: 'Reset it', style: textLinkHighlightStyle),
+                  ],
+                ),
+              ),
+            ),
           ),
         ]);
   }
@@ -139,7 +145,10 @@ class LoginPageState extends State<LoginPage> {
             } else if (state.error.isNotEmpty) {
               _loading?.close();
               SnackbarWithColor(
-                  context: context, text: state.error, color: Colors.red);
+                context: context,
+                text: state.error,
+                color: Colors.red,
+              );
             }
           },
           child: BlocBuilder<LoginBloc, LoginState>(

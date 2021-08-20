@@ -7,8 +7,11 @@ import 'package:plantos/src/pages/schedule_details/schedule_details_page.dart';
 
 import 'program_details_bloc.dart';
 
+/// TODO: Documentation.
 class ProgramDetails extends StatefulWidget {
-  const ProgramDetails({Key? key}) : super(key: key);
+  const ProgramDetails({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _ProgramDetailsState createState() => _ProgramDetailsState();
@@ -32,18 +35,20 @@ class _ProgramDetailsState extends State<ProgramDetails> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (_) => BlocProvider<ScheduleDetailsBloc>(
-          create: (_) => ScheduleDetailsBloc(p.id, null, null),
-          child: ScheduleDetailsPage()),
+        create: (_) => ScheduleDetailsBloc(p.id, null, null),
+        child: ScheduleDetailsPage(),
+      ),
     );
   }
 
   Widget loadingPage() {
     return Scaffold(
-        body: SafeArea(
-      child: Center(
-        child: CircularProgressIndicator(),
+      body: SafeArea(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
-    ));
+    );
   }
 
   Widget errorPage(ProgramDetailsStateError state) {
@@ -61,8 +66,9 @@ class _ProgramDetailsState extends State<ProgramDetails> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (_) => BlocProvider<ScheduleDetailsBloc>(
-          create: (_) => ScheduleDetailsBloc(p.id, s.id, s),
-          child: ScheduleDetailsPage()),
+        create: (_) => ScheduleDetailsBloc(p.id, s.id, s),
+        child: ScheduleDetailsPage(),
+      ),
     );
   }
 
@@ -71,13 +77,19 @@ class _ProgramDetailsState extends State<ProgramDetails> {
   }
 
   Widget buildSchedule(Program p, Schedule s) {
-    return Row(children: [
-      Text(s.name),
-      TextButton(
-          child: Text("edit"), onPressed: () => _handleEditSchedule(p, s)),
-      TextButton(
-          child: Text("delete"), onPressed: () => _handleDeleteSchedule(p, s)),
-    ]);
+    return Row(
+      children: [
+        Text(s.name),
+        TextButton(
+          child: Text("edit"),
+          onPressed: () => _handleEditSchedule(p, s),
+        ),
+        TextButton(
+          child: Text("delete"),
+          onPressed: () => _handleDeleteSchedule(p, s),
+        ),
+      ],
+    );
   }
 
   Widget schedulesList(ProgramDetailsStateDone state, BuildContext context) {
@@ -93,10 +105,11 @@ class _ProgramDetailsState extends State<ProgramDetails> {
             ),
           ),
           TextButton(
-              onPressed: () async {
-                var result = await _showMyDialog(state.program);
-              },
-              child: Text("+ New Schedule"))
+            onPressed: () async {
+              var result = await _showMyDialog(state.program);
+            },
+            child: Text("+ New Schedule"),
+          )
         ]),
       ),
     );

@@ -11,6 +11,7 @@ import 'package:collection/collection.dart';
 
 import 'schedule_details_bloc.dart';
 
+/// TODO: Documentation.
 class ScheduleDetailsPage extends StatefulWidget {
   @override
   ScheduleDetailsPageState createState() => ScheduleDetailsPageState();
@@ -26,7 +27,9 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
 
   void _onTextFieldChanged() {
     bloc.add(ScheduleDetailsTextFieldChangedEvent(
-        name: _nameController.text, startDay: _startDayController.text));
+      name: _nameController.text,
+      startDay: _startDayController.text,
+    ));
   }
 
   void _savePressed() {
@@ -38,7 +41,9 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (_) => BlocProvider<EditTaskBloc>(
-          create: (_) => EditTaskBloc(null), child: EditTaskPage()),
+        create: (_) => EditTaskBloc(null),
+        child: EditTaskPage(),
+      ),
     );
     if (result == null) {
       // User cancelled.
@@ -52,7 +57,9 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (_) => BlocProvider<EditTaskBloc>(
-          create: (_) => EditTaskBloc(t), child: EditTaskPage()),
+        create: (_) => EditTaskBloc(t),
+        child: EditTaskPage(),
+      ),
     );
     if (result == null) {
       // User cancelled.
@@ -66,9 +73,9 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
   }
 
   void _blocListener(BuildContext context, ScheduleDetailsState state) {
-    if (state.isLoading)
+    if (state.isLoading) {
       _loading = Loading(context);
-    else if (state.isSuccess) {
+    } else if (state.isSuccess) {
       _loading?.close();
       Navigator.of(context).pop();
     } else if (state.error.isNotEmpty) {
@@ -104,13 +111,19 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
       Text("${t.ec}"),
       Text("${t.duration}"),
       SizedBox(
-          height: 50,
-          child: FormButton(
-              text: 'Edit', onPressed: () => _editTaskPressed(index, t))),
+        height: 50,
+        child: FormButton(
+          text: 'Edit',
+          onPressed: () => _editTaskPressed(index, t),
+        ),
+      ),
       SizedBox(
-          height: 50,
-          child: FormButton(
-              text: 'Delete', onPressed: () => _deleteTaskPressed(index))),
+        height: 50,
+        child: FormButton(
+          text: 'Delete',
+          onPressed: () => _deleteTaskPressed(index),
+        ),
+      ),
     ]);
   }
 
@@ -133,10 +146,11 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
                     children: [
                       Text("Schedule"),
                       FormTextField(
-                          hintText: 'Name',
-                          controller: _nameController,
-                          onChanged: _onTextFieldChanged,
-                          keyboardType: TextInputType.text),
+                        hintText: 'Name',
+                        controller: _nameController,
+                        onChanged: _onTextFieldChanged,
+                        keyboardType: TextInputType.text,
+                      ),
                       FormTextField(
                         hintText: 'Start Day',
                         controller: _startDayController,
@@ -144,18 +158,21 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
                         keyboardType: TextInputType.number,
                       ),
                       Column(
-                          children: state.tasks
-                              .mapIndexed((i, t) => _buildTask(t, i))
-                              .toList()),
-                      FormButton(text: 'Add Task', onPressed: _addTaskPressed),
+                        children: state.tasks
+                            .mapIndexed((i, t) => _buildTask(t, i))
+                            .toList(),
+                      ),
+                      FormButton(
+                        text: 'Add Task',
+                        onPressed: _addTaskPressed,
+                      ),
                       FormButton(
                           text: 'Cancel',
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          }),
+                          onPressed: () => Navigator.of(context).pop()),
                       FormButton(
-                          text: 'Save',
-                          onPressed: state.isValid ? _savePressed : null)
+                        text: 'Save',
+                        onPressed: state.isValid ? _savePressed : null,
+                      )
                     ],
                   ),
                 ),

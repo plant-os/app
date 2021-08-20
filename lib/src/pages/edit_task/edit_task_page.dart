@@ -7,7 +7,9 @@ import 'package:plantos/src/widgets/form_textfield.dart';
 import 'edit_task_bloc.dart';
 
 class EditTaskPage extends StatefulWidget {
-  const EditTaskPage({Key? key}) : super(key: key);
+  const EditTaskPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _EditTaskPageState createState() => _EditTaskPageState();
@@ -62,10 +64,11 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
   void _onTextFieldChanged() {
     bloc.add(EditTaskTextFieldChangedEvent(
-        hours: _hoursController.text,
-        minutes: _minutesController.text,
-        ec: _ecController.text,
-        duration: _durationController.text));
+      hours: _hoursController.text,
+      minutes: _minutesController.text,
+      ec: _ecController.text,
+      duration: _durationController.text,
+    ));
   }
 
   void _savePressed() {
@@ -147,15 +150,16 @@ class _EditTaskPageState extends State<EditTaskPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<EditTaskBloc, EditTaskState>(
-        listener: _blocListener,
-        child: BlocBuilder<EditTaskBloc, EditTaskState>(
-          builder: (context, state) {
-            print("state is $state");
-            if (state is EditTaskState) {
-              return buildForm(state);
-            }
-            throw "Unhandled state";
-          },
-        ));
+      listener: _blocListener,
+      child: BlocBuilder<EditTaskBloc, EditTaskState>(
+        builder: (context, state) {
+          print("state is $state");
+          if (state is EditTaskState) {
+            return buildForm(state);
+          }
+          throw "Unhandled state";
+        },
+      ),
+    );
   }
 }

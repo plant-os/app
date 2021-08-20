@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/program.dart';
@@ -13,20 +15,21 @@ class ProgramsBloc extends Bloc<ProgramsEvent, ProgramsState> {
   UserService userService = UserService();
   ProgramsService programsService = ProgramsService();
 
-  ProgramsBloc() : super(ProgramsStateLoading());
+  ProgramsBloc() : super(ProgramsState.initial());
 
   @override
   Stream<ProgramsState> mapEventToState(ProgramsEvent event) async* {
     if (event is ProgramsInitialFetchEvent) {
-      initialise();
+      yield* _mapProgramsInitialFetchEventToState();
     } else if (event is ProgramsLoaded) {
-      yield* _mapLoadProgramsToState(event);
+      yield* _mapProgramsLoadedToState(event);
     } else if (event is ProgramsDeleteEvent) {
       programsService.delete(event.programId);
     }
   }
 
-  void initialise() async {
+  Stream<ProgramsState> _mapProgramsInitialFetchEventToState() async* {
+    yield state.update();
     var firebaseUser = await authService.getCurrentUser();
 
     // To get the Programs belonging to the company we need the current user's
@@ -43,7 +46,11 @@ class ProgramsBloc extends Bloc<ProgramsEvent, ProgramsState> {
 
   void dispose() {}
 
-  Stream<ProgramsState> _mapLoadProgramsToState(ProgramsLoaded event) async* {
-    yield ProgramsStateDone(event.programs);
+  Stream<ProgramsState> _mapProgramsLoadedToState(ProgramsLoaded event) async* {
+    yield state.update(
+      isFetched: true,
+      isLoading: false,
+      programs: event.programs,
+    );
   }
 }

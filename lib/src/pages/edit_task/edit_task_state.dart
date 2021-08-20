@@ -5,55 +5,64 @@ class EditTaskState {
   final bool isLoading;
   final bool isSuccess;
   final bool isFetched;
-  final Task? initial;
   final String error;
+  final Task? initial;
 
-  EditTaskState(
-      {required this.isValid,
-      required this.isLoading,
-      required this.isSuccess,
-      required this.isFetched,
-      required this.initial,
-      required this.error});
+  EditTaskState({
+    required this.isValid,
+    required this.isLoading,
+    required this.isSuccess,
+    required this.isFetched,
+    required this.error,
+    required this.initial,
+  });
 
-  factory EditTaskState.initial({bool? isValid, Task? initial}) {
+  factory EditTaskState.initial({
+    Task? initial,
+  }) {
     return EditTaskState(
-        isValid: isValid ?? false,
-        isLoading: false,
-        isSuccess: false,
-        isFetched: false,
-        initial: initial,
-        error: '');
+      isValid: true,
+      isLoading: false,
+      isSuccess: false,
+      isFetched: false,
+      error: '',
+      initial: initial,
+    );
   }
 
-  EditTaskState update(
-      {bool? isValid,
-      bool? isLoading,
-      bool? isSuccess,
-      bool? isFetched,
-      Task? initial,
-      String? error}) {
+  EditTaskState update({
+    bool? isValid,
+    bool? isLoading,
+    bool? isSuccess,
+    bool? isFetched,
+    String? error,
+    Task? initial,
+  }) {
     return EditTaskState(
-        isValid: isValid ?? this.isValid,
-        isLoading: isLoading ?? this.isLoading,
-        isSuccess: isSuccess ?? this.isSuccess,
-        isFetched: isFetched ?? this.isFetched,
-        initial: initial ?? this.initial,
-        error: error ?? this.error);
+      isValid: isValid ?? this.isValid,
+      isLoading: isLoading ?? this.isLoading,
+      isSuccess: isSuccess ?? this.isSuccess,
+      isFetched: isFetched ?? this.isFetched,
+      error: error ?? this.error,
+      initial: initial ?? this.initial,
+    );
   }
 
   @override
-  String toString() {
-    return "EditTaskState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, isFetched: $isFetched, initial: $initial, error: $error}";
-  }
+  String toString() =>
+      "EditTaskState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, isFetched: $isFetched, error: $error, initial: $initial}";
 
-  // ignore: hash_and_equals
+  @override
   bool operator ==(dynamic o) =>
       o is EditTaskState &&
       o.isValid == isValid &&
       o.isSuccess == isSuccess &&
       o.isLoading == isLoading &&
       o.isFetched == isFetched &&
-      o.initial == initial &&
-      o.error == error;
+      o.error == error &&
+      o.initial == initial;
+
+  @override
+  int get hashCode =>
+      hashValues(isValid, isSuccess, isLoading, isFetched, error, initial);
 }

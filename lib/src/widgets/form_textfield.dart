@@ -9,14 +9,15 @@ class FormTextField extends StatelessWidget {
   final bool? obscureText;
   final bool autocorrect;
 
-  FormTextField(
-      {@required required this.hintText,
-      @required required this.controller,
-      this.onChanged,
-      this.keyboardType,
-      this.readOnly,
-      this.obscureText,
-      this.autocorrect = true});
+  FormTextField({
+    required this.hintText,
+    required this.controller,
+    this.onChanged,
+    this.keyboardType,
+    this.readOnly,
+    this.obscureText,
+    this.autocorrect = true,
+  });
 
   @override
   Widget build(BuildContext context) {

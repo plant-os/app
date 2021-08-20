@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'appdrawer_bloc.dart';
 
 class AppDrawer extends StatefulWidget {
-  const AppDrawer({Key? key}) : super(key: key);
+  const AppDrawer({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _AppDrawerState createState() => _AppDrawerState();
@@ -54,23 +56,25 @@ class _AppDrawerState extends State<AppDrawer> {
     List<Widget> children = <Widget>[
       Row(children: [
         Center(
-            child: ClipOval(
-          child: Container(
-            width: 52,
-            height: 52,
-            color: Color(0xff1FAD84),
+          child: ClipOval(
+            child: Container(
+              width: 52,
+              height: 52,
+              color: Color(0xff1FAD84),
+            ),
           ),
-        )),
+        ),
         SizedBox(width: 22),
         Expanded(
-            child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(state.user.name, style: nameStyle),
-            Text(state.user.email, style: emailStyle)
-          ],
-        ))
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(state.user.name, style: nameStyle),
+              Text(state.user.email, style: emailStyle)
+            ],
+          ),
+        ),
       ]),
       SizedBox(height: 19),
       Divider(
@@ -78,32 +82,37 @@ class _AppDrawerState extends State<AppDrawer> {
       ),
       SizedBox(height: 19),
       GestureDetector(
-          onTap: () {
-            _bloc.add(ClickLogout());
+        onTap: () {
+          _bloc.add(ClickLogout());
 
-            // Then close the drawer
-            Navigator.pop(context);
-          },
-          child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Row(
-                children: [
-                  Image.asset("assets/icon/logout.png", width: 20, height: 20),
-                  SizedBox(width: 18),
-                  Text('Logout', style: menuTextStyle)
-                ],
-              ))),
+          // Then close the drawer
+          Navigator.pop(context);
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: Row(
+            children: [
+              Image.asset("assets/icon/logout.png", width: 20, height: 20),
+              SizedBox(width: 18),
+              Text('Logout', style: menuTextStyle)
+            ],
+          ),
+        ),
+      ),
     ];
 
     return Drawer(
       elevation: 0,
       child: SingleChildScrollView(
-          child: SafeArea(
-              child: Padding(
-                  padding: const EdgeInsets.only(left: 21, right: 21, top: 29),
-                  child: Column(
-                    children: children,
-                  )))),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 21, right: 21, top: 29),
+            child: Column(
+              children: children,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

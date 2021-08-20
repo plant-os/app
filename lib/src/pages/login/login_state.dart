@@ -7,27 +7,29 @@ class LoginState {
   final String error;
 
   LoginState({
-    @required required this.isValid,
-    @required required this.isLoading,
-    @required required this.isSuccess,
-    @required required this.error,
+    required this.isValid,
+    required this.isLoading,
+    required this.isSuccess,
+    required this.error,
   });
 
-  factory LoginState.initial({bool? isValid}) {
+  factory LoginState.initial({
+    bool? isValid,
+  }) {
     return LoginState(
-        isValid: isValid ?? false,
-        isLoading: false,
-        isSuccess: false,
-        error: '');
+      isValid: isValid ?? false,
+      isLoading: false,
+      isSuccess: false,
+      error: '',
+    );
   }
 
-  LoginState update(
-      {bool? isValid,
-      bool? isLoading,
-      bool? isSuccess,
-      String? error,
-      String? email,
-      String? password}) {
+  LoginState update({
+    bool? isValid,
+    bool? isLoading,
+    bool? isSuccess,
+    String? error,
+  }) {
     return LoginState(
       isValid: isValid ?? this.isValid,
       isLoading: isLoading ?? this.isLoading,
@@ -37,15 +39,17 @@ class LoginState {
   }
 
   @override
-  String toString() {
-    return "LoginState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}";
-  }
+  String toString() =>
+      "LoginState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}";
 
-  // ignore: hash_and_equals
+  @override
   bool operator ==(dynamic o) =>
       o is LoginState &&
       o.isValid == isValid &&
       o.isSuccess == isSuccess &&
       o.isLoading == isLoading &&
       o.error == error;
+
+  @override
+  int get hashCode => hashValues(isValid, isSuccess, isLoading, error);
 }

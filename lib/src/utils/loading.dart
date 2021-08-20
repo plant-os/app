@@ -6,11 +6,14 @@ class Loading {
 
   Loading(this.context) {
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => Center(
-            child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(blueColor))));
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(blueColor),
+        ),
+      ),
+    );
   }
 
   void close() {

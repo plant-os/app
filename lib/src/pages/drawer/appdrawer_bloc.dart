@@ -29,9 +29,7 @@ class AppDrawerBloc extends Bloc<AppDrawerEvent, AppDrawerState> {
 
     var currentUser =
         await userService.getCurrentUserDetails(firebaseUser!.email!);
-    add(
-      UserLoaded(currentUser),
-    );
+    add(UserLoaded(currentUser));
   }
 
   Stream<AppDrawerState> _mapUserToState(UserLoaded event) async* {

@@ -6,13 +6,17 @@ class SnackbarWithColor {
   final String text;
   final Color? color;
 
-  SnackbarWithColor(
-      {@required required this.context,
-      @required required this.text,
-      this.color}) {
+  SnackbarWithColor({
+    required this.context,
+    required this.text,
+    this.color,
+  }) {
     Scaffold.of(context).showSnackBar(SnackBar(
-        backgroundColor: color ?? blueColor,
-        content:
-            Text(text, style: TextStyle(fontSize: 16, color: whiteColor))));
+      backgroundColor: color ?? blueColor,
+      content: Text(
+        text,
+        style: TextStyle(fontSize: 16, color: whiteColor),
+      ),
+    ));
   }
 }
