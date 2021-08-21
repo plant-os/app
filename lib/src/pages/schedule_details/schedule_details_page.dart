@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/task.dart';
-import 'package:plantos/src/pages/edit_task/edit_task_bloc.dart';
-import 'package:plantos/src/pages/edit_task/edit_task_page.dart';
+import 'package:plantos/src/pages/task/task_bloc.dart';
+import 'package:plantos/src/pages/task/task_page.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
 import 'package:plantos/src/widgets/form_button.dart';
@@ -40,9 +40,9 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
     var result = await showDialog<Task>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (_) => BlocProvider<EditTaskBloc>(
-        create: (_) => EditTaskBloc(null),
-        child: EditTaskPage(),
+      builder: (_) => BlocProvider<TaskBloc>(
+        create: (_) => TaskBloc(null),
+        child: TaskPage(),
       ),
     );
     if (result == null) {
@@ -56,9 +56,9 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
     var result = await showDialog<Task>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (_) => BlocProvider<EditTaskBloc>(
-        create: (_) => EditTaskBloc(t),
-        child: EditTaskPage(),
+      builder: (_) => BlocProvider<TaskBloc>(
+        create: (_) => TaskBloc(t),
+        child: TaskPage(),
       ),
     );
     if (result == null) {

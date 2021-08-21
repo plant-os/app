@@ -1,6 +1,6 @@
-part of 'edit_task_bloc.dart';
+part of 'task_bloc.dart';
 
-class EditTaskState {
+class TaskState {
   final bool isValid;
   final bool isLoading;
   final bool isSuccess;
@@ -8,7 +8,7 @@ class EditTaskState {
   final String error;
   final Task? initial;
 
-  EditTaskState({
+  TaskState({
     required this.isValid,
     required this.isLoading,
     required this.isSuccess,
@@ -17,10 +17,10 @@ class EditTaskState {
     required this.initial,
   });
 
-  factory EditTaskState.initial({
+  factory TaskState.initial({
     Task? initial,
   }) {
-    return EditTaskState(
+    return TaskState(
       isValid: true,
       isLoading: false,
       isSuccess: false,
@@ -30,7 +30,7 @@ class EditTaskState {
     );
   }
 
-  EditTaskState update({
+  TaskState update({
     bool? isValid,
     bool? isLoading,
     bool? isSuccess,
@@ -38,7 +38,7 @@ class EditTaskState {
     String? error,
     Task? initial,
   }) {
-    return EditTaskState(
+    return TaskState(
       isValid: isValid ?? this.isValid,
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
@@ -50,11 +50,11 @@ class EditTaskState {
 
   @override
   String toString() =>
-      "EditTaskState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, isFetched: $isFetched, error: $error, initial: $initial}";
+      "TaskState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, isFetched: $isFetched, error: $error, initial: $initial}";
 
   @override
   bool operator ==(dynamic o) =>
-      o is EditTaskState &&
+      o is TaskState &&
       o.isValid == isValid &&
       o.isSuccess == isSuccess &&
       o.isLoading == isLoading &&

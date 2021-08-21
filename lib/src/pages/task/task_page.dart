@@ -4,24 +4,24 @@ import 'package:plantos/src/utils/snackbar_with_color.dart';
 import 'package:plantos/src/widgets/form_button.dart';
 import 'package:plantos/src/widgets/form_textfield.dart';
 
-import 'edit_task_bloc.dart';
+import 'task_bloc.dart';
 
-class EditTaskPage extends StatefulWidget {
-  const EditTaskPage({
+class TaskPage extends StatefulWidget {
+  const TaskPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  _EditTaskPageState createState() => _EditTaskPageState();
+  _TaskPageState createState() => _TaskPageState();
 }
 
-class _EditTaskPageState extends State<EditTaskPage> {
+class _TaskPageState extends State<TaskPage> {
   TextEditingController _hoursController = TextEditingController();
   TextEditingController _minutesController = TextEditingController();
   TextEditingController _ecController = TextEditingController();
   TextEditingController _durationController = TextEditingController();
 
-  late EditTaskBloc bloc;
+  late TaskBloc bloc;
 
   String dropdownValue = 'Irrigation';
 
@@ -33,8 +33,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
   @override
   void initState() {
     super.initState();
-    bloc = BlocProvider.of<EditTaskBloc>(context);
-    bloc.add(EditTaskLoadedEvent());
+    bloc = BlocProvider.of<TaskBloc>(context);
+    bloc.add(TaskLoadedEvent());
   }
 
   @override
@@ -46,7 +46,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     super.dispose();
   }
 
-  void _blocListener(BuildContext context, EditTaskState state) {
+  void _blocListener(BuildContext context, TaskState state) {
     if (state.error.isNotEmpty) {
       SnackbarWithColor(context: context, text: state.error, color: Colors.red);
     } else if (state.isFetched) {
@@ -63,7 +63,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   }
 
   void _onTextFieldChanged() {
-    bloc.add(EditTaskTextFieldChangedEvent(
+    bloc.add(TaskTextFieldChangedEvent(
       hours: _hoursController.text,
       minutes: _minutesController.text,
       ec: _ecController.text,
@@ -83,7 +83,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     Navigator.of(context).pop(null);
   }
 
-  Widget buildForm(EditTaskState state) {
+  Widget buildForm(TaskState state) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -109,7 +109,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                   onChanged: (String? data) {
                     print("selected $data");
                     if (data != null) {
-                      bloc.add(EditTaskActionChangedEvent(data));
+                      bloc.add(TaskActionChangedEvent(data));
                       setState(() {
                         dropdownValue = data;
                       });
@@ -149,12 +149,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<EditTaskBloc, EditTaskState>(
+    return BlocListener<TaskBloc, TaskState>(
       listener: _blocListener,
-      child: BlocBuilder<EditTaskBloc, EditTaskState>(
+      child: BlocBuilder<TaskBloc, TaskState>(
         builder: (context, state) {
           print("state is $state");
-          if (state is EditTaskState) {
+          if (state is TaskState) {
             return buildForm(state);
           }
           throw "Unhandled state";

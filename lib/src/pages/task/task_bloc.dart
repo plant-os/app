@@ -6,10 +6,10 @@ import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/programs_service.dart';
 import 'package:plantos/src/services/user_service.dart';
 
-part 'edit_task_state.dart';
-part 'edit_task_event.dart';
+part 'task_state.dart';
+part 'task_event.dart';
 
-class EditTaskBloc extends Bloc<EditTaskEvent, EditTaskState> {
+class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final Task? initial;
 
   AuthService authService = AuthService();
@@ -22,21 +22,21 @@ class EditTaskBloc extends Bloc<EditTaskEvent, EditTaskState> {
   int? duration;
   String action = "Irrigation";
 
-  EditTaskBloc(this.initial) : super(EditTaskState.initial());
+  TaskBloc(this.initial) : super(TaskState.initial());
 
   @override
-  Stream<EditTaskState> mapEventToState(EditTaskEvent event) async* {
+  Stream<TaskState> mapEventToState(TaskEvent event) async* {
     print("handling event $event");
-    if (event is EditTaskTextFieldChangedEvent) {
-      yield* _mapEditTaskTextFieldChangedEventToState(event);
-    } else if (event is EditTaskActionChangedEvent) {
-      yield* _mapEditTaskActionChangedEventToState(event);
-    } else if (event is EditTaskLoadedEvent) {
-      yield* _mapEditTaskEditTaskLoadedEventEventToState();
+    if (event is TaskTextFieldChangedEvent) {
+      yield* _mapTaskTextFieldChangedEventToState(event);
+    } else if (event is TaskActionChangedEvent) {
+      yield* _mapTaskActionChangedEventToState(event);
+    } else if (event is TaskLoadedEvent) {
+      yield* _mapTaskTaskLoadedEventEventToState();
     }
   }
 
-  Stream<EditTaskState> _mapEditTaskEditTaskLoadedEventEventToState() async* {
+  Stream<TaskState> _mapTaskTaskLoadedEventEventToState() async* {
     yield state.update(isFetched: this.initial != null, initial: initial);
   }
 
@@ -44,8 +44,8 @@ class EditTaskBloc extends Bloc<EditTaskEvent, EditTaskState> {
     return hours != null && minutes != null && ec != null && duration != null;
   }
 
-  Stream<EditTaskState> _mapEditTaskTextFieldChangedEventToState(
-      EditTaskTextFieldChangedEvent event) async* {
+  Stream<TaskState> _mapTaskTextFieldChangedEventToState(
+      TaskTextFieldChangedEvent event) async* {
     hours = int.tryParse(event.hours);
     minutes = int.tryParse(event.minutes);
     ec = double.tryParse(event.ec);
@@ -55,8 +55,8 @@ class EditTaskBloc extends Bloc<EditTaskEvent, EditTaskState> {
     yield state.update(isValid: isValid(), isFetched: false);
   }
 
-  Stream<EditTaskState> _mapEditTaskActionChangedEventToState(
-      EditTaskActionChangedEvent event) async* {
+  Stream<TaskState> _mapTaskActionChangedEventToState(
+      TaskActionChangedEvent event) async* {
     action = event.action;
   }
 
