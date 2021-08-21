@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/crop.dart';
 import 'package:plantos/src/models/program.dart';
-import 'package:plantos/src/pages/schedule_details/schedule_details_bloc.dart';
-import 'package:plantos/src/pages/schedule_details/schedule_details_page.dart';
+import 'package:plantos/src/pages/schedule/schedule_bloc.dart';
+import 'package:plantos/src/pages/schedule/schedule_page.dart';
 
 import 'program_details_bloc.dart';
 
