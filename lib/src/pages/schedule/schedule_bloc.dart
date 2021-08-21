@@ -6,11 +6,10 @@ import 'package:plantos/src/models/crop.dart';
 import 'package:plantos/src/models/task.dart';
 import 'package:plantos/src/services/programs_service.dart';
 
-part 'schedule_details_event.dart';
-part 'schedule_details_state.dart';
+part 'schedule_event.dart';
+part 'schedule_state.dart';
 
-class ScheduleDetailsBloc
-    extends Bloc<ScheduleDetailsEvent, ScheduleDetailsState> {
+class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   ProgramsService _programsService = ProgramsService();
 
   final String programId;
@@ -21,13 +20,12 @@ class ScheduleDetailsBloc
   int startDay = 0;
   List<Task> tasks = [];
 
-  ScheduleDetailsBloc(this.programId, this.scheduleId, this.initial)
-      : super(ScheduleDetailsState.initial());
+  ScheduleBloc(this.programId, this.scheduleId, this.initial)
+      : super(ScheduleState.initial());
 
   @override
-  Stream<ScheduleDetailsState> mapEventToState(
-      ScheduleDetailsEvent event) async* {
-    if (event is ScheduleDetailsLoadedEvent) {
+  Stream<ScheduleState> mapEventToState(ScheduleEvent event) async* {
+    if (event is ScheduleLoadedEvent) {
       if (initial != null) {
         tasks = []..addAll(initial!.tasks);
       }
@@ -36,25 +34,25 @@ class ScheduleDetailsBloc
         initial: initial,
         tasks: List.unmodifiable(tasks),
       );
-    } else if (event is ScheduleDetailsTextFieldChangedEvent) {
+    } else if (event is ScheduleTextFieldChangedEvent) {
       yield* _mapTextFieldChangedToState(event);
-    } else if (event is ScheduleDetailsPressedEvent) {
-      yield* _mapScheduleDetailsPressedToState();
-    } else if (event is ScheduleDetailsAddTaskEvent) {
+    } else if (event is SchedulePressedEvent) {
+      yield* _mapSchedulePressedToState();
+    } else if (event is ScheduleAddTaskEvent) {
       tasks.add(event.task);
       yield state.update(tasks: List.unmodifiable(tasks));
-    } else if (event is ScheduleDetailsEditTaskEvent) {
+    } else if (event is ScheduleEditTaskEvent) {
       tasks.removeAt(event.index);
       tasks.insert(event.index, event.task);
       yield state.update(tasks: List.unmodifiable(tasks));
-    } else if (event is ScheduleDetailsDeleteTaskEvent) {
+    } else if (event is ScheduleDeleteTaskEvent) {
       tasks.removeAt(event.index);
       yield state.update(tasks: List.unmodifiable(tasks));
     }
   }
 
-  Stream<ScheduleDetailsState> _mapTextFieldChangedToState(
-      ScheduleDetailsTextFieldChangedEvent event) async* {
+  Stream<ScheduleState> _mapTextFieldChangedToState(
+      ScheduleTextFieldChangedEvent event) async* {
     name = event.name;
     var parsedDay = int.tryParse(event.startDay);
     if (parsedDay != null) {
@@ -66,7 +64,7 @@ class ScheduleDetailsBloc
     );
   }
 
-  Stream<ScheduleDetailsState> _mapScheduleDetailsPressedToState() async* {
+  Stream<ScheduleState> _mapSchedulePressedToState() async* {
     yield state.update(isLoading: true);
     try {
       if (scheduleId == null) {
@@ -91,7 +89,7 @@ class ScheduleDetailsBloc
         error: "$e",
       );
     } finally {
-      yield ScheduleDetailsState.initial(isValid: name.isNotEmpty);
+      yield ScheduleState.initial(isValid: name.isNotEmpty);
     }
   }
 }

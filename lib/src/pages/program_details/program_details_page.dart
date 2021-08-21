@@ -34,9 +34,9 @@ class _ProgramDetailsState extends State<ProgramDetails> {
     showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (_) => BlocProvider<ScheduleDetailsBloc>(
-        create: (_) => ScheduleDetailsBloc(p.id, null, null),
-        child: ScheduleDetailsPage(),
+      builder: (_) => BlocProvider<ScheduleBloc>(
+        create: (_) => ScheduleBloc(p.id, null, null),
+        child: SchedulePage(),
       ),
     );
   }
@@ -65,9 +65,9 @@ class _ProgramDetailsState extends State<ProgramDetails> {
     showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (_) => BlocProvider<ScheduleDetailsBloc>(
-        create: (_) => ScheduleDetailsBloc(p.id, s.id, s),
-        child: ScheduleDetailsPage(),
+      builder: (_) => BlocProvider<ScheduleBloc>(
+        create: (_) => ScheduleBloc(p.id, s.id, s),
+        child: SchedulePage(),
       ),
     );
   }

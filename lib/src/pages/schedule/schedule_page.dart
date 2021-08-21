@@ -9,31 +9,31 @@ import 'package:plantos/src/widgets/form_button.dart';
 import 'package:plantos/src/widgets/form_textfield.dart';
 import 'package:collection/collection.dart';
 
-import 'schedule_details_bloc.dart';
+import 'schedule_bloc.dart';
 
 /// TODO: Documentation.
-class ScheduleDetailsPage extends StatefulWidget {
+class SchedulePage extends StatefulWidget {
   @override
-  ScheduleDetailsPageState createState() => ScheduleDetailsPageState();
+  SchedulePageState createState() => SchedulePageState();
 }
 
-class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
+class SchedulePageState extends State<SchedulePage> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _startDayController = TextEditingController();
 
   Loading? _loading;
 
-  late ScheduleDetailsBloc bloc;
+  late ScheduleBloc bloc;
 
   void _onTextFieldChanged() {
-    bloc.add(ScheduleDetailsTextFieldChangedEvent(
+    bloc.add(ScheduleTextFieldChangedEvent(
       name: _nameController.text,
       startDay: _startDayController.text,
     ));
   }
 
   void _savePressed() {
-    bloc.add(ScheduleDetailsPressedEvent());
+    bloc.add(SchedulePressedEvent());
   }
 
   void _addTaskPressed() async {
@@ -48,7 +48,7 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
     if (result == null) {
       // User cancelled.
     } else {
-      bloc.add(ScheduleDetailsAddTaskEvent(result));
+      bloc.add(ScheduleAddTaskEvent(result));
     }
   }
 
@@ -64,15 +64,15 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
     if (result == null) {
       // User cancelled.
     } else {
-      bloc.add(ScheduleDetailsEditTaskEvent(result, index));
+      bloc.add(ScheduleEditTaskEvent(result, index));
     }
   }
 
   void _deleteTaskPressed(int index) {
-    bloc.add(ScheduleDetailsDeleteTaskEvent(index));
+    bloc.add(ScheduleDeleteTaskEvent(index));
   }
 
-  void _blocListener(BuildContext context, ScheduleDetailsState state) {
+  void _blocListener(BuildContext context, ScheduleState state) {
     if (state.isLoading) {
       _loading = Loading(context);
     } else if (state.isSuccess) {
@@ -93,8 +93,8 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
   @override
   void initState() {
     super.initState();
-    bloc = BlocProvider.of<ScheduleDetailsBloc>(context);
-    bloc.add(ScheduleDetailsLoadedEvent());
+    bloc = BlocProvider.of<ScheduleBloc>(context);
+    bloc.add(ScheduleLoadedEvent());
   }
 
   @override
@@ -134,9 +134,9 @@ class ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Scaffold(
-          body: BlocListener<ScheduleDetailsBloc, ScheduleDetailsState>(
+          body: BlocListener<ScheduleBloc, ScheduleState>(
             listener: _blocListener,
-            child: BlocBuilder<ScheduleDetailsBloc, ScheduleDetailsState>(
+            child: BlocBuilder<ScheduleBloc, ScheduleState>(
               builder: (_, state) => SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(30.0),

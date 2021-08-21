@@ -1,6 +1,6 @@
-part of 'schedule_details_bloc.dart';
+part of 'schedule_bloc.dart';
 
-class ScheduleDetailsState {
+class ScheduleState {
   final bool isValid;
   final bool isLoading;
 
@@ -11,7 +11,7 @@ class ScheduleDetailsState {
   final Schedule? initial;
   final List<Task> tasks;
 
-  ScheduleDetailsState({
+  ScheduleState({
     required this.isValid,
     required this.isLoading,
     required this.isSuccess,
@@ -21,11 +21,11 @@ class ScheduleDetailsState {
     required this.tasks,
   });
 
-  factory ScheduleDetailsState.initial({
+  factory ScheduleState.initial({
     bool? isValid,
     Schedule? initial,
   }) {
-    return ScheduleDetailsState(
+    return ScheduleState(
       isValid: isValid ?? false,
       isLoading: false,
       isSuccess: false,
@@ -36,7 +36,7 @@ class ScheduleDetailsState {
     );
   }
 
-  ScheduleDetailsState update({
+  ScheduleState update({
     bool? isValid,
     bool? isLoading,
     bool? isSuccess,
@@ -45,7 +45,7 @@ class ScheduleDetailsState {
     Schedule? initial,
     List<Task>? tasks,
   }) {
-    return ScheduleDetailsState(
+    return ScheduleState(
       isValid: isValid ?? this.isValid,
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
@@ -58,11 +58,11 @@ class ScheduleDetailsState {
 
   @override
   String toString() =>
-      "ScheduleDetailsState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error, isFetched: $isFetched, initial: $initial, tasks: $tasks}";
+      "ScheduleState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error, isFetched: $isFetched, initial: $initial, tasks: $tasks}";
 
   @override
   bool operator ==(dynamic o) =>
-      o is ScheduleDetailsState &&
+      o is ScheduleState &&
       o.isValid == isValid &&
       o.isSuccess == isSuccess &&
       o.isLoading == isLoading &&
