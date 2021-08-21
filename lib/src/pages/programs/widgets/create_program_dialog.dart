@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantos/src/pages/program_details/program_details_bloc.dart';
-import 'package:plantos/src/pages/program_details/program_details_page.dart';
+import 'package:plantos/src/pages/program/program_bloc.dart';
+import 'package:plantos/src/pages/program/program_page.dart';
 import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/programs_service.dart';
 import 'package:plantos/src/services/user_service.dart';
@@ -58,10 +58,14 @@ class _CreateProgramDialogState extends State<CreateProgramDialog> {
             var program =
                 await programsService.add(user.company!.id, _controller.text);
 
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (_) => BlocProvider<ProgramDetailsBloc>(
-                    create: (_) => ProgramDetailsBloc(program.id, program),
-                    child: ProgramDetails())));
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => BlocProvider<ProgramBloc>(
+                  create: (_) => ProgramBloc(program.id, program),
+                  child: ProgramPage(),
+                ),
+              ),
+            );
           },
         ),
       ],

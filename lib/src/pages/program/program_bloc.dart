@@ -6,11 +6,10 @@ import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/programs_service.dart';
 import 'package:plantos/src/services/user_service.dart';
 
-part 'program_details_state.dart';
-part 'program_details_event.dart';
+part 'program_state.dart';
+part 'program_event.dart';
 
-class ProgramDetailsBloc
-    extends Bloc<ProgramDetailsEvent, ProgramDetailsState> {
+class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
   final String programId;
   final Program initial;
 
@@ -18,28 +17,26 @@ class ProgramDetailsBloc
   UserService userService = UserService();
   ProgramsService programsService = ProgramsService();
 
-  ProgramDetailsBloc(this.programId, this.initial)
-      : super(ProgramDetailsStateLoading());
+  ProgramBloc(this.programId, this.initial) : super(ProgramStateLoading());
 
   @override
-  Stream<ProgramDetailsState> mapEventToState(
-      ProgramDetailsEvent event) async* {
+  Stream<ProgramState> mapEventToState(ProgramEvent event) async* {
     print("handling event $event");
-    if (event is ProgramDetailsLoadEvent) {
+    if (event is ProgramLoadEvent) {
       programsService.listSchedules(programId).listen((event) {
-        add(ProgramDetailsSchedulesLoadedEvent(event));
+        add(ProgramSchedulesLoadedEvent(event));
       });
-    } else if (event is ProgramDetailsSchedulesLoadedEvent) {
+    } else if (event is ProgramSchedulesLoadedEvent) {
       yield* _mapSchedulesLoadedToState(event);
-    } else if (event is ProgramDetailsDeleteScheduleEvent) {
+    } else if (event is ProgramDeleteScheduleEvent) {
       programsService.deleteSchedule(programId, event.scheduleId);
     }
   }
 
   void dispose() {}
 
-  Stream<ProgramDetailsState> _mapSchedulesLoadedToState(
-      ProgramDetailsSchedulesLoadedEvent event) async* {
-    yield ProgramDetailsStateDone(initial, event.schedules);
+  Stream<ProgramState> _mapSchedulesLoadedToState(
+      ProgramSchedulesLoadedEvent event) async* {
+    yield ProgramStateDone(initial, event.schedules);
   }
 }

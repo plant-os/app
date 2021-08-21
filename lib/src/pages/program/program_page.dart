@@ -5,29 +5,29 @@ import 'package:plantos/src/models/program.dart';
 import 'package:plantos/src/pages/schedule/schedule_bloc.dart';
 import 'package:plantos/src/pages/schedule/schedule_page.dart';
 
-import 'program_details_bloc.dart';
+import 'program\_bloc.dart';
 
 /// TODO: Documentation.
-class ProgramDetails extends StatefulWidget {
-  const ProgramDetails({
+class ProgramPage extends StatefulWidget {
+  const ProgramPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  _ProgramDetailsState createState() => _ProgramDetailsState();
+  _ProgramPageState createState() => _ProgramPageState();
 }
 
-class _ProgramDetailsState extends State<ProgramDetails> {
-  late ProgramDetailsBloc bloc;
+class _ProgramPageState extends State<ProgramPage> {
+  late ProgramBloc bloc;
 
   @override
   void initState() {
     super.initState();
 
-    bloc = BlocProvider.of<ProgramDetailsBloc>(context);
+    bloc = BlocProvider.of<ProgramBloc>(context);
 
     // Fetch the schedules.
-    bloc.add(ProgramDetailsLoadEvent());
+    bloc.add(ProgramLoadEvent());
   }
 
   Future<void> _showMyDialog(Program p) async {
@@ -51,7 +51,7 @@ class _ProgramDetailsState extends State<ProgramDetails> {
     );
   }
 
-  Widget errorPage(ProgramDetailsStateError state) {
+  Widget errorPage(ProgramStateError state) {
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -73,7 +73,7 @@ class _ProgramDetailsState extends State<ProgramDetails> {
   }
 
   void _handleDeleteSchedule(Program p, Schedule s) {
-    bloc.add(ProgramDetailsDeleteScheduleEvent(s.id!));
+    bloc.add(ProgramDeleteScheduleEvent(s.id!));
   }
 
   Widget buildSchedule(Program p, Schedule s) {
@@ -92,7 +92,7 @@ class _ProgramDetailsState extends State<ProgramDetails> {
     );
   }
 
-  Widget schedulesList(ProgramDetailsStateDone state, BuildContext context) {
+  Widget schedulesList(ProgramStateDone state, BuildContext context) {
     return Scaffold(
       appBar: AppBar(leading: BackButton()),
       body: SafeArea(
@@ -117,17 +117,17 @@ class _ProgramDetailsState extends State<ProgramDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProgramDetailsBloc, ProgramDetailsState>(
+    return BlocBuilder<ProgramBloc, ProgramState>(
       builder: (context, state) {
-        if (state is ProgramDetailsStateDone) {
-          print("ProgramDetailsStateDone");
+        if (state is ProgramStateDone) {
+          print("ProgramStateDone");
           print(state);
           return schedulesList(state, context);
-        } else if (state is ProgramDetailsStateLoading) {
-          print("ProgramDetailsStateLoading");
+        } else if (state is ProgramStateLoading) {
+          print("ProgramStateLoading");
           return loadingPage();
-        } else if (state is ProgramDetailsStateError) {
-          print("ProgramDetailsStateError");
+        } else if (state is ProgramStateError) {
+          print("ProgramStateError");
           return errorPage(state);
         }
         throw "Unhandled state";

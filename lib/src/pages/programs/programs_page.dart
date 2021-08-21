@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/program.dart';
 import 'package:plantos/src/pages/drawer/appdrawer.dart';
-import 'package:plantos/src/pages/program_details/program_details_bloc.dart';
-import 'package:plantos/src/pages/program_details/program_details_page.dart';
+import 'package:plantos/src/pages/program/program_bloc.dart';
+import 'package:plantos/src/pages/program/program_page.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/widgets/hamburger.dart';
 
@@ -44,9 +44,9 @@ class _ProgramsPageState extends State<ProgramsPage> {
       TextButton(
         child: Text("edit"),
         onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => BlocProvider<ProgramDetailsBloc>(
-            create: (_) => ProgramDetailsBloc(p.id, p),
-            child: ProgramDetails(),
+          builder: (_) => BlocProvider<ProgramBloc>(
+            create: (_) => ProgramBloc(p.id, p),
+            child: ProgramPage(),
           ),
         )),
       ),
