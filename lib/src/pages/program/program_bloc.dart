@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/crop.dart';
@@ -10,14 +12,17 @@ part 'program_state.dart';
 part 'program_event.dart';
 
 class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
-  final String programId;
-  final Program initial;
-
   AuthService authService = AuthService();
   UserService userService = UserService();
   ProgramsService programsService = ProgramsService();
 
-  ProgramBloc(this.programId, this.initial) : super(ProgramStateLoading());
+  final String programId;
+  final Program program;
+
+  ProgramBloc(this.programId, this.program)
+      : super(ProgramState.initial(program: program));
+
+  void dispose() {}
 
   @override
   Stream<ProgramState> mapEventToState(ProgramEvent event) async* {
@@ -33,10 +38,12 @@ class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
     }
   }
 
-  void dispose() {}
-
   Stream<ProgramState> _mapSchedulesLoadedToState(
       ProgramSchedulesLoadedEvent event) async* {
-    yield ProgramStateDone(initial, event.schedules);
+    yield state.update(
+      isLoading: false,
+      isFetched: true,
+      schedules: event.schedules,
+    );
   }
 }

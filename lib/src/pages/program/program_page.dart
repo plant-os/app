@@ -51,16 +51,6 @@ class _ProgramPageState extends State<ProgramPage> {
     );
   }
 
-  Widget errorPage(ProgramStateError state) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Text(state.error),
-        ),
-      ),
-    );
-  }
-
   void _handleEditSchedule(Program p, Schedule s) {
     showDialog<void>(
       context: context,
@@ -92,7 +82,7 @@ class _ProgramPageState extends State<ProgramPage> {
     );
   }
 
-  Widget schedulesList(ProgramStateDone state, BuildContext context) {
+  Widget schedulesList(ProgramState state, BuildContext context) {
     return Scaffold(
       appBar: AppBar(leading: BackButton()),
       body: SafeArea(
@@ -119,18 +109,11 @@ class _ProgramPageState extends State<ProgramPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProgramBloc, ProgramState>(
       builder: (context, state) {
-        if (state is ProgramStateDone) {
-          print("ProgramStateDone");
-          print(state);
-          return schedulesList(state, context);
-        } else if (state is ProgramStateLoading) {
-          print("ProgramStateLoading");
+        // TODO: Error handling.
+        if (state.isLoading) {
           return loadingPage();
-        } else if (state is ProgramStateError) {
-          print("ProgramStateError");
-          return errorPage(state);
         }
-        throw "Unhandled state";
+        return schedulesList(state, context);
       },
     );
   }

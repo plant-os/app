@@ -38,21 +38,21 @@ class _ProgramsPageState extends State<ProgramsPage> {
     );
   }
 
-  Widget buildProgram(Program p) {
+  Widget buildProgram(Program program) {
     return Row(children: [
-      Text(p.name),
+      Text(program.name),
       TextButton(
         child: Text("edit"),
         onPressed: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => BlocProvider<ProgramBloc>(
-            create: (_) => ProgramBloc(p.id, p),
+            create: (_) => ProgramBloc(program.id, program),
             child: ProgramPage(),
           ),
         )),
       ),
       TextButton(
         child: Text("delete"),
-        onPressed: () => bloc.add(ProgramsDeleteEvent(p.id)),
+        onPressed: () => bloc.add(ProgramsDeleteEvent(program.id)),
       ),
     ]);
   }
