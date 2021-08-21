@@ -83,7 +83,7 @@ class _AppDrawerState extends State<AppDrawer> {
       SizedBox(height: 19),
       GestureDetector(
         onTap: () {
-          _bloc.add(ClickLogout());
+          _bloc.add(AppDrawerPressLogout());
 
           // Then close the drawer
           Navigator.pop(context);

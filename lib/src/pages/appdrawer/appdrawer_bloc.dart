@@ -17,9 +17,9 @@ class AppDrawerBloc extends Bloc<AppDrawerEvent, AppDrawerState> {
 
   @override
   Stream<AppDrawerState> mapEventToState(AppDrawerEvent event) async* {
-    if (event is ClickLogout) {
+    if (event is AppDrawerPressLogout) {
       authService.logout();
-    } else if (event is UserLoaded) {
+    } else if (event is AppDrawerUserLoaded) {
       yield* _mapUserToState(event);
     }
   }
@@ -29,10 +29,10 @@ class AppDrawerBloc extends Bloc<AppDrawerEvent, AppDrawerState> {
 
     var currentUser =
         await userService.getCurrentUserDetails(firebaseUser!.email!);
-    add(UserLoaded(currentUser));
+    add(AppDrawerUserLoaded(currentUser));
   }
 
-  Stream<AppDrawerState> _mapUserToState(UserLoaded event) async* {
+  Stream<AppDrawerState> _mapUserToState(AppDrawerUserLoaded event) async* {
     yield DefaultAppDrawerState(event.user);
   }
 
