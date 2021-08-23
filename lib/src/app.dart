@@ -6,47 +6,70 @@ import 'package:plantos/src/pages/login/login.dart';
 import 'pages/programs/programs_bloc.dart';
 import 'pages/programs/programs_page.dart';
 
+var theme = ThemeData(
+  fontFamily: "Work Sans",
+  appBarTheme: AppBarTheme().copyWith(
+    brightness: Brightness.light,
+    backgroundColor: const Color(0xFFF9F9F9),
+    elevation: 0,
+  ),
+  scaffoldBackgroundColor: const Color(0xFFF9F9F9),
+);
+
 class App extends StatelessWidget {
+  Widget authenticatedApp(BuildContext context) {
+    return BlocProvider<AppDrawerBloc>(
+      create: (_) => AppDrawerBloc(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: theme,
+        initialRoute: '/programs',
+        routes: {
+          '/programs': (_) => BlocProvider<ProgramsBloc>(
+                create: (_) => ProgramsBloc(),
+                child: ProgramsPage(),
+              ),
+          // '/grows': (_) => BlocProvider<GrowsBloc>(
+          //       create: (_) => GrowsBloc(),
+          //       child: GrowsPage(),
+          //     ),
+        },
+      ),
+    );
+  }
+
+  Widget unauthenticatedApp(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: theme,
+      home: BlocProvider<LoginBloc>(
+        create: (_) => LoginBloc(),
+        child: LoginPage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AuthBloc()..add(AuthStartedEvent()),
       child: BlocBuilder<AuthBloc, AuthState>(builder: (_, state) {
-        Widget homeWidget;
+        print(state);
+
+        Widget widget;
         if (state is AuthUnauthenticatedState) {
-          homeWidget = BlocProvider<LoginBloc>(
-            create: (_) => LoginBloc(),
-            child: LoginPage(),
-          );
+          widget = unauthenticatedApp(context);
         } else if (state is AuthAuthenticatedState) {
-          homeWidget = BlocProvider<AppDrawerBloc>(
-            create: (_) => AppDrawerBloc(),
-            child: BlocProvider<ProgramsBloc>(
-                create: (_) => ProgramsBloc(), child: ProgramsPage()),
-          );
+          widget = authenticatedApp(context);
         } else if (state is AuthUninitializedState) {
-          homeWidget = Scaffold();
+          widget = Container();
         } else {
           throw new Exception("invalid auth state");
         }
 
-        var theme = ThemeData(
-          fontFamily: "Work Sans",
-          appBarTheme: AppBarTheme().copyWith(
-            brightness: Brightness.light,
-            backgroundColor: const Color(0xFFF9F9F9),
-            elevation: 0,
-          ),
-          scaffoldBackgroundColor: const Color(0xFFF9F9F9),
-        );
-
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: theme,
-            home: homeWidget,
-          ),
+          child: widget,
         );
       }),
     );

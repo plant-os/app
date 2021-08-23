@@ -92,6 +92,7 @@ class _ProgramsPageState extends State<ProgramsPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("building ProgramsPage");
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
