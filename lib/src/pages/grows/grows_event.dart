@@ -4,4 +4,8 @@ abstract class GrowsEvent {}
 
 class GrowsInitialFetchEvent extends GrowsEvent {}
 
-class GrowsLoadedEvent extends GrowsEvent {}
+class GrowsLoadedEvent extends GrowsEvent {
+  final List<Grow> grows;
+
+  GrowsLoadedEvent(this.grows);
+}

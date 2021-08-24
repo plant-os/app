@@ -1,9 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plantos/src/models/crop.dart';
+import 'package:plantos/src/models/grow.dart';
 import 'package:plantos/src/models/program.dart';
 
 class ProgramsService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  LocalDate parseLocalDateFromJson(Map<String, dynamic> json) {
+    return LocalDate(
+      year: json['Year'],
+      month: json['Month'],
+      day: json['Day'],
+    );
+  }
+
+  Grow parseGrowFromJson(String id, Map<String, dynamic> json) {
+    return Grow(
+      id: id,
+      name: json['Name'],
+      programId: json['ProgramId'],
+      deviceId: json['DeviceId'],
+      plot: json['Plot'],
+      state: json['State'],
+      startDate: parseLocalDateFromJson(json['StartDate']),
+    );
+  }
+
+  Stream<List<Grow>> listGrows(String companyId) {
+    return firestore
+        .collection("grows")
+        .where('CompanyId', isEqualTo: companyId)
+        .snapshots()
+        .map((event) => event.docs
+            .map((doc) => parseGrowFromJson(doc.id, doc.data()))
+            .toList());
+  }
 
   Stream<List<Program>> list(String companyId) {
     return firestore
