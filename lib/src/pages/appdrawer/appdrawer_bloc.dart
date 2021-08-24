@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/user.dart';
 import 'package:plantos/src/services/auth_service.dart';
@@ -11,30 +12,29 @@ class AppDrawerBloc extends Bloc<AppDrawerEvent, AppDrawerState> {
   AuthService authService = AuthService();
   UserService userService = UserService();
 
-  AppDrawerBloc() : super(LoadingAppDrawerState()) {
-    initialise();
-  }
+  AppDrawerBloc() : super(AppDrawerState.initial());
+
+  void dispose() {}
 
   @override
   Stream<AppDrawerState> mapEventToState(AppDrawerEvent event) async* {
-    if (event is AppDrawerPressLogout) {
+    if (event is AppDrawerStarted) {
+      yield* _mapAppDrawerStartedToState();
+    } else if (event is AppDrawerPressLogout) {
       authService.logout();
-    } else if (event is AppDrawerUserLoaded) {
-      yield* _mapUserToState(event);
     }
   }
 
-  void initialise() async {
+  Stream<AppDrawerState> _mapAppDrawerStartedToState() async* {
+    yield state.update(
+      isLoading: true,
+    );
     var firebaseUser = await authService.getCurrentUser();
-
     var currentUser =
         await userService.getCurrentUserDetails(firebaseUser!.email!);
-    add(AppDrawerUserLoaded(currentUser));
+    yield state.update(
+      isLoading: false,
+      user: currentUser,
+    );
   }
-
-  Stream<AppDrawerState> _mapUserToState(AppDrawerUserLoaded event) async* {
-    yield DefaultAppDrawerState(event.user);
-  }
-
-  void dispose() {}
 }

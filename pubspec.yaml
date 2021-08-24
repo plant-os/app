@@ -52,6 +52,11 @@ flutter:
     - assets/hamburger.png
     - assets/logo/withtext.png
     - assets/icon/logout.png
+    - assets/icon/devices.png
+    - assets/icon/grows.png
+    - assets/icon/hamburger.png
+    - assets/icon/programs.png
+    - assets/icon/settings.png
     - assets/user.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

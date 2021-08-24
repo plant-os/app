@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/pages/appdrawer/appdrawer_bloc.dart';
 import 'package:plantos/src/pages/auth/auth_bloc.dart';
+import 'package:plantos/src/pages/grows/grows_bloc.dart';
+import 'package:plantos/src/pages/grows/grows_page.dart';
 import 'package:plantos/src/pages/login/login.dart';
 import 'pages/programs/programs_bloc.dart';
 import 'pages/programs/programs_page.dart';
@@ -24,15 +26,22 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme,
         initialRoute: '/programs',
-        routes: {
-          '/programs': (_) => BlocProvider<ProgramsBloc>(
+        onGenerateRoute: (settings) {
+          if (settings.name == '/programs') {
+            return PageRouteBuilder(
+              pageBuilder: (_, __, ___) => BlocProvider<ProgramsBloc>(
                 create: (_) => ProgramsBloc(),
                 child: ProgramsPage(),
               ),
-          // '/grows': (_) => BlocProvider<GrowsBloc>(
-          //       create: (_) => GrowsBloc(),
-          //       child: GrowsPage(),
-          //     ),
+            );
+          } else {
+            return PageRouteBuilder(
+              pageBuilder: (_, __, ___) => BlocProvider<GrowsBloc>(
+                create: (_) => GrowsBloc(),
+                child: GrowsPage(),
+              ),
+            );
+          }
         },
       ),
     );
