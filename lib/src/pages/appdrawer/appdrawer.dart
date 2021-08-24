@@ -19,7 +19,7 @@ class _AppDrawerState extends State<AppDrawer> {
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<AppDrawerBloc>(context);
-    _bloc.add(AppDrawerStarted());
+    _bloc.add(AppDrawerStartedEvent());
   }
 
   @override
@@ -161,7 +161,7 @@ class _AppDrawerState extends State<AppDrawer> {
               Spacer(),
               GestureDetector(
                 onTap: () {
-                  _bloc.add(AppDrawerPressLogout());
+                  _bloc.add(AppDrawerPressLogoutEvent());
 
                   // Then close the drawer
                   Navigator.pop(context);

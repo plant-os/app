@@ -18,9 +18,9 @@ class AppDrawerBloc extends Bloc<AppDrawerEvent, AppDrawerState> {
 
   @override
   Stream<AppDrawerState> mapEventToState(AppDrawerEvent event) async* {
-    if (event is AppDrawerStarted) {
+    if (event is AppDrawerStartedEvent) {
       yield* _mapAppDrawerStartedToState();
-    } else if (event is AppDrawerPressLogout) {
+    } else if (event is AppDrawerPressLogoutEvent) {
       authService.logout();
     }
   }

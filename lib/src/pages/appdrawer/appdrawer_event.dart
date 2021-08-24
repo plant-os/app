@@ -2,6 +2,6 @@ part of 'appdrawer_bloc.dart';
 
 abstract class AppDrawerEvent {}
 
-class AppDrawerStarted extends AppDrawerEvent {}
+class AppDrawerStartedEvent extends AppDrawerEvent {}
 
-class AppDrawerPressLogout extends AppDrawerEvent {}
+class AppDrawerPressLogoutEvent extends AppDrawerEvent {}
