@@ -6,7 +6,6 @@ import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/pages/login/login_bloc.dart';
-import 'package:plantos/src/pages/auth/auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
