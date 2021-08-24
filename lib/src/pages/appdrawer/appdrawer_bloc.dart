@@ -29,12 +29,32 @@ class AppDrawerBloc extends Bloc<AppDrawerEvent, AppDrawerState> {
     yield state.update(
       isLoading: true,
     );
-    var firebaseUser = await authService.getCurrentUser();
-    var currentUser =
-        await userService.getCurrentUserDetails(firebaseUser!.email!);
-    yield state.update(
-      isLoading: false,
-      user: currentUser,
-    );
+    try {
+      var firebaseUser = await authService.getCurrentUser();
+      var currentUser = await userService.getUserByEmail(firebaseUser!.email!);
+
+      if (currentUser == null) {
+        // Display the error alert box.
+        yield state.update(
+          error: "User not found",
+        );
+        yield state.update(
+          isLoading: false,
+        );
+      } else {
+        yield state.update(
+          isLoading: false,
+          isFetched: true,
+          user: currentUser,
+        );
+      }
+    } catch (e) {
+      print(e);
+      yield state.update(
+        isLoading: false,
+        isFetched: false,
+        error: "Failed to fetch user data: $e",
+      );
+    }
   }
 }

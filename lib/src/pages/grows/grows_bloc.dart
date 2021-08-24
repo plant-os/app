@@ -35,18 +35,30 @@ class GrowsBloc extends Bloc<GrowsEvent, GrowsState> {
       isLoading: true,
     );
 
-    var firebaseUser = await authService.getCurrentUser();
+    try {
+      var firebaseUser = await authService.getCurrentUser();
 
-    // To get the Programs belonging to the company we need the current user's
-    // company id.
-    var currentUser =
-        await userService.getCurrentUserDetails(firebaseUser!.email!);
-
-    // Whenever the collection changes we pipe the new list into a
-    // GrowsLoadedEvent event to update the state.
-    programsService
-        .listGrows(currentUser.company!.id)
-        .listen((grows) => add(GrowsLoadedEvent(grows)));
+      // To get the Programs belonging to the company we need the current user's
+      // company id.
+      var currentUser = await userService.getUserByEmail(firebaseUser!.email!);
+      if (currentUser == null) {
+        yield state.update(
+          isLoading: false,
+          error: "Failed to look up user",
+        );
+      } else {
+        // Whenever the collection changes we pipe the new list into a
+        // GrowsLoadedEvent event to update the state.
+        programsService
+            .listGrows(currentUser.company!.id)
+            .listen((grows) => add(GrowsLoadedEvent(grows)));
+      }
+    } catch (e) {
+      yield state.update(
+        isLoading: false,
+        error: "Failed to list programs: $e",
+      );
+    }
   }
 
   Stream<GrowsState> _mapGrowsLoadedEventToState(

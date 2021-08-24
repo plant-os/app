@@ -49,14 +49,15 @@ class _CreateProgramDialogState extends State<CreateProgramDialog> {
         TextButton(
           child: const Text('Save'),
           onPressed: () async {
+            // TODO: FIXME: Do this properly.
             var authService = AuthService();
             var auth = await authService.getCurrentUser();
             var userService = UserService();
-            var user = await userService.getCurrentUserDetails(auth!.email!);
+            var user = await userService.getUserByEmail(auth!.email!);
             var programsService = ProgramsService();
             print("Create program with name: ${_controller.text}");
             var program =
-                await programsService.add(user.company!.id, _controller.text);
+                await programsService.add(user!.company!.id, _controller.text);
 
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(

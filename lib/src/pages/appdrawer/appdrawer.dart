@@ -22,15 +22,47 @@ class _AppDrawerState extends State<AppDrawer> {
     _bloc.add(AppDrawerStartedEvent());
   }
 
+  Future<void> _showErrorDialog(BuildContext context, String error) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(error),
+        actions: [
+          TextButton(
+            child: const Text('Ok'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _blocListener(BuildContext context, AppDrawerState state) async {
+    if (state.error != "") {
+      await _showErrorDialog(context, state.error);
+      // Close the AppDrawer, we can't display the content anyway.
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppDrawerBloc, AppDrawerState>(
-      builder: (context, state) {
-        if (state.isLoading) {
-          return Container();
-        }
-        return buildMenu(state, context);
-      },
+    return BlocListener<AppDrawerBloc, AppDrawerState>(
+      listener: (context, state) => _blocListener(context, state),
+      child: BlocBuilder<AppDrawerBloc, AppDrawerState>(
+        builder: (context, state) {
+          print(state);
+          if (state.isLoading) {
+            return Container();
+          } else if (state.isFetched) {
+            return buildMenu(state, context);
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 

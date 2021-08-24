@@ -17,6 +17,8 @@ class ProgramsBloc extends Bloc<ProgramsEvent, ProgramsState> {
 
   ProgramsBloc() : super(ProgramsState.initial());
 
+  void dispose() {}
+
   @override
   Stream<ProgramsState> mapEventToState(ProgramsEvent event) async* {
     if (event is ProgramsInitialFetchEvent) {
@@ -29,22 +31,35 @@ class ProgramsBloc extends Bloc<ProgramsEvent, ProgramsState> {
   }
 
   Stream<ProgramsState> _mapProgramsInitialFetchEventToState() async* {
-    yield state.update();
-    var firebaseUser = await authService.getCurrentUser();
+    yield state.update(
+      isLoading: true,
+    );
+    try {
+      var firebaseUser = await authService.getCurrentUser();
 
-    // To get the Programs belonging to the company we need the current user's
-    // company id.
-    var currentUser =
-        await userService.getCurrentUserDetails(firebaseUser!.email!);
+      // To get the Programs belonging to the company we need the current user's
+      // company id.
+      var currentUser = await userService.getUserByEmail(firebaseUser!.email!);
 
-    // Whenever the list of programs changes we pipe the new list into a
-    // ProgramsLoaded event.
-    programsService.list(currentUser.company!.id).listen((programs) {
-      add(ProgramsLoaded(programs));
-    });
+      if (currentUser == null) {
+        yield state.update(
+          isLoading: false,
+          error: "Failed to find user",
+        );
+      } else {
+        // Whenever the list of programs changes we pipe the new list into a
+        // ProgramsLoaded event.
+        programsService.list(currentUser.company!.id).listen((programs) {
+          add(ProgramsLoaded(programs));
+        });
+      }
+    } catch (e) {
+      yield state.update(
+        isLoading: false,
+        error: "Failed to list programs: $e",
+      );
+    }
   }
-
-  void dispose() {}
 
   Stream<ProgramsState> _mapProgramsLoadedToState(ProgramsLoaded event) async* {
     yield state.update(
