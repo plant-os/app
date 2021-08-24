@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plantos/src/pages/auth/auth_bloc.dart';
 import 'package:plantos/src/pages/reset_password/reset_password.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
@@ -137,9 +138,9 @@ class LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
-            if (state.isLoading)
+            if (state.isLoading) {
               _loading = Loading(context);
-            else if (state.isSuccess) {
+            } else if (state.isSuccess) {
               _loading?.close();
               BlocProvider.of<AuthBloc>(context).add(AuthLoggedInEvent());
             } else if (state.error.isNotEmpty) {
