@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantos/src/models/crop.dart';
+import 'package:plantos/src/models/schedule.dart';
 import 'package:plantos/src/models/program.dart';
 import 'package:plantos/src/pages/schedule/schedule_bloc.dart';
 import 'package:plantos/src/pages/schedule/schedule_page.dart';
@@ -99,7 +99,7 @@ class _ProgramPageState extends State<ProgramPage> {
               var result = await _showMyDialog(state.program);
             },
             child: Text("+ New Schedule"),
-          )
+          ),
         ]),
       ),
     );

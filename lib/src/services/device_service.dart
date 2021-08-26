@@ -5,15 +5,12 @@ class DeviceService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Stream<List<Device>> list(String companyId) {
-    var list = firestore
+    return firestore
         .collection("devices")
-        .where('Company.Id', isEqualTo: companyId);
-    return list.snapshots().map((devices) => devices.docs
-        .map(
-          (device) => Device.fromJson(
-            device.data(),
-          ),
-        )
-        .toList());
+        .where('Company.Id', isEqualTo: companyId)
+        .snapshots()
+        .map((devices) => devices.docs
+            .map((device) => Device.fromJson(device.id, device.data()))
+            .toList());
   }
 }

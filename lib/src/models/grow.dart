@@ -1,7 +1,7 @@
 class LocalDate {
-  final int year;
-  final int month;
-  final int day;
+  int year;
+  int month;
+  int day;
 
   LocalDate({
     required this.year,
@@ -12,13 +12,25 @@ class LocalDate {
 
 class Grow {
   // The firebase document id for this grow.
-  final String id;
-  final String name;
-  final String programId;
-  final String deviceId;
-  final int plot;
-  final String state; // "active" | "inactive"
-  final LocalDate startDate;
+  String? id;
+  String name;
+  String? programId;
+  String? deviceId;
+  int? plot;
+  String state; // "active" | "inactive"
+  LocalDate? startDate;
+
+  factory Grow.initial() {
+    return Grow(
+      id: null,
+      name: "",
+      programId: null,
+      deviceId: null,
+      plot: null,
+      state: "active",
+      startDate: null,
+    );
+  }
 
   Grow({
     required this.id,
@@ -29,4 +41,23 @@ class Grow {
     required this.state,
     required this.startDate,
   });
+
+  Grow copyWith({
+    String? id,
+    String? name,
+    String? programId,
+    String? deviceId,
+    int? plot,
+    String? state,
+    LocalDate? startDate,
+  }) =>
+      Grow(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        programId: programId ?? this.programId,
+        deviceId: deviceId ?? this.deviceId,
+        plot: plot ?? this.plot,
+        state: state ?? this.state,
+        startDate: startDate ?? this.startDate,
+      );
 }

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantos/src/models/crop.dart';
+import 'package:plantos/src/models/schedule.dart';
 import 'package:plantos/src/models/program.dart';
 import 'package:plantos/src/services/auth_service.dart';
 import 'package:plantos/src/services/programs_service.dart';

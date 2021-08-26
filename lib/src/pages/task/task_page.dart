@@ -94,10 +94,11 @@ class _TaskPageState extends State<TaskPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 FormTextField(
-                    hintText: 'Hours',
-                    controller: _hoursController,
-                    onChanged: _onTextFieldChanged,
-                    keyboardType: TextInputType.number),
+                  hintText: 'Hours',
+                  controller: _hoursController,
+                  onChanged: _onTextFieldChanged,
+                  keyboardType: TextInputType.number,
+                ),
                 FormTextField(
                   hintText: 'Minutes',
                   controller: _minutesController,
@@ -116,12 +117,12 @@ class _TaskPageState extends State<TaskPage> {
                     }
                   },
                   items: spinnerItems
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                      .map<DropdownMenuItem<String>>(
+                          (value) => DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              ))
+                      .toList(),
                 ),
                 FormTextField(
                   hintText: 'EC',
@@ -136,9 +137,13 @@ class _TaskPageState extends State<TaskPage> {
                   keyboardType: TextInputType.number,
                 ),
                 FormButton(
-                    text: 'Save',
-                    onPressed: state.isValid ? _savePressed : null),
-                FormButton(text: 'Cancel', onPressed: _cancelPressed)
+                  text: 'Save',
+                  onPressed: state.isValid ? _savePressed : null,
+                ),
+                FormButton(
+                  text: 'Cancel',
+                  onPressed: _cancelPressed,
+                ),
               ],
             ),
           ),

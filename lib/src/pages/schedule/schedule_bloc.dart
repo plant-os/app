@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantos/src/models/crop.dart';
+import 'package:plantos/src/models/schedule.dart';
 import 'package:plantos/src/models/task.dart';
 import 'package:plantos/src/services/programs_service.dart';
 
@@ -67,17 +67,16 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   Stream<ScheduleState> _mapSchedulePressedToState() async* {
     yield state.update(isLoading: true);
     try {
+      var schedule = Schedule(
+        id: scheduleId,
+        name: name,
+        startDay: startDay,
+        tasks: tasks,
+      );
       if (scheduleId == null) {
-        _programsService.addSchedule(
-          programId,
-          Schedule(scheduleId, name, startDay, tasks),
-        );
+        _programsService.addSchedule(programId, schedule);
       } else {
-        _programsService.updateSchedule(
-          programId,
-          scheduleId!,
-          Schedule(scheduleId, name, startDay, tasks),
-        );
+        _programsService.updateSchedule(programId, scheduleId!, schedule);
       }
       yield state.update(
         isLoading: false,

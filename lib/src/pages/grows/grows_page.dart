@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plantos/src/models/grow.dart';
 import 'package:plantos/src/pages/appdrawer/appdrawer.dart';
+import 'package:plantos/src/pages/grow/grow_bloc.dart';
+import 'package:plantos/src/pages/grow/grow_page.dart';
 import 'package:plantos/src/pages/grows/grows_bloc.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/widgets/hamburger.dart';
@@ -26,6 +29,17 @@ class _GrowsPageState extends State<GrowsPage> {
     bloc.add(GrowsInitialFetchEvent());
   }
 
+  Future<void> _showNewGrowDialog() async {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => BlocProvider<GrowBloc>(
+        create: (_) => GrowBloc(Grow.initial()),
+        child: GrowPage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +61,11 @@ class _GrowsPageState extends State<GrowsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Grows", style: titleStyle),
+                  SizedBox(height: 30),
+                  TextButton(
+                    onPressed: () => _showNewGrowDialog(),
+                    child: Text("+ New Grow"),
+                  ),
                 ],
               ),
             ),

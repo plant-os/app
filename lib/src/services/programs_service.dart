@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:plantos/src/models/crop.dart';
+import 'package:plantos/src/models/schedule.dart';
+import 'package:plantos/src/models/device.dart';
 import 'package:plantos/src/models/grow.dart';
 import 'package:plantos/src/models/program.dart';
 
@@ -14,6 +15,14 @@ class ProgramsService {
     );
   }
 
+  Map<String, dynamic> serialiseLocalDateToJson(LocalDate localDate) {
+    return {
+      'Year': localDate.year,
+      'Month': localDate.month,
+      'Day': localDate.day,
+    };
+  }
+
   Grow parseGrowFromJson(String id, Map<String, dynamic> json) {
     return Grow(
       id: id,
@@ -26,6 +35,17 @@ class ProgramsService {
     );
   }
 
+  Map<String, dynamic> serialiseGrowToJson(Grow grow) {
+    return {
+      'Name': grow.name,
+      'ProgramId': grow.programId,
+      'DeviceId': grow.deviceId,
+      'Plot': grow.plot,
+      'State': grow.state,
+      'StartDate': serialiseLocalDateToJson(grow.startDate!),
+    };
+  }
+
   Stream<List<Grow>> listGrows(String companyId) {
     return firestore
         .collection("grows")
@@ -36,6 +56,17 @@ class ProgramsService {
             .toList());
   }
 
+  Future<DocumentReference> addGrow(Grow grow) {
+    return firestore.collection("grows").add(serialiseGrowToJson(grow));
+  }
+
+  Future<void> updateGrow(String id, Grow grow) {
+    return firestore
+        .collection("grows")
+        .doc(id)
+        .set(serialiseGrowToJson(grow), SetOptions(merge: true));
+  }
+
   Stream<List<Program>> list(String companyId) {
     return firestore
         .collection("programs")
@@ -43,6 +74,16 @@ class ProgramsService {
         .snapshots()
         .map((event) => event.docs
             .map((doc) => Program.fromJson(doc.id, doc.data()))
+            .toList());
+  }
+
+  Stream<List<Device>> listDevices(String companyId) {
+    return firestore
+        .collection("devices")
+        .where('Company.Id', isEqualTo: companyId)
+        .snapshots()
+        .map((event) => event.docs
+            .map((doc) => Device.fromJson(doc.id, doc.data()))
             .toList());
   }
 
@@ -73,7 +114,7 @@ class ProgramsService {
         .doc(programId)
         .collection("schedules")
         .doc(scheduleId)
-        .set(s.toJson());
+        .set(s.toJson(), SetOptions(merge: true));
   }
 
   Future<void> deleteSchedule(String programId, String scheduleId) {
@@ -92,8 +133,8 @@ class ProgramsService {
   Future<Program> add(String companyId, String name) async {
     var ref = await firestore
         .collection("programs")
-        .add(Program("", name, companyId).toJson());
+        .add(Program(id: "", name: name, companyId: companyId).toJson());
 
-    return Program(ref.id, name, companyId);
+    return Program(id: ref.id, name: name, companyId: companyId);
   }
 }
