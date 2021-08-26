@@ -36,6 +36,8 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
       yield* _mapGrowDeviceChangedEventToState(event);
     } else if (event is GrowStartDateChangedEvent) {
       yield* _mapGrowStartDateChangedEventToState(event);
+    } else if (event is GrowPlotChangedEvent) {
+      yield* _mapGrowPlotChangedEventToState(event);
     } else if (event is GrowPressedEvent) {
       yield* _mapGrowPressedEventToState();
     }
@@ -81,7 +83,8 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
     return grow.name != "" &&
         grow.programId != null &&
         grow.deviceId != null &&
-        grow.startDate != null;
+        grow.startDate != null &&
+        grow.plot != null;
   }
 
   Stream<GrowState> _mapGrowTextFieldChangedEventToState(
@@ -119,7 +122,15 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
     grow = grow.copyWith(startDate: event.startDate);
     yield state.update(
       isValid: isValid(),
-      isFetched: false,
+      grow: grow,
+    );
+  }
+
+  Stream<GrowState> _mapGrowPlotChangedEventToState(
+      GrowPlotChangedEvent event) async* {
+    grow = grow.copyWith(plot: event.plot);
+    yield state.update(
+      isValid: isValid(),
       grow: grow,
     );
   }

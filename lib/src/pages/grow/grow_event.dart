@@ -36,4 +36,12 @@ class GrowStartDateChangedEvent extends GrowEvent {
   });
 }
 
+class GrowPlotChangedEvent extends GrowEvent {
+  final int plot;
+
+  GrowPlotChangedEvent({
+    required this.plot,
+  });
+}
+
 class GrowPressedEvent extends GrowEvent {}

@@ -91,6 +91,31 @@ class _GrowPageState extends State<GrowPage> {
     }
   }
 
+  void _onChangePlotSelection(int? plot) {
+    print("selected $plot");
+    if (plot != null) {
+      bloc.add(GrowPlotChangedEvent(plot: plot));
+    }
+  }
+
+  void _onPressDatePicker(GrowState state) async {
+    var result = await showDatePicker(
+      context: context,
+      initialDate: state.grow.startDate == null
+          ? DateTime.now()
+          : DateTime(state.grow.startDate!.year, state.grow.startDate!.month,
+              state.grow.startDate!.day),
+      firstDate: DateTime(2021, 1, 1),
+      lastDate: DateTime(2031, 1, 1),
+    );
+    print("got: $result");
+    if (result != null) {
+      bloc.add(GrowStartDateChangedEvent(
+          startDate: LocalDate(
+              year: result.year, month: result.month, day: result.day)));
+    }
+  }
+
   Widget buildForm(GrowState state) {
     return Scaffold(
       body: SafeArea(
@@ -135,39 +160,30 @@ class _GrowPageState extends State<GrowPage> {
                               ))
                       .toList(),
                 ),
+                DropdownButton<int>(
+                  value: state.grow.plot,
+                  onChanged: _onChangePlotSelection,
+                  items: List.generate(
+                      2,
+                      (index) => DropdownMenuItem<int>(
+                            value: index,
+                            child: Text("$index"),
+                          )),
+                ),
                 GestureDetector(
-                    onTap: () async {
-                      var result = await showDatePicker(
-                        context: context,
-                        initialDate: state.grow.startDate == null
-                            ? DateTime.now()
-                            : DateTime(
-                                state.grow.startDate!.year,
-                                state.grow.startDate!.month,
-                                state.grow.startDate!.day),
-                        firstDate: DateTime(2021, 1, 1),
-                        lastDate: DateTime(2031, 1, 1),
-                      );
-                      print("got: $result");
-                      if (result != null) {
-                        bloc.add(GrowStartDateChangedEvent(
-                            startDate: LocalDate(
-                                year: result.year,
-                                month: result.month,
-                                day: result.day)));
-                      }
-                    },
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      color: Colors.white,
-                      child: Text(state.grow.startDate == null
-                          ? ""
-                          : DateFormat.yMd('en_MY').format(DateTime(
-                              state.grow.startDate!.year,
-                              state.grow.startDate!.month,
-                              state.grow.startDate!.day))),
-                    )),
+                  onTap: () => _onPressDatePicker(state),
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: Text(state.grow.startDate == null
+                        ? ""
+                        : DateFormat.yMd('en_MY').format(DateTime(
+                            state.grow.startDate!.year,
+                            state.grow.startDate!.month,
+                            state.grow.startDate!.day))),
+                  ),
+                ),
                 FormButton(
                   text: 'Save',
                   onPressed: state.isValid ? _savePressed : null,
