@@ -40,6 +40,29 @@ class _GrowsPageState extends State<GrowsPage> {
     );
   }
 
+  Future<void> _handleEditGrow(Grow grow) async {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => BlocProvider<GrowBloc>(
+        create: (_) => GrowBloc(grow),
+        child: GrowPage(),
+      ),
+    );
+  }
+
+  Widget _buildGrowRow(Grow grow) {
+    return Row(
+      children: [
+        Text(grow.name),
+        TextButton(
+          child: Text("edit"),
+          onPressed: () => _handleEditGrow(grow),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,6 +84,15 @@ class _GrowsPageState extends State<GrowsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Grows", style: titleStyle),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: state.grows
+                            .map((grow) => _buildGrowRow(grow))
+                            .toList(),
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 30),
                   TextButton(
                     onPressed: () => _showNewGrowDialog(),

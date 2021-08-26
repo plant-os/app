@@ -64,11 +64,17 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
         var programs = await programsService.list(companyId).first;
         var devices = await programsService.listDevices(companyId).first;
 
+        // Default this document to be owned by the creating users company.
+        if (grow.companyId == null) {
+          grow = grow.copyWith(companyId: companyId);
+        }
+
         yield state.update(
           isLoading: false,
           isFetched: true,
           programs: programs,
           devices: devices,
+          grow: grow,
         );
       }
     } catch (e) {

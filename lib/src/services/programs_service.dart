@@ -32,6 +32,7 @@ class ProgramsService {
       plot: json['Plot'],
       state: json['State'],
       startDate: parseLocalDateFromJson(json['StartDate']),
+      companyId: json['CompanyId'],
     );
   }
 
@@ -43,6 +44,7 @@ class ProgramsService {
       'Plot': grow.plot,
       'State': grow.state,
       'StartDate': serialiseLocalDateToJson(grow.startDate!),
+      'CompanyId': grow.companyId,
     };
   }
 

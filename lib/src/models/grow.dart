@@ -19,6 +19,7 @@ class Grow {
   int? plot;
   String state; // "active" | "inactive"
   LocalDate? startDate;
+  String? companyId;
 
   factory Grow.initial() {
     return Grow(
@@ -29,6 +30,7 @@ class Grow {
       plot: null,
       state: "active",
       startDate: null,
+      companyId: null,
     );
   }
 
@@ -40,6 +42,7 @@ class Grow {
     required this.plot,
     required this.state,
     required this.startDate,
+    required this.companyId,
   });
 
   Grow copyWith({
@@ -50,6 +53,7 @@ class Grow {
     int? plot,
     String? state,
     LocalDate? startDate,
+    String? companyId,
   }) =>
       Grow(
         id: id ?? this.id,
@@ -59,5 +63,6 @@ class Grow {
         plot: plot ?? this.plot,
         state: state ?? this.state,
         startDate: startDate ?? this.startDate,
+        companyId: companyId ?? this.companyId,
       );
 }

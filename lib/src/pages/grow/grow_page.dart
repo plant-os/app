@@ -116,6 +116,24 @@ class _GrowPageState extends State<GrowPage> {
     }
   }
 
+  Program? lookupProgram(GrowState state) {
+    var it =
+        state.programs.where((element) => element.id == state.grow.programId);
+    if (it.isEmpty) {
+      return null;
+    }
+    return it.first;
+  }
+
+  Device? lookupDevice(GrowState state) {
+    var it =
+        state.devices.where((element) => element.id == state.grow.deviceId);
+    if (it.isEmpty) {
+      return null;
+    }
+    return it.first;
+  }
+
   Widget buildForm(GrowState state) {
     return Scaffold(
       body: SafeArea(
@@ -133,10 +151,7 @@ class _GrowPageState extends State<GrowPage> {
                   keyboardType: TextInputType.text,
                 ),
                 DropdownButton<Program>(
-                  value: state.grow.programId == null
-                      ? null
-                      : state.programs.singleWhere(
-                          (element) => element.id == state.grow.programId),
+                  value: lookupProgram(state),
                   onChanged: _onChangeProgramSelection,
                   items: state.programs
                       .map<DropdownMenuItem<Program>>(
@@ -147,10 +162,7 @@ class _GrowPageState extends State<GrowPage> {
                       .toList(),
                 ),
                 DropdownButton<Device>(
-                  value: state.grow.deviceId == null
-                      ? null
-                      : state.devices.singleWhere(
-                          (element) => element.id == state.grow.deviceId),
+                  value: lookupDevice(state),
                   onChanged: _onChangeDeviceSelection,
                   items: state.devices
                       .map<DropdownMenuItem<Device>>(
