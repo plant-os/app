@@ -99,7 +99,7 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
                       onChanged: _onTextFieldChanged,
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    FormButton(
+                    SecondaryButton(
                       text: 'Reset Password',
                       onPressed: state.isValid ? _resetPasswordPressed : null,
                     )

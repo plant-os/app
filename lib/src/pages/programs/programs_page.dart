@@ -5,6 +5,7 @@ import 'package:plantos/src/pages/appdrawer/appdrawer.dart';
 import 'package:plantos/src/pages/program/program_bloc.dart';
 import 'package:plantos/src/pages/program/program_page.dart';
 import 'package:plantos/src/themes/colors.dart';
+import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/widgets/hamburger.dart';
 
 import 'programs_bloc.dart';
@@ -22,20 +23,13 @@ class ProgramsPage extends StatefulWidget {
 
 class _ProgramsPageState extends State<ProgramsPage> {
   late ProgramsBloc bloc;
+  Loading? _loading;
 
   @override
   void initState() {
     super.initState();
     bloc = BlocProvider.of<ProgramsBloc>(context);
     bloc.add(ProgramsInitialFetchEvent());
-  }
-
-  Widget loadingPage() {
-    return SafeArea(
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
   }
 
   Widget buildProgram(Program program) {
@@ -73,9 +67,11 @@ class _ProgramsPageState extends State<ProgramsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Programs", style: titleStyle),
-            SingleChildScrollView(
-              child: Column(
-                children: state.programs.map((e) => buildProgram(e)).toList(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: state.programs.map((e) => buildProgram(e)).toList(),
+                ),
               ),
             ),
             TextButton(
@@ -90,6 +86,24 @@ class _ProgramsPageState extends State<ProgramsPage> {
     );
   }
 
+  void _blocListener(BuildContext context, ProgramsState state) {
+    if (state.isLoading) {
+      _loading = Loading(context);
+    } else if (state.error.isNotEmpty) {
+      _loading?.close();
+      print("showing error message: ${state.error}");
+      Scaffold.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          state.error,
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+      ));
+    } else {
+      _loading?.close();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,15 +116,13 @@ class _ProgramsPageState extends State<ProgramsPage> {
             width: 115.0, height: 27.14),
       ),
       drawer: AppDrawer(),
-      body: BlocBuilder<ProgramsBloc, ProgramsState>(
-        builder: (context, state) {
-          // TODO: Handle error in state.
-          if (state.isLoading) {
-            return loadingPage();
-          } else {
+      body: BlocListener<ProgramsBloc, ProgramsState>(
+        listener: (context, state) => _blocListener(context, state),
+        child: BlocBuilder<ProgramsBloc, ProgramsState>(
+          builder: (context, state) {
             return programsList(state, context);
-          }
-        },
+          },
+        ),
       ),
     );
   }

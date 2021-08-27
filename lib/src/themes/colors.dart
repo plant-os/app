@@ -15,6 +15,13 @@ const titleStyle = TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+const dialogHeaderStyle = TextStyle(
+  color: Color(0xff28183d),
+  fontSize: 18,
+  fontFamily: "Work Sans",
+  fontWeight: FontWeight.w600,
+);
+
 const textStyle = TextStyle(
     color: Color(0xff28183d),
     fontSize: 13,

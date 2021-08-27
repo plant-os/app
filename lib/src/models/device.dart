@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'company.dart';
 
 class Device {
@@ -118,4 +120,20 @@ class Device {
       o.demo == demo &&
       o.registryId == registryId &&
       o.cropId == cropId;
+
+  @override
+  int get hashCode => hashValues(
+      id,
+      connected,
+      deviceId,
+      deviceZone,
+      description,
+      outdoor,
+      indoor,
+      location,
+      company,
+      active,
+      demo,
+      registryId,
+      cropId);
 }

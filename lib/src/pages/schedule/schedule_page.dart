@@ -112,14 +112,14 @@ class SchedulePageState extends State<SchedulePage> {
       Text("${t.duration}"),
       SizedBox(
         height: 50,
-        child: FormButton(
+        child: SecondaryButton(
           text: 'Edit',
           onPressed: () => _editTaskPressed(index, t),
         ),
       ),
       SizedBox(
         height: 50,
-        child: FormButton(
+        child: SecondaryButton(
           text: 'Delete',
           onPressed: () => _deleteTaskPressed(index),
         ),
@@ -162,14 +162,14 @@ class SchedulePageState extends State<SchedulePage> {
                             .mapIndexed((i, t) => _buildTask(t, i))
                             .toList(),
                       ),
-                      FormButton(
+                      SecondaryButton(
                         text: 'Add Task',
                         onPressed: _addTaskPressed,
                       ),
-                      FormButton(
+                      SecondaryButton(
                           text: 'Cancel',
                           onPressed: () => Navigator.of(context).pop()),
-                      FormButton(
+                      SecondaryButton(
                         text: 'Save',
                         onPressed: state.isValid ? _savePressed : null,
                       )

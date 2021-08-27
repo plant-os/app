@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class LocalDate {
   int year;
   int month;
@@ -65,4 +67,24 @@ class Grow {
         startDate: startDate ?? this.startDate,
         companyId: companyId ?? this.companyId,
       );
+
+  @override
+  String toString() =>
+      "Grow{id: $id, name: $name, programId: $programId, deviceId: $deviceId, plot: $plot, state: $state, startDate: $startDate, companyId: $companyId}";
+
+  @override
+  bool operator ==(dynamic o) =>
+      o is Grow &&
+      o.id == id &&
+      o.name == name &&
+      o.programId == programId &&
+      o.deviceId == deviceId &&
+      o.plot == plot &&
+      o.state == state &&
+      o.startDate == startDate &&
+      o.companyId == companyId;
+
+  @override
+  int get hashCode => hashValues(
+      id, name, programId, deviceId, plot, state, startDate, companyId);
 }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class Program {
   final String id;
   final String name;
@@ -22,4 +24,7 @@ class Program {
   @override
   bool operator ==(dynamic o) =>
       o is Program && o.id == id && o.name == name && o.companyId == companyId;
+
+  @override
+  int get hashCode => hashValues(id, name, companyId);
 }

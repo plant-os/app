@@ -136,11 +136,11 @@ class _TaskPageState extends State<TaskPage> {
                   onChanged: _onTextFieldChanged,
                   keyboardType: TextInputType.number,
                 ),
-                FormButton(
+                SecondaryButton(
                   text: 'Save',
                   onPressed: state.isValid ? _savePressed : null,
                 ),
-                FormButton(
+                SecondaryButton(
                   text: 'Cancel',
                   onPressed: _cancelPressed,
                 ),

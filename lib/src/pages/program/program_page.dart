@@ -30,23 +30,13 @@ class _ProgramPageState extends State<ProgramPage> {
     bloc.add(ProgramLoadEvent());
   }
 
-  Future<void> _showMyDialog(Program p) async {
+  Future<void> _showCreateScheduleDialog(Program p) async {
     showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (_) => BlocProvider<ScheduleBloc>(
         create: (_) => ScheduleBloc(p.id, null, null),
         child: SchedulePage(),
-      ),
-    );
-  }
-
-  Widget loadingPage() {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
       ),
     );
   }
@@ -96,7 +86,7 @@ class _ProgramPageState extends State<ProgramPage> {
           ),
           TextButton(
             onPressed: () async {
-              var result = await _showMyDialog(state.program);
+              var result = await _showCreateScheduleDialog(state.program);
             },
             child: Text("+ New Schedule"),
           ),
@@ -110,9 +100,7 @@ class _ProgramPageState extends State<ProgramPage> {
     return BlocBuilder<ProgramBloc, ProgramState>(
       builder: (context, state) {
         // TODO: Error handling.
-        if (state.isLoading) {
-          return loadingPage();
-        }
+        // TODO: Loading screen.
         return schedulesList(state, context);
       },
     );

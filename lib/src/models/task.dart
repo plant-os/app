@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class Task {
   final int hours;
   final int minutes;
@@ -36,4 +38,7 @@ class Task {
       o.ec == ec &&
       o.duration == duration &&
       o.action == action;
+
+  @override
+  int get hashCode => hashValues(hours, minutes, ec, duration, action);
 }

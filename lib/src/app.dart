@@ -5,6 +5,7 @@ import 'package:plantos/src/pages/auth/auth_bloc.dart';
 import 'package:plantos/src/pages/grows/grows_bloc.dart';
 import 'package:plantos/src/pages/grows/grows_page.dart';
 import 'package:plantos/src/pages/login/login.dart';
+import 'package:plantos/src/themes/colors.dart';
 import 'pages/programs/programs_bloc.dart';
 import 'pages/programs/programs_page.dart';
 
@@ -16,6 +17,25 @@ var theme = ThemeData(
     elevation: 0,
   ),
   scaffoldBackgroundColor: const Color(0xFFF9F9F9),
+  dividerTheme: const DividerThemeData(
+    color: const Color(0xFFE9E9E9),
+    // space: 15,
+    thickness: 1,
+    indent: 0,
+    endIndent: 0,
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      backgroundColor: Color(0xFF1FAD84),
+      textStyle: btnLabelStyle,
+      primary: Colors.white,
+      minimumSize: Size(88, 40),
+      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+      ),
+    ),
+  ),
 );
 
 class App extends StatelessWidget {

@@ -6,6 +6,7 @@ import 'package:plantos/src/pages/grow/grow_bloc.dart';
 import 'package:plantos/src/pages/grow/grow_page.dart';
 import 'package:plantos/src/pages/grows/grows_bloc.dart';
 import 'package:plantos/src/themes/colors.dart';
+import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/widgets/hamburger.dart';
 
 /// [GrowsPage] renders the list of crops that are currently being grown. This
@@ -20,6 +21,7 @@ class GrowsPage extends StatefulWidget {
 
 class _GrowsPageState extends State<GrowsPage> {
   late GrowsBloc bloc;
+  Loading? _loading;
 
   @override
   void initState() {
@@ -63,6 +65,24 @@ class _GrowsPageState extends State<GrowsPage> {
     );
   }
 
+  void _blocListener(BuildContext context, GrowsState state) {
+    if (state.isLoading) {
+      _loading = Loading(context);
+    } else if (state.error.isNotEmpty) {
+      _loading?.close();
+      print("showing error message: ${state.error}");
+      Scaffold.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          state.error,
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+      ));
+    } else {
+      _loading?.close();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,34 +95,37 @@ class _GrowsPageState extends State<GrowsPage> {
             width: 115.0, height: 27.14),
       ),
       drawer: AppDrawer(),
-      body: BlocBuilder<GrowsBloc, GrowsState>(
-        builder: (context, state) {
-          return SafeArea(
-            child: Padding(
-              padding: standardPagePadding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Grows", style: titleStyle),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: state.grows
-                            .map((grow) => _buildGrowRow(grow))
-                            .toList(),
+      body: BlocListener<GrowsBloc, GrowsState>(
+        listener: (context, state) => _blocListener(context, state),
+        child: BlocBuilder<GrowsBloc, GrowsState>(
+          builder: (context, state) {
+            return SafeArea(
+              child: Padding(
+                padding: standardPagePadding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Grows", style: titleStyle),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: state.grows
+                              .map((grow) => _buildGrowRow(grow))
+                              .toList(),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 30),
-                  TextButton(
-                    onPressed: () => _showNewGrowDialog(),
-                    child: Text("+ New Grow"),
-                  ),
-                ],
+                    SizedBox(height: 30),
+                    TextButton(
+                      onPressed: () => _showNewGrowDialog(),
+                      child: Text("+ New Grow"),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

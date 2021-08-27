@@ -51,10 +51,13 @@ flutter:
     - assets/logo.png
     - assets/crop.jpg
     - assets/hamburger.png
+    - assets/icon/close.png
     - assets/logo/withtext.png
     - assets/icon/logout.png
     - assets/icon/devices.png
     - assets/icon/grows.png
+    - assets/icon/calendar.png
+    - assets/icon/arrow_down.png
     - assets/icon/hamburger.png
     - assets/icon/programs.png
     - assets/icon/settings.png

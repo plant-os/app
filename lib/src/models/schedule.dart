@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:ui';
+
 import 'package:plantos/src/models/task.dart';
 
 class Schedule {
@@ -41,4 +42,7 @@ class Schedule {
       name == o.name &&
       startDay == o.startDay &&
       tasks == o.tasks;
+
+  @override
+  int get hashCode => hashValues(id, name, startDay, hashList(tasks));
 }
