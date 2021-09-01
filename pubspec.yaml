@@ -30,6 +30,8 @@ dependencies:
   quiver: ^3.0.1
   provider: ^5.0.0
   intl: ^0.17.0
+  path_drawing: ^0.5.1
+  sprintf: "^6.0.0"
 
 dev_dependencies:
   mockito: ^5.0.0-nullsafety.1
@@ -61,6 +63,10 @@ flutter:
     - assets/icon/hamburger.png
     - assets/icon/programs.png
     - assets/icon/settings.png
+    - assets/icon/plus.png
+    - assets/icon/bin.png
+    - assets/icon/ellipsis.png
+    - assets/icon/edit.png
     - assets/user.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

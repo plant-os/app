@@ -2,22 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:plantos/src/themes/colors.dart';
 
 class Loading {
-  final BuildContext context;
+  BuildContext? loadingCtx;
 
-  Loading(this.context) {
+  Loading(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(blueColor),
-        ),
-      ),
+      builder: (context) {
+        loadingCtx = context;
+        return Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(blueColor),
+          ),
+        );
+      },
     );
   }
 
   void close() {
-    FocusScope.of(context).requestFocus(FocusNode());
-    Navigator.pop(context);
+    if (loadingCtx != null) {
+      FocusScope.of(loadingCtx!).requestFocus(FocusNode());
+      Navigator.pop(loadingCtx!);
+    } else {
+      print("loadingCtx is null");
+    }
   }
 }

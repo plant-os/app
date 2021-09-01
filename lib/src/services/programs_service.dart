@@ -66,7 +66,7 @@ class ProgramsService {
     return firestore
         .collection("grows")
         .doc(id)
-        .set(serialiseGrowToJson(grow), SetOptions(merge: true));
+        .update(serialiseGrowToJson(grow));
   }
 
   Stream<List<Program>> list(String companyId) {

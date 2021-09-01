@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
+import 'package:plantos/src/widgets/dialog_form.dart';
+import 'package:plantos/src/widgets/field_box.dart';
 import 'package:plantos/src/widgets/form_button.dart';
 import 'package:plantos/src/widgets/form_textfield.dart';
 
 import 'task_bloc.dart';
 
+/// TaskPage displays a form for adding a task to a schedule. This is a single
+/// repeated action that is taken by the device at a specified time each day.
+/// It's either an irrigation cycle or a fertigation cycle.
 class TaskPage extends StatefulWidget {
   const TaskPage({
     Key? key,
@@ -84,28 +90,48 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   Widget buildForm(TaskState state) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FormTextField(
-                  hintText: 'Hours',
-                  controller: _hoursController,
-                  onChanged: _onTextFieldChanged,
-                  keyboardType: TextInputType.number,
-                ),
-                FormTextField(
-                  hintText: 'Minutes',
-                  controller: _minutesController,
-                  onChanged: _onTextFieldChanged,
-                  keyboardType: TextInputType.number,
-                ),
-                DropdownButton<String>(
+    return Padding(
+      padding: const EdgeInsets.only(left: 14, right: 14),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 15, bottom: 9),
+            child: Text("Hours", style: labelStyle),
+          ),
+          FieldBox(
+            child: FormTextField(
+              hintText: 'Hours',
+              controller: _hoursController,
+              onChanged: _onTextFieldChanged,
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15, bottom: 9),
+            child: Text("Minutes", style: labelStyle),
+          ),
+          FieldBox(
+            child: FormTextField(
+              hintText: 'Minutes',
+              controller: _minutesController,
+              onChanged: _onTextFieldChanged,
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15, bottom: 9),
+            child: Text("Action", style: labelStyle),
+          ),
+          FieldBox(
+            child: DropdownButtonHideUnderline(
+              child: Padding(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  icon: Image.asset("assets/icon/arrow_down.png",
+                      width: 12, height: 6),
                   value: dropdownValue,
                   onChanged: (String? data) {
                     print("selected $data");
@@ -124,30 +150,34 @@ class _TaskPageState extends State<TaskPage> {
                               ))
                       .toList(),
                 ),
-                FormTextField(
-                  hintText: 'EC',
-                  controller: _ecController,
-                  onChanged: _onTextFieldChanged,
-                  keyboardType: TextInputType.number,
-                ),
-                FormTextField(
-                  hintText: 'Duration',
-                  controller: _durationController,
-                  onChanged: _onTextFieldChanged,
-                  keyboardType: TextInputType.number,
-                ),
-                SecondaryButton(
-                  text: 'Save',
-                  onPressed: state.isValid ? _savePressed : null,
-                ),
-                SecondaryButton(
-                  text: 'Cancel',
-                  onPressed: _cancelPressed,
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+          Padding(
+            padding: EdgeInsets.only(top: 15, bottom: 9),
+            child: Text("EC", style: labelStyle),
+          ),
+          FieldBox(
+            child: FormTextField(
+              hintText: 'EC',
+              controller: _ecController,
+              onChanged: _onTextFieldChanged,
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15, bottom: 9),
+            child: Text("Duration", style: labelStyle),
+          ),
+          FieldBox(
+            child: FormTextField(
+              hintText: 'Duration',
+              controller: _durationController,
+              onChanged: _onTextFieldChanged,
+              keyboardType: TextInputType.number,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -157,13 +187,11 @@ class _TaskPageState extends State<TaskPage> {
     return BlocListener<TaskBloc, TaskState>(
       listener: _blocListener,
       child: BlocBuilder<TaskBloc, TaskState>(
-        builder: (context, state) {
-          print("state is $state");
-          if (state is TaskState) {
-            return buildForm(state);
-          }
-          throw "Unhandled state";
-        },
+        builder: (context, state) => DialogForm(
+          header: Text("New Task", style: dialogHeaderStyle),
+          onPressedSave: state.isValid ? _savePressed : null,
+          child: buildForm(state),
+        ),
       ),
     );
   }

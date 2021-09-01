@@ -49,27 +49,31 @@ class _GrowPageState extends State<GrowPage> {
 
   void _blocListener(BuildContext context, GrowState state) {
     if (state.isLoading) {
+      print("creating loading dialog widget");
       _loading = Loading(context);
-    } else if (state.error.isNotEmpty) {
+    } else if (!state.isLoading && _loading != null) {
+      print("cancelling loading dialog widget");
       _loading?.close();
+      _loading = null;
+    }
+
+    if (state.error.isNotEmpty) {
       print("showing error message: ${state.error}");
-      // TODO:
-      // Scaffold.of(context).showSnackBar(SnackBar(
-      //   backgroundColor: Colors.red,
-      //   content: Text(
-      //     state.error,
-      //     style: TextStyle(fontSize: 16, color: Colors.white),
-      //   ),
-      // ));
+      Scaffold.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          state.error,
+          style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+      ));
     } else if (state.isFetched) {
-      _loading?.close();
       _nameController.text = state.grow.name;
 
       // Ensure the bloc has the latest values.
       _onTextFieldChanged();
     } else if (state.isSuccess) {
-      _loading?.close();
-      Navigator.of(context).pop();
+      print("state.isSuccess - popping context");
+      Navigator.pop(context);
     }
   }
 
@@ -144,6 +148,7 @@ class _GrowPageState extends State<GrowPage> {
         builder: (context, state) {
           print("state is $state");
           return DialogForm(
+            header: Text("New Grow", style: dialogHeaderStyle),
             onPressedSave: () => bloc.add(GrowPressedEvent()),
             isValid: state.isValid,
             child: Padding(

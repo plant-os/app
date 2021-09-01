@@ -3,11 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/task.dart';
 import 'package:plantos/src/pages/task/task_bloc.dart';
 import 'package:plantos/src/pages/task/task_page.dart';
+import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
+import 'package:plantos/src/widgets/dialog_form.dart';
+import 'package:plantos/src/widgets/field_box.dart';
 import 'package:plantos/src/widgets/form_button.dart';
 import 'package:plantos/src/widgets/form_textfield.dart';
 import 'package:collection/collection.dart';
+import 'package:sprintf/sprintf.dart';
 
 import 'schedule_bloc.dart';
 
@@ -105,78 +109,85 @@ class SchedulePageState extends State<SchedulePage> {
   }
 
   Widget _buildTask(Task t, int index) {
-    return Row(children: [
-      Text("${t.hours}:${t.minutes}"),
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Text("${sprintf("%02d:%02d", [t.hours, t.minutes])}"),
       Text("${t.action}"),
       Text("${t.ec}"),
       Text("${t.duration}"),
-      SizedBox(
-        height: 50,
-        child: SecondaryButton(
-          text: 'Edit',
-          onPressed: () => _editTaskPressed(index, t),
+      Row(children: [
+        GestureDetector(
+          onTap: () => _editTaskPressed(index, t),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset("assets/icon/edit.png", width: 23, height: 23),
+          ),
         ),
-      ),
-      SizedBox(
-        height: 50,
-        child: SecondaryButton(
-          text: 'Delete',
-          onPressed: () => _deleteTaskPressed(index),
+        GestureDetector(
+          onTap: () => _deleteTaskPressed(index),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8, top: 8, bottom: 8),
+            child: Image.asset("assets/icon/bin.png", width: 23, height: 23),
+          ),
         ),
-      ),
+      ]),
     ]);
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Future.value(true),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Scaffold(
-          body: BlocListener<ScheduleBloc, ScheduleState>(
-            listener: _blocListener,
-            child: BlocBuilder<ScheduleBloc, ScheduleState>(
-              builder: (_, state) => SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Schedule"),
-                      FormTextField(
-                        hintText: 'Name',
-                        controller: _nameController,
-                        onChanged: _onTextFieldChanged,
-                        keyboardType: TextInputType.text,
-                      ),
-                      FormTextField(
-                        hintText: 'Start Day',
-                        controller: _startDayController,
-                        onChanged: _onTextFieldChanged,
-                        keyboardType: TextInputType.number,
-                      ),
-                      Column(
+    return BlocListener<ScheduleBloc, ScheduleState>(
+      listener: _blocListener,
+      child: BlocBuilder<ScheduleBloc, ScheduleState>(
+        builder: (_, state) => DialogForm(
+          header: Text("New Schedule", style: dialogHeaderStyle),
+          onPressedSave: state.isValid ? _savePressed : null,
+          child: Padding(
+            padding: EdgeInsets.only(left: 14, right: 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 15, bottom: 9),
+                  child: Text("Name", style: labelStyle),
+                ),
+                FieldBox(
+                  child: FormTextField(
+                    hintText: 'Name',
+                    controller: _nameController,
+                    onChanged: _onTextFieldChanged,
+                    keyboardType: TextInputType.text,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15, bottom: 9),
+                  child: Text("Start Day", style: labelStyle),
+                ),
+                FieldBox(
+                  child: FormTextField(
+                    hintText: 'Start Day',
+                    controller: _startDayController,
+                    onChanged: _onTextFieldChanged,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15, bottom: 9),
+                  child: Text("Tasks", style: labelStyle),
+                ),
+                state.tasks.isEmpty
+                    ? Text(
+                        "No tasks. Click Add Task to trigger irrigation or fertigation at a specific time of day.")
+                    : Column(
                         children: state.tasks
                             .mapIndexed((i, t) => _buildTask(t, i))
                             .toList(),
                       ),
-                      SecondaryButton(
-                        text: 'Add Task',
-                        onPressed: _addTaskPressed,
-                      ),
-                      SecondaryButton(
-                          text: 'Cancel',
-                          onPressed: () => Navigator.of(context).pop()),
-                      SecondaryButton(
-                        text: 'Save',
-                        onPressed: state.isValid ? _savePressed : null,
-                      )
-                    ],
-                  ),
+                SizedBox(height: 14),
+                SecondaryButton(
+                  text: '+ Add Task',
+                  onPressed: _addTaskPressed,
                 ),
-              ),
+              ],
             ),
           ),
         ),

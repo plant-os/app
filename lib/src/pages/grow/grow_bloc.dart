@@ -155,8 +155,8 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
         await programsService.updateGrow(grow.id!, grow);
       }
       yield state.update(
-        isLoading: false,
         isSuccess: true,
+        isLoading: false,
       );
     } catch (e) {
       print(e);

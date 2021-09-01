@@ -6,7 +6,9 @@ import 'package:plantos/src/pages/program/program_bloc.dart';
 import 'package:plantos/src/pages/program/program_page.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/loading.dart';
+import 'package:plantos/src/widgets/card_element.dart';
 import 'package:plantos/src/widgets/hamburger.dart';
+import 'package:plantos/src/widgets/new_button.dart';
 
 import 'programs_bloc.dart';
 import 'widgets/create_program_dialog.dart';
@@ -32,26 +34,28 @@ class _ProgramsPageState extends State<ProgramsPage> {
     bloc.add(ProgramsInitialFetchEvent());
   }
 
-  Widget buildProgram(Program program) {
-    return Row(children: [
-      Text(program.name),
-      TextButton(
-        child: Text("edit"),
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => BlocProvider<ProgramBloc>(
-            create: (_) => ProgramBloc(program.id, program),
-            child: ProgramPage(),
-          ),
-        )),
+  void _editProgramPressed(Program program) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => BlocProvider<ProgramBloc>(
+        create: (_) => ProgramBloc(program.id, program),
+        child: ProgramPage(),
       ),
-      TextButton(
-        child: Text("delete"),
-        onPressed: () => bloc.add(ProgramsDeleteEvent(program.id)),
-      ),
-    ]);
+    ));
   }
 
-  Future<void> _showMyDialog() async {
+  void _deleteProgramPressed(Program program) {
+    bloc.add(ProgramsDeleteEvent(program.id));
+  }
+
+  Widget buildProgram(Program program) {
+    return CardElement(
+      child: Text(program.name),
+      onEditPressed: () => _editProgramPressed(program),
+      onDeletePressed: () => _deleteProgramPressed(program),
+    );
+  }
+
+  Future<void> _showCreateProgramDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -69,17 +73,16 @@ class _ProgramsPageState extends State<ProgramsPage> {
             Text("Programs", style: titleStyle),
             Expanded(
               child: SingleChildScrollView(
+                padding: EdgeInsets.only(top: 22),
                 child: Column(
                   children: state.programs.map((e) => buildProgram(e)).toList(),
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () async {
-                var result = await _showMyDialog();
-              },
-              child: Text("+ New Program"),
-            )
+            NewButton(
+              child: Text("New Program"),
+              onPressed: _showCreateProgramDialog,
+            ),
           ],
         ),
       ),

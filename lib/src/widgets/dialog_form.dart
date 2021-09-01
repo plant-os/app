@@ -5,13 +5,15 @@ import 'package:plantos/src/widgets/close_button.dart';
 import 'form_button.dart';
 
 class DialogForm extends StatelessWidget {
-  final Function() onPressedSave;
+  final Function()? onPressedSave;
+  final Widget header;
   final Widget child;
   final bool isValid;
 
   const DialogForm({
     Key? key,
     required this.onPressedSave,
+    required this.header,
     required this.child,
     this.isValid = true,
   }) : super(key: key);
@@ -35,7 +37,7 @@ class DialogForm extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("New Grow", style: dialogHeaderStyle),
+                  header,
                   CircularCloseButton(),
                 ],
               ),
