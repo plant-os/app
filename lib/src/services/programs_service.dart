@@ -79,16 +79,6 @@ class ProgramsService {
             .toList());
   }
 
-  Stream<List<Device>> listDevices(String companyId) {
-    return firestore
-        .collection("devices")
-        .where('Company.Id', isEqualTo: companyId)
-        .snapshots()
-        .map((event) => event.docs
-            .map((doc) => Device.fromJson(doc.id, doc.data()))
-            .toList());
-  }
-
   Stream<List<Schedule>> listSchedules(String programId) {
     return firestore
         .collection("programs")

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/pages/appdrawer/appdrawer_bloc.dart';
 import 'package:plantos/src/pages/auth/auth_bloc.dart';
+import 'package:plantos/src/pages/devices/devices_bloc.dart';
+import 'package:plantos/src/pages/devices/devices_page.dart';
 import 'package:plantos/src/pages/grows/grows_bloc.dart';
 import 'package:plantos/src/pages/grows/grows_page.dart';
 import 'package:plantos/src/pages/login/login.dart';
@@ -52,6 +54,13 @@ class App extends StatelessWidget {
               pageBuilder: (_, __, ___) => BlocProvider<ProgramsBloc>(
                 create: (_) => ProgramsBloc(),
                 child: ProgramsPage(),
+              ),
+            );
+          } else if (settings.name == '/devices') {
+            return PageRouteBuilder(
+              pageBuilder: (_, __, ___) => BlocProvider<DevicesBloc>(
+                create: (_) => DevicesBloc(),
+                child: DevicesPage(),
               ),
             );
           } else {

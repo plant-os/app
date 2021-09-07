@@ -6,6 +6,7 @@ import 'package:plantos/src/models/device.dart';
 import 'package:plantos/src/models/grow.dart';
 import 'package:plantos/src/models/program.dart';
 import 'package:plantos/src/services/auth_service.dart';
+import 'package:plantos/src/services/device_service.dart';
 import 'package:plantos/src/services/programs_service.dart';
 import 'package:plantos/src/services/user_service.dart';
 
@@ -16,6 +17,7 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
   AuthService authService = AuthService();
   UserService userService = UserService();
   ProgramsService programsService = ProgramsService();
+  DeviceService deviceService = DeviceService();
 
   Grow grow;
 
@@ -62,7 +64,7 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
       } else {
         var companyId = currentUser.company!.id;
         var programs = await programsService.list(companyId).first;
-        var devices = await programsService.listDevices(companyId).first;
+        var devices = await deviceService.list(companyId).first;
 
         // Default this document to be owned by the creating users company.
         if (grow.companyId == null) {

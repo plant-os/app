@@ -2,20 +2,65 @@ import 'dart:ui';
 
 import 'company.dart';
 
+class DeviceStateModel {
+  final double humidity;
+  final double ec;
+  final double smoothed_ec;
+  final int ec_status;
+  final double temperature;
+  final double rtd;
+  final String version;
+  final bool i0;
+  final bool i1;
+  final bool i2;
+  final bool i3;
+  final bool i4;
+  final bool i5;
+  final bool i6;
+  final bool i7;
+  final bool o0;
+  final bool o1;
+  final bool o2;
+  final bool o3;
+  final bool o4;
+  final bool o5;
+  final bool o6;
+  final bool o7;
+
+  DeviceStateModel(
+    this.humidity,
+    this.ec,
+    this.smoothed_ec,
+    this.ec_status,
+    this.temperature,
+    this.rtd,
+    this.version,
+    this.i0,
+    this.i1,
+    this.i2,
+    this.i3,
+    this.i4,
+    this.i5,
+    this.i6,
+    this.i7,
+    this.o0,
+    this.o1,
+    this.o2,
+    this.o3,
+    this.o4,
+    this.o5,
+    this.o6,
+    this.o7,
+  );
+}
+
 class Device {
   /// The firestore Id of this document.
   /// @deprecated
   final String id;
 
-  final bool connected;
-
   /// The device id in cloud iot core that's used to receive telemetry.
   final String deviceId;
-
-  /// The device id of the MQTT subscriber that controls the pumps and the
-  /// valves. This is where trigger messages will be sent to. This can be the
-  /// same as DeviceId.
-  // final String controlDeviceId;
 
   final String deviceZone;
 
@@ -29,63 +74,32 @@ class Device {
 
   final Company? company;
 
-  //final DeviceType DeviceType;
-
   final bool active;
 
   final bool demo;
 
-  //Attachments?: Attachment[];
-
   final String registryId;
 
-  // final double lastHeartbeatTimeInSeconds;
+  // TODO: add to firestore.
+  final DeviceStateModel? state;
 
-  final String? cropId;
-
-  //Recipe?: Recipe;
-
-  // final double latestEC;
-  // final double latestPH;
-  // final double latestAirTemperature;
-  // final double latestWaterTemperature;
-  // final double latestHumidity;
-
-  //LatestUpdateTime: firestore.Timestamp;
   Device(
-      this.id,
-      this.connected,
-      this.deviceId,
-      this.deviceZone,
-      this.description,
-      this.outdoor,
-      this.indoor,
-      this.location,
-      this.company,
-      this.active,
-      this.demo,
-      this.registryId,
-      this.cropId);
-
-  Device.fromJson(String id, Map<String, dynamic> json)
-      : id = id,
-        connected = json['Connected'] ?? null,
-        deviceId = json['DeviceId'] ?? null,
-        deviceZone = json['DeviceZone'] ?? null,
-        description = json['Description'] ?? null,
-        outdoor = json['Outdoor'] ?? null,
-        indoor = json['Indoor'] ?? null,
-        location = json['Location'] ?? null,
-        company =
-            json['Company'] != null ? Company.fromJson(json['Company']) : null,
-        active = json['Active'] ?? null,
-        demo = json['Demo'] ?? null,
-        registryId = json['RegistryId'] ?? null,
-        cropId = json['CropId'] ?? null;
+    this.id,
+    this.deviceId,
+    this.deviceZone,
+    this.description,
+    this.outdoor,
+    this.indoor,
+    this.location,
+    this.company,
+    this.active,
+    this.demo,
+    this.registryId,
+    this.state,
+  );
 
   Map<String, dynamic> toJson() => {
         'Id': id,
-        'Connected': connected,
         'DeviceId': deviceId,
         'DeviceZone': deviceZone,
         'Description': description,
@@ -96,7 +110,6 @@ class Device {
         'Active': active,
         'Demo': demo,
         'RegistryId': registryId,
-        'CropId': cropId,
       };
 
   @override
@@ -108,7 +121,6 @@ class Device {
   bool operator ==(dynamic o) =>
       o is Device &&
       o.id == id &&
-      o.connected == connected &&
       o.deviceId == deviceId &&
       o.deviceZone == deviceZone &&
       o.description == description &&
@@ -119,21 +131,21 @@ class Device {
       o.active == active &&
       o.demo == demo &&
       o.registryId == registryId &&
-      o.cropId == cropId;
+      o.state == state;
 
   @override
   int get hashCode => hashValues(
-      id,
-      connected,
-      deviceId,
-      deviceZone,
-      description,
-      outdoor,
-      indoor,
-      location,
-      company,
-      active,
-      demo,
-      registryId,
-      cropId);
+        id,
+        deviceId,
+        deviceZone,
+        description,
+        outdoor,
+        indoor,
+        location,
+        company,
+        active,
+        demo,
+        registryId,
+        state,
+      );
 }

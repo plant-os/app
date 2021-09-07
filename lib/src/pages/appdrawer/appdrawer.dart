@@ -139,8 +139,8 @@ class _AppDrawerState extends State<AppDrawer> {
               SizedBox(height: 30),
               GestureDetector(
                 onTap: () {
-                  // TODO
-                  // Navigator.of(context).pushNamedAndRemoveUntil("/devices", (_) => false);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil("/devices", (_) => false);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
