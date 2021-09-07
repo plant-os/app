@@ -7,12 +7,12 @@ class DeviceService {
 
   DeviceStateModel parseDeviceStateFromJson(Map<String, dynamic> json) {
     return DeviceStateModel(
-      json['humidity'],
-      json['ec'],
-      json['smoothed_ec'],
+      json['humidity'].toDouble(),
+      json['ec'].toDouble(),
+      json['smoothed_ec'].toDouble(),
       json['ec_status'],
-      json['temperature'],
-      json['rtd'],
+      json['temperature'].toDouble(),
+      json['rtd'].toDouble(),
       json['version'],
       json['i0'],
       json['i1'],
@@ -34,17 +34,14 @@ class DeviceService {
   }
 
   Device parseDeviceFromJson(String id, Map<String, dynamic> json) {
+    print(json);
     return Device(
         id,
         json['DeviceId'],
         json['DeviceZone'],
-        json['Description'],
-        json['Outdoor'],
-        json['Indoor'],
+        json['Description'] ?? "",
         json['Location'],
         Company.fromJson(json['Company']),
-        json['Active'],
-        json['Demo'],
         json['RegistryId'],
         json['State'] == null ? null : parseDeviceStateFromJson(json['State']));
   }

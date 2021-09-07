@@ -56,7 +56,6 @@ class DeviceStateModel {
 
 class Device {
   /// The firestore Id of this document.
-  /// @deprecated
   final String id;
 
   /// The device id in cloud iot core that's used to receive telemetry.
@@ -66,21 +65,12 @@ class Device {
 
   final String description;
 
-  final bool outdoor;
-
-  final bool indoor;
-
   final String location;
 
-  final Company? company;
+  final Company company;
 
-  final bool active;
+  final String registryId; // "fertigation"
 
-  final bool demo;
-
-  final String registryId;
-
-  // TODO: add to firestore.
   final DeviceStateModel? state;
 
   Device(
@@ -88,12 +78,8 @@ class Device {
     this.deviceId,
     this.deviceZone,
     this.description,
-    this.outdoor,
-    this.indoor,
     this.location,
     this.company,
-    this.active,
-    this.demo,
     this.registryId,
     this.state,
   );
@@ -103,12 +89,8 @@ class Device {
         'DeviceId': deviceId,
         'DeviceZone': deviceZone,
         'Description': description,
-        'Outdoor': outdoor,
-        'Indoor': indoor,
         'Location': location,
-        'Company': company != null ? company!.toJson() : null,
-        'Active': active,
-        'Demo': demo,
+        'Company': company.toJson(),
         'RegistryId': registryId,
       };
 
@@ -124,12 +106,8 @@ class Device {
       o.deviceId == deviceId &&
       o.deviceZone == deviceZone &&
       o.description == description &&
-      o.outdoor == outdoor &&
-      o.indoor == indoor &&
       o.location == location &&
       o.company == company &&
-      o.active == active &&
-      o.demo == demo &&
       o.registryId == registryId &&
       o.state == state;
 
@@ -139,12 +117,8 @@ class Device {
         deviceId,
         deviceZone,
         description,
-        outdoor,
-        indoor,
         location,
         company,
-        active,
-        demo,
         registryId,
         state,
       );

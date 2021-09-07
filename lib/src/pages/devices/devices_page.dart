@@ -8,6 +8,7 @@ import 'package:plantos/src/pages/device/device_page.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/widgets/hamburger.dart';
+import 'package:sprintf/sprintf.dart';
 
 import 'devices_bloc.dart';
 
@@ -46,12 +47,12 @@ class _DevicesPageState extends State<DevicesPage> {
     return Padding(
       padding: EdgeInsets.only(bottom: 17),
       child: Container(
-        padding: EdgeInsets.only(left: 28, right: 18),
+        padding: EdgeInsets.only(top: 20, left: 28, right: 18, bottom: 20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(13),
         ),
-        height: 77,
+        // height: 77,
         child: Row(
           children: [
             Expanded(
@@ -60,7 +61,7 @@ class _DevicesPageState extends State<DevicesPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    device.description,
+                    device.deviceZone,
                     style: TextStyle(
                       fontFamily: "Work Sans",
                       fontSize: 16,
@@ -68,12 +69,36 @@ class _DevicesPageState extends State<DevicesPage> {
                     ),
                   ),
                   SizedBox(height: 7),
-                  Text("Greenhouse A",
-                      style: TextStyle(
-                        fontFamily: "Work Sans",
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                      )),
+                  Text(
+                    sprintf("EC : %0.2f", [device.state?.ec ?? 0]),
+                    style: TextStyle(
+                      fontFamily: "Work Sans",
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 7),
+                  Text(
+                    sprintf(
+                        "Humidity : %0.0f%%", [device.state?.humidity ?? 0]),
+                    style: TextStyle(
+                      fontFamily: "Work Sans",
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(height: 7),
+                  Text(
+                    sprintf("Temperature (air/water) : %0.1f / %0.1f", [
+                      device.state?.temperature ?? 0,
+                      device.state?.rtd ?? 0
+                    ]),
+                    style: TextStyle(
+                      fontFamily: "Work Sans",
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -100,6 +125,7 @@ class _DevicesPageState extends State<DevicesPage> {
       _loading = Loading(context);
     } else if (state.error.isNotEmpty) {
       _loading?.close();
+      _loading = null;
       print("showing error message: ${state.error}");
       Scaffold.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.red,
@@ -110,6 +136,7 @@ class _DevicesPageState extends State<DevicesPage> {
       ));
     } else {
       _loading?.close();
+      _loading = null;
     }
   }
 
