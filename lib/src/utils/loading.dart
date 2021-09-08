@@ -5,6 +5,7 @@ class Loading {
   BuildContext? loadingCtx;
 
   Loading(BuildContext context) {
+    loadingCtx = context;
     showDialog(
       context: context,
       barrierDismissible: false,

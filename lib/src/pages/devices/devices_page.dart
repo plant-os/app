@@ -37,7 +37,7 @@ class _DevicesPageState extends State<DevicesPage> {
       context: context,
       barrierDismissible: false,
       builder: (_) => BlocProvider<DeviceBloc>(
-        create: (_) => DeviceBloc(),
+        create: (_) => DeviceBloc(device.id, device.deviceId),
         child: DevicePage(),
       ),
     );

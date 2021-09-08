@@ -55,4 +55,9 @@ class DeviceService {
             .map((device) => parseDeviceFromJson(device.id, device.data()))
             .toList());
   }
+
+  Stream<Device> get(String deviceId) {
+    return firestore.collection("devices").doc(deviceId).snapshots().map(
+        (device) => parseDeviceFromJson(device.id, device.data() ?? Map()));
+  }
 }
