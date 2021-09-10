@@ -4,11 +4,16 @@ import 'package:plantos/src/models/user.dart';
 class UserService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<UserModel> getCurrentUserDetails(String email) async {
-    var user = await firestore
+  // Returns the user document for the user with the given email. If no users
+  // have this email address null is returned.
+  Future<UserModel?> getUserByEmail(String email) async {
+    var users = await firestore
         .collection("users")
         .where('Email', isEqualTo: email)
         .get();
-    return UserModel.fromJson(user.docs.first.data());
+    if (users.size == 0) {
+      return null;
+    }
+    return UserModel.fromJson(users.docs.first.data());
   }
 }

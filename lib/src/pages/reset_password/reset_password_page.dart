@@ -27,17 +27,17 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
   }
 
   void _blocListener(context, state) {
-    if (state.isLoading)
+    if (state.isLoading) {
       _loading = Loading(context);
-    else if (state.isSuccess) {
+    } else if (state.isSuccess) {
       _emailController.text = '';
       _onTextFieldChanged();
       _loading?.close();
       SnackbarWithColor(
-          color: greenColor,
-          context: context,
-          text:
-              'An email has been sent. Please click the link when you get it.');
+        color: greenColor,
+        context: context,
+        text: 'An email has been sent. Please click the link when you get it.',
+      );
     } else if (state.error.isNotEmpty) {
       _loading?.close();
       SnackbarWithColor(context: context, text: state.error, color: Colors.red);
@@ -63,14 +63,9 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
       child: Scaffold(
         backgroundColor: blueColor,
         appBar: AppBar(
-          iconTheme: IconThemeData(
-            color: blackColor,
-          ),
+          iconTheme: IconThemeData(color: blackColor),
           backgroundColor: whiteColor,
-          title: Text(
-            "Reset Password",
-            style: TextStyle(color: blackColor),
-          ),
+          title: Text("Reset Password", style: TextStyle(color: blackColor)),
         ),
         body: BlocListener<ResetPasswordBloc, ResetPasswordState>(
           listener: _blocListener,
@@ -99,13 +94,15 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
                       ),
                     ),
                     FormTextField(
-                        hintText: 'Email',
-                        controller: _emailController,
-                        onChanged: _onTextFieldChanged,
-                        keyboardType: TextInputType.emailAddress),
-                    FormButton(
-                        text: 'Reset Password',
-                        onPressed: state.isValid ? _resetPasswordPressed : null)
+                      hintText: 'Email',
+                      controller: _emailController,
+                      onChanged: _onTextFieldChanged,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SecondaryButton(
+                      text: 'Reset Password',
+                      onPressed: state.isValid ? _resetPasswordPressed : null,
+                    )
                   ],
                 ),
               ),

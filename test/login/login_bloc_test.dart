@@ -9,26 +9,16 @@ void main() {
   group("loginBloc", () {
     test("Enables the login button if the email and password are correct", () {
       MockAuthService authService = MockAuthService();
-      LoginBloc loginBloc = LoginBloc(authService);
+      LoginBloc loginBloc = LoginBloc();
       loginBloc.add(LoginTextFieldChangedEvent(
           email: "aaa@bbb.com", password: "test1234"));
       expectLater(
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: false,
-              email: "",
-              password: ""),
+              error: "", isLoading: false, isSuccess: false, isValid: false),
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: true,
-              email: "aaa@bbb.com",
-              password: "test1234"),
+              error: "", isLoading: false, isSuccess: false, isValid: true),
         ]),
       );
     });
@@ -36,57 +26,42 @@ void main() {
     test("Does not enable the login button if the email is not a valid email",
         () {
       MockAuthService authService = MockAuthService();
-      LoginBloc loginBloc = LoginBloc(authService);
+      LoginBloc loginBloc = LoginBloc();
       loginBloc.add(LoginTextFieldChangedEvent(
           email: "aaafgfhkg.com", password: "test1234"));
       expectLater(
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: false,
-              email: "",
-              password: ""),
+              error: "", isLoading: false, isSuccess: false, isValid: false),
         ]),
       );
     });
 
     test("Does not enable the login button if the email empty", () {
       MockAuthService authService = MockAuthService();
-      LoginBloc loginBloc = LoginBloc(authService);
+      LoginBloc loginBloc = LoginBloc();
       loginBloc
           .add(LoginTextFieldChangedEvent(email: "", password: "test1234"));
       expectLater(
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: false,
-              email: "",
-              password: ""),
+              error: "", isLoading: false, isSuccess: false, isValid: false),
         ]),
       );
     });
 
     test("Does not enable the login button if the password is empty", () {
       MockAuthService authService = MockAuthService();
-      LoginBloc loginBloc = LoginBloc(authService);
+      LoginBloc loginBloc = LoginBloc();
       loginBloc.add(
           LoginTextFieldChangedEvent(email: "aaafgfhkg.com", password: ""));
       expectLater(
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: false,
-              email: "",
-              password: ""),
+              error: "", isLoading: false, isSuccess: false, isValid: false),
         ]),
       );
     });
@@ -95,7 +70,7 @@ void main() {
         "Enables the login button after correcting the password which was empty",
         () {
       MockAuthService authService = MockAuthService();
-      LoginBloc loginBloc = LoginBloc(authService);
+      LoginBloc loginBloc = LoginBloc();
       loginBloc.add(
           LoginTextFieldChangedEvent(email: "dadas@sfds.com", password: ""));
       loginBloc.add(LoginTextFieldChangedEvent(
@@ -104,26 +79,11 @@ void main() {
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: false,
-              email: "",
-              password: ""),
+              error: "", isLoading: false, isSuccess: false, isValid: false),
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: false,
-              email: "dadas@sfds.com",
-              password: ""),
+              error: "", isLoading: false, isSuccess: false, isValid: false),
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: true,
-              email: "dadas@sfds.com",
-              password: "dssadsa"),
+              error: "", isLoading: false, isSuccess: false, isValid: true),
         ]),
       );
     });
@@ -132,7 +92,7 @@ void main() {
         "Enables the login button after correcting the email which was not valid",
         () {
       MockAuthService authService = MockAuthService();
-      LoginBloc loginBloc = LoginBloc(authService);
+      LoginBloc loginBloc = LoginBloc();
       loginBloc.add(
           LoginTextFieldChangedEvent(email: "aaafgfhkg.com", password: ""));
       loginBloc.add(
@@ -141,26 +101,11 @@ void main() {
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: false,
-              email: "",
-              password: ""),
+              error: "", isLoading: false, isSuccess: false, isValid: false),
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: false,
-              email: "aaafgfhkg.com",
-              password: ""),
+              error: "", isLoading: false, isSuccess: false, isValid: false),
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: true,
-              email: "aaa@bbb.com",
-              password: "dsdsds"),
+              error: "", isLoading: false, isSuccess: false, isValid: true),
         ]),
       );
     });
@@ -169,7 +114,7 @@ void main() {
         "Once login button is clicked will validate the fields and sets the loading",
         () {
       MockAuthService authService = MockAuthService();
-      LoginBloc loginBloc = LoginBloc(authService);
+      LoginBloc loginBloc = LoginBloc();
       loginBloc.add(LoginTextFieldChangedEvent(
           email: "aaa@bbb.com", password: "test1234"));
       loginBloc.add(LoginPressedEvent());
@@ -177,33 +122,13 @@ void main() {
         loginBloc,
         emitsInOrder([
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: false,
-              email: "",
-              password: ""),
+              error: "", isLoading: false, isSuccess: false, isValid: false),
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: false,
-              isValid: true,
-              email: "aaa@bbb.com",
-              password: "test1234"),
+              error: "", isLoading: false, isSuccess: false, isValid: true),
           LoginState(
-              error: "",
-              isLoading: true,
-              isSuccess: false,
-              isValid: true,
-              email: "aaa@bbb.com",
-              password: "test1234"),
+              error: "", isLoading: true, isSuccess: false, isValid: true),
           LoginState(
-              error: "",
-              isLoading: false,
-              isSuccess: true,
-              isValid: true,
-              email: "aaa@bbb.com",
-              password: "test1234"),
+              error: "", isLoading: false, isSuccess: true, isValid: true),
         ]),
       );
     });

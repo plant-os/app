@@ -5,49 +5,51 @@ class ResetPasswordState {
   final bool isLoading;
   final bool isSuccess;
   final String error;
-  final String email;
 
-  ResetPasswordState(
-      {@required required this.isValid,
-      @required required this.isLoading,
-      @required required this.isSuccess,
-      @required required this.email,
-      @required required this.error});
+  ResetPasswordState({
+    required this.isValid,
+    required this.isLoading,
+    required this.isSuccess,
+    required this.error,
+  });
 
-  factory ResetPasswordState.initial({bool? isValid, String? email}) {
+  factory ResetPasswordState.initial({
+    bool? isValid,
+  }) {
     return ResetPasswordState(
-        isValid: isValid ?? false,
-        isLoading: false,
-        isSuccess: false,
-        error: '',
-        email: email ?? '');
+      isValid: isValid ?? false,
+      isLoading: false,
+      isSuccess: false,
+      error: '',
+    );
   }
 
-  ResetPasswordState update(
-      {bool? isValid,
-      bool? isLoading,
-      bool? isSuccess,
-      String? error,
-      String? email}) {
+  ResetPasswordState update({
+    bool? isValid,
+    bool? isLoading,
+    bool? isSuccess,
+    String? error,
+  }) {
     return ResetPasswordState(
-        isValid: isValid ?? this.isValid,
-        isLoading: isLoading ?? this.isLoading,
-        isSuccess: isSuccess ?? this.isSuccess,
-        email: email ?? this.email,
-        error: error ?? this.error);
+      isValid: isValid ?? this.isValid,
+      isLoading: isLoading ?? this.isLoading,
+      isSuccess: isSuccess ?? this.isSuccess,
+      error: error ?? this.error,
+    );
   }
 
   @override
-  String toString() {
-    return "ResetPasswordState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}, email: $email";
-  }
+  String toString() =>
+      "ResetPasswordState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error}";
 
-  // ignore: hash_and_equals
+  @override
   bool operator ==(dynamic o) =>
       o is ResetPasswordState &&
       o.isValid == isValid &&
       o.isSuccess == isSuccess &&
       o.isLoading == isLoading &&
-      o.error == error &&
-      o.email == email;
+      o.error == error;
+
+  @override
+  int get hashCode => hashValues(isValid, isSuccess, isLoading, error);
 }

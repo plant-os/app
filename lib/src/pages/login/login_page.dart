@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plantos/src/pages/auth/auth_bloc.dart';
 import 'package:plantos/src/pages/reset_password/reset_password.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
-import 'package:plantos/src/widgets/form_textfield.dart';
-import 'package:plantos/src/widgets/form_button.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/pages/login/login_bloc.dart';
-import 'package:plantos/src/pages/auth/auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,16 +20,18 @@ class LoginPageState extends State<LoginPage> {
 
   void _onTextFieldChanged() {
     _loginBloc.add(LoginTextFieldChangedEvent(
-        email: _emailController.text, password: _passwordController.text));
+      email: _emailController.text,
+      password: _passwordController.text,
+    ));
   }
 
   void _forgotPasswordPressed() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => BlocProvider<ResetPasswordBloc>(
-                create: (_) => ResetPasswordBloc(_loginBloc.authService),
-                child: ResetPasswordPage())));
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => BlocProvider<ResetPasswordBloc>(
+        create: (_) => ResetPasswordBloc(),
+        child: ResetPasswordPage(),
+      ),
+    ));
   }
 
   @override
@@ -48,51 +48,6 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Widget buildContent(BuildContext context, LoginState state) {
-    const titleStyle = TextStyle(
-      color: Color(0xff28183d),
-      fontSize: 25,
-      fontFamily: "Work Sans",
-      fontWeight: FontWeight.w600,
-    );
-
-    const textStyle = TextStyle(
-        color: Color(0xff28183d),
-        fontSize: 13,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.normal);
-
-    const textLinkStyle = TextStyle(
-        color: Color(0xff6e6e6e),
-        fontSize: 14,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.w500);
-
-    const textLinkHighlightStyle = TextStyle(
-        color: Color(0xff1FAD84),
-        fontSize: 14,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.w500);
-
-    const labelStyle = TextStyle(
-        color: Color(0xff28183d),
-        fontSize: 14,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.w500);
-
-    const btnLabelStyle = TextStyle(
-        color: Color(0xffffffff),
-        fontSize: 14,
-        fontFamily: "Work Sans",
-        fontWeight: FontWeight.w500);
-
-    var textFieldDecoration = InputDecoration(
-      isCollapsed: true,
-      contentPadding: EdgeInsets.all(10),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(6)),
-      hintText: '',
-      isDense: true,
-    );
-
     return Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -154,25 +109,24 @@ class LoginPageState extends State<LoginPage> {
                       : TextButton.styleFrom(
                           backgroundColor: Color(0xFFC4C4C4)),
                   onPressed: state.isValid
-                      ? () {
-                          _loginBloc.add(LoginPressedEvent());
-                        }
+                      ? () => _loginBloc.add(LoginPressedEvent())
                       : null,
                   child: Center(child: Text("Sign in", style: btnLabelStyle)))),
           SizedBox(height: 20),
           Center(
             child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => _forgotPasswordPressed(),
-                child: RichText(
-                  text: TextSpan(
-                    children: const <TextSpan>[
-                      TextSpan(
-                          text: 'Forgot your password? ', style: textLinkStyle),
-                      TextSpan(text: 'Reset it', style: textLinkHighlightStyle),
-                    ],
-                  ),
-                )),
+              behavior: HitTestBehavior.opaque,
+              onTap: () => _forgotPasswordPressed(),
+              child: RichText(
+                text: TextSpan(
+                  children: const <TextSpan>[
+                    TextSpan(
+                        text: 'Forgot your password? ', style: textLinkStyle),
+                    TextSpan(text: 'Reset it', style: textLinkHighlightStyle),
+                  ],
+                ),
+              ),
+            ),
           ),
         ]);
   }
@@ -183,15 +137,18 @@ class LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
-            if (state.isLoading)
+            if (state.isLoading) {
               _loading = Loading(context);
-            else if (state.isSuccess) {
+            } else if (state.isSuccess) {
               _loading?.close();
               BlocProvider.of<AuthBloc>(context).add(AuthLoggedInEvent());
             } else if (state.error.isNotEmpty) {
               _loading?.close();
               SnackbarWithColor(
-                  context: context, text: state.error, color: Colors.red);
+                context: context,
+                text: state.error,
+                color: Colors.red,
+              );
             }
           },
           child: BlocBuilder<LoginBloc, LoginState>(
