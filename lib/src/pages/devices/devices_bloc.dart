@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -15,9 +16,13 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
   UserService userService = UserService();
   DeviceService deviceService = DeviceService();
 
+  Timer? timer;
+
   DevicesBloc() : super(DevicesState.initial());
 
-  void dispose() {}
+  void dispose() {
+    timer?.cancel();
+  }
 
   @override
   Stream<DevicesState> mapEventToState(DevicesEvent event) async* {
@@ -25,6 +30,8 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
       yield* _mapDevicesInitialFetchEventToState();
     } else if (event is DevicesLoadedEvent) {
       yield* _mapDevicesLoadedEventToState(event);
+    } else if (event is DevicesTimerTickEvent) {
+      yield* _mapDevicesTimerTickEventToState();
     } else {
       throw "unhandled event: $event";
     }
@@ -59,6 +66,11 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
         error: "Failed to list devices: $e",
       );
     }
+
+    // Create a periodic timer for updating the online/offline status.
+    timer = Timer.periodic(Duration(seconds: 1), (t) {
+      add(DevicesTimerTickEvent());
+    });
   }
 
   Stream<DevicesState> _mapDevicesLoadedEventToState(
@@ -66,6 +78,12 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
     yield state.update(
       isLoading: false,
       devices: event.devices,
+    );
+  }
+
+  Stream<DevicesState> _mapDevicesTimerTickEventToState() async* {
+    yield state.update(
+      now: DateTime.now(),
     );
   }
 }

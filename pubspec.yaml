@@ -59,6 +59,7 @@ flutter:
     - assets/icon/logout.png
     - assets/icon/devices.png
     - assets/icon/grows.png
+    - assets/icon/transmit.png
     - assets/icon/calendar.png
     - assets/icon/arrow_down.png
     - assets/icon/hamburger.png
@@ -68,6 +69,8 @@ flutter:
     - assets/icon/bin.png
     - assets/icon/ellipsis.png
     - assets/icon/edit.png
+    - assets/icon/online.png
+    - assets/icon/offline.png
     - assets/user.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

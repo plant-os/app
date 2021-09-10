@@ -30,6 +30,7 @@ class DeviceService {
       json['o5'],
       json['o6'],
       json['o7'],
+      json['state'].toInt(),
     );
   }
 
@@ -43,7 +44,8 @@ class DeviceService {
         json['Location'],
         Company.fromJson(json['Company']),
         json['RegistryId'],
-        json['State'] == null ? null : parseDeviceStateFromJson(json['State']));
+        json['State'] == null ? null : parseDeviceStateFromJson(json['State']),
+        json['LatestUpdateTime']);
   }
 
   Stream<List<Device>> list(String companyId) {

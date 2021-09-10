@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'company.dart';
 
 class DeviceStateModel {
@@ -26,6 +28,7 @@ class DeviceStateModel {
   final bool o5;
   final bool o6;
   final bool o7;
+  final int state;
 
   DeviceStateModel(
     this.humidity,
@@ -51,6 +54,7 @@ class DeviceStateModel {
     this.o5,
     this.o6,
     this.o7,
+    this.state,
   );
 }
 
@@ -73,6 +77,8 @@ class Device {
 
   final DeviceStateModel? state;
 
+  final Timestamp latestUpdateTime;
+
   Device(
     this.id,
     this.deviceId,
@@ -82,6 +88,7 @@ class Device {
     this.company,
     this.registryId,
     this.state,
+    this.latestUpdateTime,
   );
 
   Map<String, dynamic> toJson() => {
@@ -96,7 +103,7 @@ class Device {
 
   @override
   String toString() {
-    return "Device${toJson()}";
+    return "Device{id: $id, deviceId: $deviceId, deviceZone: $deviceZone, description: $description, location: $location, company: $company, registryId: $registryId, state: $state, latestUpdateTime: $latestUpdateTime}";
   }
 
   @override
@@ -109,7 +116,8 @@ class Device {
       o.location == location &&
       o.company == company &&
       o.registryId == registryId &&
-      o.state == state;
+      o.state == state &&
+      o.latestUpdateTime == latestUpdateTime;
 
   @override
   int get hashCode => hashValues(
@@ -121,5 +129,6 @@ class Device {
         company,
         registryId,
         state,
+        latestUpdateTime,
       );
 }

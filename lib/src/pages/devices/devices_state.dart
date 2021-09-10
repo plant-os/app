@@ -6,6 +6,7 @@ class DevicesState {
   final bool isSuccess;
   final String error;
   final List<Device> devices;
+  final DateTime now;
 
   DevicesState({
     required this.isValid,
@@ -13,6 +14,7 @@ class DevicesState {
     required this.isSuccess,
     required this.error,
     required this.devices,
+    required this.now,
   });
 
   factory DevicesState.initial({
@@ -24,6 +26,7 @@ class DevicesState {
       isSuccess: false,
       error: '',
       devices: [],
+      now: DateTime.now(),
     );
   }
 
@@ -33,6 +36,7 @@ class DevicesState {
     bool? isSuccess,
     String? error,
     List<Device>? devices,
+    DateTime? now,
   }) {
     return DevicesState(
       isValid: isValid ?? this.isValid,
@@ -40,12 +44,13 @@ class DevicesState {
       isSuccess: isSuccess ?? this.isSuccess,
       error: error ?? this.error,
       devices: devices ?? this.devices,
+      now: now ?? this.now,
     );
   }
 
   @override
   String toString() =>
-      "DevicesState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error, devices: $devices}";
+      "DevicesState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, error: $error, devices: $devices, now: $now}";
 
   @override
   bool operator ==(dynamic o) =>
@@ -54,9 +59,10 @@ class DevicesState {
       o.isSuccess == isSuccess &&
       o.isLoading == isLoading &&
       o.error == error &&
-      listEquals(o.devices, devices);
+      listEquals(o.devices, devices) &&
+      o.now == now;
 
   @override
   int get hashCode =>
-      hashValues(isValid, isSuccess, isLoading, error, hashList(devices));
+      hashValues(isValid, isSuccess, isLoading, error, hashList(devices), now);
 }
