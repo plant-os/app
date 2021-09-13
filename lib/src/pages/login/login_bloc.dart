@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:email_validator/email_validator.dart';
@@ -8,41 +9,53 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthService authService;
+  AuthService authService = AuthService();
 
-  LoginBloc(this.authService) : super(LoginState.initial());
+  String email = "";
+  String password = "";
+
+  LoginBloc() : super(LoginState.initial());
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginTextFieldChangedEvent)
+    if (event is LoginTextFieldChangedEvent) {
       yield* _mapTextFieldChangedToState(event);
-    else if (event is LoginPressedEvent) yield* _mapLoginPressedToState();
+    } else if (event is LoginPressedEvent) {
+      yield* _mapLoginPressedToState();
+    }
   }
 
   Stream<LoginState> _mapTextFieldChangedToState(
       LoginTextFieldChangedEvent event) async* {
+    email = event.email;
+    password = event.password;
     yield state.update(
-        isValid: _isFormValidated(event.email, event.password),
-        email: event.email,
-        password: event.password);
+      isValid: _isFormValidated(),
+    );
   }
 
-  bool _isFormValidated(email, password) {
+  bool _isFormValidated() {
     return EmailValidator.validate(email) && password.isNotEmpty;
   }
 
   Stream<LoginState> _mapLoginPressedToState() async* {
-    yield state.update(isLoading: true);
+    yield state.update(
+      isLoading: true,
+    );
     try {
-      await authService.login(state.email, state.password);
-      yield state.update(isLoading: false, isSuccess: true);
+      await authService.login(email, password);
+      yield state.update(
+        isLoading: false,
+        isSuccess: true,
+      );
     } on FirebaseAuthException catch (e) {
-      print(e);
-      yield state.update(isLoading: false, error: e.message);
+      yield state.update(
+        isLoading: false,
+        error: e.message,
+      );
       yield LoginState.initial(
-          email: state.email,
-          password: state.password,
-          isValid: _isFormValidated(state.email, state.password));
+        isValid: _isFormValidated(),
+      );
     }
   }
 }

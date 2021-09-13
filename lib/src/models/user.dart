@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:plantos/src/models/company.dart';
 
 class UserModel {
@@ -36,7 +38,6 @@ class UserModel {
     return "UserModel ${toJson()}";
   }
 
-  // ignore: hash_and_equals
   @override
   bool operator ==(dynamic o) =>
       o is UserModel &&
@@ -46,6 +47,9 @@ class UserModel {
       o.dashboard == dashboard &&
       o.role == role &&
       o.email == email;
+
+  @override
+  int get hashCode => hashValues(name, id, company, dashboard, role, email);
 }
 
 class Dashboard {

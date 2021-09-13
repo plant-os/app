@@ -11,8 +11,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc() : super(AuthUninitializedState()) {
     FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-    _firebaseAuth.authStateChanges().listen((event) {
-      if (event == null) {
+    _firebaseAuth.authStateChanges().listen((user) {
+      if (user == null) {
         add(AuthLoggedOutEvent());
       }
     });
@@ -22,18 +22,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
-    if (event is AuthStartedEvent)
+    if (event is AuthStartedEvent) {
       yield* _mapStartedToState();
-    else if (event is AuthLoggedInEvent)
+    } else if (event is AuthLoggedInEvent) {
       yield* _mapLoggedInToState();
-    else if (event is AuthLoggedOutEvent) yield* _mapLoggedOutToState();
+    } else if (event is AuthLoggedOutEvent) {
+      yield* _mapLoggedOutToState();
+    }
   }
 
   Stream<AuthState> _mapStartedToState() async* {
-    if (await _authService.isLoggedIn())
+    if (await _authService.isLoggedIn()) {
       yield AuthAuthenticatedState();
-    else
+    } else {
       yield AuthUnauthenticatedState();
+    }
   }
 
   Stream<AuthState> _mapLoggedInToState() async* {

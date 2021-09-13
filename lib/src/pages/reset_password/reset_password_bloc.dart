@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,9 +10,10 @@ part 'reset_password_event.dart';
 part 'reset_password_state.dart';
 
 class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
-  final AuthService _authService;
+  AuthService _authService = AuthService();
+  String email = "";
 
-  ResetPasswordBloc(this._authService) : super(ResetPasswordState.initial());
+  ResetPasswordBloc() : super(ResetPasswordState.initial());
 
   @override
   Stream<ResetPasswordState> mapEventToState(ResetPasswordEvent event) async* {
@@ -22,21 +25,20 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvent, ResetPasswordState> {
 
   Stream<ResetPasswordState> _mapTextFieldChangedToState(
       ResetPasswordTextFieldChangedEvent event) async* {
-    yield state.update(
-        isValid: EmailValidator.validate(event.email), email: event.email);
+    email = event.email;
+    yield state.update(isValid: EmailValidator.validate(email));
   }
 
   Stream<ResetPasswordState> _mapResetPasswordPressedToState() async* {
     yield state.update(isLoading: true);
     try {
-      await _authService.resetPassword(state.email);
+      await _authService.resetPassword(email);
       yield state.update(isLoading: false, isSuccess: true);
     } on FirebaseAuthException catch (e) {
       print(e);
       yield state.update(isLoading: false, error: e.message);
     } finally {
-      yield ResetPasswordState.initial(
-          email: state.email, isValid: EmailValidator.validate(state.email));
+      yield ResetPasswordState.initial(isValid: EmailValidator.validate(email));
     }
   }
 }
