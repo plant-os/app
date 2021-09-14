@@ -7,6 +7,7 @@ import 'package:plantos/src/pages/devices/devices_page.dart';
 import 'package:plantos/src/pages/grows/grows_bloc.dart';
 import 'package:plantos/src/pages/grows/grows_page.dart';
 import 'package:plantos/src/pages/login/login.dart';
+import 'package:plantos/src/services/notification_service.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'pages/programs/programs_bloc.dart';
 import 'pages/programs/programs_page.dart';
@@ -41,6 +42,8 @@ var theme = ThemeData(
 );
 
 class App extends StatelessWidget {
+  NotificationService notificationService = NotificationService();
+
   Widget authenticatedApp(BuildContext context) {
     return BlocProvider<AppDrawerBloc>(
       create: (_) => AppDrawerBloc(),
@@ -87,29 +90,36 @@ class App extends StatelessWidget {
     );
   }
 
+  void _stateListener(BuildContext context, AuthState state) {
+    if (state is AuthAuthenticatedState) {
+      notificationService.requestPermissions();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AuthBloc()..add(AuthStartedEvent()),
-      child: BlocBuilder<AuthBloc, AuthState>(builder: (_, state) {
-        print(state);
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: _stateListener,
+        child: BlocBuilder<AuthBloc, AuthState>(builder: (_, state) {
+          Widget widget;
+          if (state is AuthUnauthenticatedState) {
+            widget = unauthenticatedApp(context);
+          } else if (state is AuthAuthenticatedState) {
+            widget = authenticatedApp(context);
+          } else if (state is AuthUninitializedState) {
+            widget = Container();
+          } else {
+            throw new Exception("invalid auth state");
+          }
 
-        Widget widget;
-        if (state is AuthUnauthenticatedState) {
-          widget = unauthenticatedApp(context);
-        } else if (state is AuthAuthenticatedState) {
-          widget = authenticatedApp(context);
-        } else if (state is AuthUninitializedState) {
-          widget = Container();
-        } else {
-          throw new Exception("invalid auth state");
-        }
-
-        return GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
-          child: widget,
-        );
-      }),
+          return GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+            child: widget,
+          );
+        }),
+      ),
     );
   }
 }
