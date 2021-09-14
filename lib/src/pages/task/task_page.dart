@@ -29,11 +29,11 @@ class _TaskPageState extends State<TaskPage> {
 
   late TaskBloc bloc;
 
-  String dropdownValue = 'Irrigation';
+  String dropdownValue = 'irrigation';
 
   List<String> spinnerItems = [
-    'Irrigation',
-    'Fertigation',
+    'irrigation',
+    'fertigation',
   ];
 
   @override

@@ -20,7 +20,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   int? minutes;
   double? ec;
   int? duration;
-  String action = "Irrigation";
+  String action = "irrigation";
 
   TaskBloc(this.initial) : super(TaskState.initial());
 
