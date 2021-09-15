@@ -117,6 +117,169 @@ class _DevicePageState extends State<DevicePage> {
     );
   }
 
+  Widget _buildDebugActions(BuildContext context, DeviceState state) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            Expanded(
+                child: PrimaryButton(
+              text: "Centrifugal Pump on",
+              onPressed: () => bloc.add(DevicePressedCommandEvent("qc_p1_on")),
+            )),
+            SizedBox(width: 7),
+            Expanded(
+                child: PrimaryButton(
+              text: "Centrifugal Pump off",
+              onPressed: () => bloc.add(DevicePressedCommandEvent("qc_p1_off")),
+            ))
+          ],
+        ),
+        SizedBox(height: 5),
+        Row(
+          children: [
+            Expanded(
+                child: PrimaryButton(
+              text: "dosing pump 1 on",
+              onPressed: () => bloc.add(DevicePressedCommandEvent("qc_d1_on")),
+            )),
+            SizedBox(width: 7),
+            Expanded(
+                child: PrimaryButton(
+              text: "dosing pump 1 off",
+              onPressed: () => bloc.add(DevicePressedCommandEvent("qc_d1_off")),
+            ))
+          ],
+        ),
+        SizedBox(height: 5),
+        Row(
+          children: [
+            Expanded(
+                child: PrimaryButton(
+              text: "dosing pump 2 on",
+              onPressed: () => bloc.add(DevicePressedCommandEvent("qc_d2_on")),
+            )),
+            SizedBox(width: 7),
+            Expanded(
+                child: PrimaryButton(
+              text: "dosing pump 2 off",
+              onPressed: () => bloc.add(DevicePressedCommandEvent("qc_d2_off")),
+            ))
+          ],
+        ),
+        SizedBox(height: 5),
+        Row(
+          children: [
+            Expanded(
+                child: PrimaryButton(
+              text: "v5 open",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v5_open")),
+            )),
+            SizedBox(width: 7),
+            Expanded(
+                child: PrimaryButton(
+              text: "v5 closed",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v5_close")),
+            ))
+          ],
+        ),
+        SizedBox(height: 5),
+        Row(
+          children: [
+            Expanded(
+                child: PrimaryButton(
+              text: "v4 open",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v4_open")),
+            )),
+            SizedBox(width: 7),
+            Expanded(
+                child: PrimaryButton(
+              text: "v4 closed",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v4_close")),
+            ))
+          ],
+        ),
+        SizedBox(height: 5),
+        Row(
+          children: [
+            Expanded(
+                child: PrimaryButton(
+              text: "v3 open",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v3_open")),
+            )),
+            SizedBox(width: 7),
+            Expanded(
+                child: PrimaryButton(
+              text: "v3 closed",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v3_close")),
+            ))
+          ],
+        ),
+        SizedBox(height: 5),
+        Row(
+          children: [
+            Expanded(
+                child: PrimaryButton(
+              text: "v2 open",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v2_open")),
+            )),
+            SizedBox(width: 7),
+            Expanded(
+                child: PrimaryButton(
+              text: "v2 closed",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v2_close")),
+            ))
+          ],
+        ),
+        SizedBox(height: 5),
+        Row(
+          children: [
+            Expanded(
+                child: PrimaryButton(
+              text: "v1 open",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v1_open")),
+            )),
+            SizedBox(width: 7),
+            Expanded(
+                child: PrimaryButton(
+              text: "v1 closed",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v1_close")),
+            ))
+          ],
+        ),
+        SizedBox(height: 5),
+        Row(
+          children: [
+            Expanded(
+                child: PrimaryButton(
+              text: "v0 open",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v0_open")),
+            )),
+            SizedBox(width: 7),
+            Expanded(
+                child: PrimaryButton(
+              text: "v0 closed",
+              onPressed: () =>
+                  bloc.add(DevicePressedCommandEvent("qc_v0_close")),
+            ))
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget _buildActions(BuildContext context, DeviceState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -208,6 +371,7 @@ class _DevicePageState extends State<DevicePage> {
                     child: Text("Actions", style: labelStyle),
                   ),
                   _buildActions(context, state),
+                  _buildDebugActions(context, state),
                 ],
               ),
             ),

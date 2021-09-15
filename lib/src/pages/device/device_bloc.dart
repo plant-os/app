@@ -45,6 +45,15 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     yield state.update(
       isLoading: true,
     );
+
+    var firebaseUser = await authService.getCurrentUser();
+    var currentUser = await userService.getUserByEmail(firebaseUser!.email!);
+    var isAdmin = currentUser?.role?.admin ?? false;
+
+    yield state.update(
+      showDebug: isAdmin,
+    );
+
     try {
       deviceService.get(deviceId).listen((device) {
         add(DeviceChangedEvent(device));
