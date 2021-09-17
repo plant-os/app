@@ -258,24 +258,6 @@ class _DevicePageState extends State<DevicePage> {
             ))
           ],
         ),
-        SizedBox(height: 5),
-        Row(
-          children: [
-            Expanded(
-                child: PrimaryButton(
-              text: "v0 open",
-              onPressed: () =>
-                  bloc.add(DevicePressedCommandEvent("qc_v0_open")),
-            )),
-            SizedBox(width: 7),
-            Expanded(
-                child: PrimaryButton(
-              text: "v0 closed",
-              onPressed: () =>
-                  bloc.add(DevicePressedCommandEvent("qc_v0_close")),
-            ))
-          ],
-        ),
       ],
     );
   }
@@ -371,7 +353,9 @@ class _DevicePageState extends State<DevicePage> {
                     child: Text("Actions", style: labelStyle),
                   ),
                   _buildActions(context, state),
-                  _buildDebugActions(context, state),
+                  state.showDebug
+                      ? _buildDebugActions(context, state)
+                      : Container(),
                 ],
               ),
             ),
