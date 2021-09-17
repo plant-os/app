@@ -62,15 +62,6 @@ class _DevicePageState extends State<DevicePage> {
   }
 
   void _blocListener(BuildContext context, DeviceState state) {
-    if (state.isLoading) {
-      print("creating loading dialog widget");
-      _loading = Loading(context);
-    } else if (!state.isLoading && _loading != null) {
-      print("cancelling loading dialog widget");
-      _loading?.close();
-      _loading = null;
-    }
-
     if (state.error.isNotEmpty) {
       print("showing error message: ${state.error}");
       _showError(state.error);
@@ -121,6 +112,10 @@ class _DevicePageState extends State<DevicePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Padding(
+          padding: EdgeInsets.only(top: 15, bottom: 9),
+          child: Text("Factory Actions", style: labelStyle),
+        ),
         Row(
           children: [
             Expanded(
@@ -337,28 +332,34 @@ class _DevicePageState extends State<DevicePage> {
                 Text(state.device?.deviceZone ?? "", style: dialogHeaderStyle),
             onPressedSave: () {},
             isValid: true,
-            child: Padding(
-              padding: EdgeInsets.only(left: 14, right: 14),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 15, bottom: 9),
-                    child: Text("State", style: labelStyle),
+            child: state.isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(blueColor),
+                    ),
+                  )
+                : Padding(
+                    padding: EdgeInsets.only(left: 14, right: 14),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 15, bottom: 9),
+                          child: Text("State", style: labelStyle),
+                        ),
+                        _buildState(context, state),
+                        Padding(
+                          padding: EdgeInsets.only(top: 15, bottom: 9),
+                          child: Text("Actions", style: labelStyle),
+                        ),
+                        _buildActions(context, state),
+                        state.showDebug
+                            ? _buildDebugActions(context, state)
+                            : Container(),
+                      ],
+                    ),
                   ),
-                  _buildState(context, state),
-                  Padding(
-                    padding: EdgeInsets.only(top: 15, bottom: 9),
-                    child: Text("Actions", style: labelStyle),
-                  ),
-                  _buildActions(context, state),
-                  state.showDebug
-                      ? _buildDebugActions(context, state)
-                      : Container(),
-                ],
-              ),
-            ),
           );
         },
       ),
