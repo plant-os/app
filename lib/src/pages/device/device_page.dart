@@ -326,40 +326,50 @@ class _DevicePageState extends State<DevicePage> {
       listener: _blocListener,
       child: BlocBuilder<DeviceBloc, DeviceState>(
         builder: (context, state) {
-          print("state is $state");
+          if (state.isLoading) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(20, 42, 20, 42),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Container(
+                  color: Color(0xFFFFFFFF),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(blueColor),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+
           return DialogForm(
             header:
                 Text(state.device?.deviceZone ?? "", style: dialogHeaderStyle),
             onPressedSave: () {},
             isValid: true,
-            child: state.isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(blueColor),
-                    ),
-                  )
-                : Padding(
-                    padding: EdgeInsets.only(left: 14, right: 14),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 15, bottom: 9),
-                          child: Text("State", style: labelStyle),
-                        ),
-                        _buildState(context, state),
-                        Padding(
-                          padding: EdgeInsets.only(top: 15, bottom: 9),
-                          child: Text("Actions", style: labelStyle),
-                        ),
-                        _buildActions(context, state),
-                        state.showDebug
-                            ? _buildDebugActions(context, state)
-                            : Container(),
-                      ],
-                    ),
+            child: Padding(
+              padding: EdgeInsets.only(left: 14, right: 14),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 15, bottom: 9),
+                    child: Text("State", style: labelStyle),
                   ),
+                  _buildState(context, state),
+                  Padding(
+                    padding: EdgeInsets.only(top: 15, bottom: 9),
+                    child: Text("Actions", style: labelStyle),
+                  ),
+                  _buildActions(context, state),
+                  state.showDebug
+                      ? _buildDebugActions(context, state)
+                      : Container(),
+                ],
+              ),
+            ),
           );
         },
       ),
