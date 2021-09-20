@@ -40,6 +40,8 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
       yield* _mapGrowStartDateChangedEventToState(event);
     } else if (event is GrowPlotChangedEvent) {
       yield* _mapGrowPlotChangedEventToState(event);
+    } else if (event is GrowDeletePressedEvent) {
+      yield* _mapGrowDeletePressedEventToState();
     } else if (event is GrowPressedEvent) {
       yield* _mapGrowPressedEventToState();
     }
@@ -141,6 +143,30 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
       isValid: isValid(),
       grow: grow,
     );
+  }
+
+  Stream<GrowState> _mapGrowDeletePressedEventToState() async* {
+    if (grow.id == null) {
+      return;
+    }
+
+    yield state.update(
+      isLoading: true,
+    );
+    try {
+      await programsService.deleteGrow(grow.id!);
+      yield state.update(
+        isSuccess: true,
+        isLoading: false,
+      );
+    } catch (e) {
+      print(e);
+      yield state.update(
+        isLoading: false,
+        isSuccess: false,
+        error: "Failed to delete grow: $e",
+      );
+    }
   }
 
   Stream<GrowState> _mapGrowPressedEventToState() async* {

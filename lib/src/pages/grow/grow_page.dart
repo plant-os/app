@@ -8,6 +8,7 @@ import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/widgets/dialog_form.dart';
 import 'package:plantos/src/widgets/field_box.dart';
+import 'package:plantos/src/widgets/form_button.dart';
 import 'package:plantos/src/widgets/form_textfield.dart';
 
 import 'grow_bloc.dart';
@@ -120,6 +121,10 @@ class _GrowPageState extends State<GrowPage> {
           startDate: LocalDate(
               year: result.year, month: result.month, day: result.day)));
     }
+  }
+
+  void _deletePressed() {
+    bloc.add(GrowDeletePressedEvent());
   }
 
   Program? lookupProgram(GrowState state) {
@@ -269,6 +274,14 @@ class _GrowPageState extends State<GrowPage> {
                           ],
                         ),
                       ),
+                    ),
+                  ),
+                  SizedBox(height: 14),
+                  SizedBox(
+                    width: double.infinity,
+                    child: SecondaryButton(
+                      text: 'Stop and Delete Grow',
+                      onPressed: _deletePressed,
                     ),
                   ),
                 ],

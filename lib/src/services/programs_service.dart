@@ -52,6 +52,7 @@ class ProgramsService {
     return firestore
         .collection("grows")
         .where('CompanyId', isEqualTo: companyId)
+        .where('State', isNotEqualTo: "inactive")
         .snapshots()
         .map((event) => event.docs
             .map((doc) => parseGrowFromJson(doc.id, doc.data()))
@@ -67,6 +68,10 @@ class ProgramsService {
         .collection("grows")
         .doc(id)
         .update(serialiseGrowToJson(grow));
+  }
+
+  Future<void> deleteGrow(String id) {
+    return firestore.collection("grows").doc(id).update({'State': 'inactive'});
   }
 
   Stream<List<Program>> list(String companyId) {

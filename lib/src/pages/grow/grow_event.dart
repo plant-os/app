@@ -45,3 +45,5 @@ class GrowPlotChangedEvent extends GrowEvent {
 }
 
 class GrowPressedEvent extends GrowEvent {}
+
+class GrowDeletePressedEvent extends GrowEvent {}
