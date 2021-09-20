@@ -4,8 +4,6 @@ import 'package:plantos/src/pages/reset_password/reset_password.dart';
 import 'package:plantos/src/themes/colors.dart';
 import 'package:plantos/src/utils/loading.dart';
 import 'package:plantos/src/utils/snackbar_with_color.dart';
-import 'package:plantos/src/widgets/form_button.dart';
-import 'package:plantos/src/widgets/form_textfield.dart';
 
 class ResetPasswordPage extends StatefulWidget {
   @override
@@ -56,55 +54,62 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
     super.dispose();
   }
 
+  Widget buildContent(BuildContext context, ResetPasswordState state) {
+    return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child:
+                Image.asset("assets/logo/withtext.png", width: 144, height: 34),
+          ),
+          SizedBox(height: 43),
+          Text(
+            "Forgot password?",
+            textAlign: TextAlign.center,
+            style: titleStyle,
+          ),
+          SizedBox(height: 20),
+          Text("Please enter your email here to reset your account",
+              textAlign: TextAlign.center, style: textStyle),
+          SizedBox(height: 20),
+          TextField(
+            controller: _emailController,
+            onChanged: (val) => _onTextFieldChanged(),
+            textAlign: TextAlign.start,
+            decoration: textFieldDecoration,
+            keyboardType: TextInputType.emailAddress,
+            autocorrect: false,
+          ),
+          SizedBox(height: 20),
+          TextButton(
+            style: state.isValid
+                ? TextButton.styleFrom(backgroundColor: Color(0xFF1FAD84))
+                : TextButton.styleFrom(backgroundColor: Color(0xFFC4C4C4)),
+            onPressed: state.isValid ? _resetPasswordPressed : null,
+            child: Center(
+              child: Text("Send", style: btnLabelStyle),
+            ),
+          ),
+        ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => Future.value(true),
       child: Scaffold(
-        backgroundColor: blueColor,
         appBar: AppBar(
           iconTheme: IconThemeData(color: blackColor),
-          backgroundColor: whiteColor,
-          title: Text("Reset Password", style: TextStyle(color: blackColor)),
         ),
         body: BlocListener<ResetPasswordBloc, ResetPasswordState>(
           listener: _blocListener,
           child: BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
             builder: (_, state) => SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 50.0),
-                      child: Column(
-                        children: [
-                          ImageIcon(
-                            AssetImage("assets/logo.png"),
-                            color: whiteColor,
-                            size: 100,
-                          ),
-                          Text(
-                            "PlantOS",
-                            style: TextStyle(fontSize: 30, color: whiteColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                    FormTextField(
-                      hintText: 'Email',
-                      controller: _emailController,
-                      onChanged: _onTextFieldChanged,
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    SecondaryButton(
-                      text: 'Reset Password',
-                      onPressed: state.isValid ? _resetPasswordPressed : null,
-                    )
-                  ],
-                ),
+                padding: standardPagePadding,
+                child: buildContent(context, state),
               ),
             ),
           ),
