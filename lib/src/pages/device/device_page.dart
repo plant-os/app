@@ -344,8 +344,8 @@ class _DevicePageState extends State<DevicePage> {
           }
 
           return DialogForm(
-            header:
-                Text(state.device?.deviceZone ?? "", style: dialogHeaderStyle),
+            header: Text(state.device?.description ?? "",
+                overflow: TextOverflow.ellipsis, style: dialogHeaderStyle),
             onPressedSave: () {},
             isValid: true,
             child: Padding(

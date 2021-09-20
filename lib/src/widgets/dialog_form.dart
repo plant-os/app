@@ -37,7 +37,7 @@ class DialogForm extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  header,
+                  Expanded(child: header),
                   CircularCloseButton(),
                 ],
               ),

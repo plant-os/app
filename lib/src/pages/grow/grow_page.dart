@@ -212,7 +212,10 @@ class _GrowPageState extends State<GrowPage> {
                               .map<DropdownMenuItem<Device>>(
                                   (value) => DropdownMenuItem<Device>(
                                         value: value,
-                                        child: Text(value.description),
+                                        child: Text(
+                                          value.description,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ))
                               .toList(),
                         ),

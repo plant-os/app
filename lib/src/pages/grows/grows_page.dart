@@ -82,7 +82,7 @@ class _GrowsPageState extends State<GrowsPage> {
                     ),
                   ),
                   SizedBox(height: 7),
-                  Text("Greenhouse A",
+                  Text("Plot #${grow.plot}",
                       style: TextStyle(
                         fontFamily: "Work Sans",
                         fontSize: 13,

@@ -87,12 +87,15 @@ class _DevicesPageState extends State<DevicesPage> {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        device.deviceZone,
-                        style: TextStyle(
-                          fontFamily: "Work Sans",
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                      Expanded(
+                        child: Text(
+                          device.description,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: "Work Sans",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                       SizedBox(width: 7),
