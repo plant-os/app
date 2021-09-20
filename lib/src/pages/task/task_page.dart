@@ -98,7 +98,7 @@ class _TaskPageState extends State<TaskPage> {
         children: [
           Padding(
             padding: EdgeInsets.only(top: 15, bottom: 9),
-            child: Text("Hours", style: labelStyle),
+            child: Text("Hours (hour of day, 0-23)", style: labelStyle),
           ),
           FieldBox(
             child: FormTextField(
@@ -110,7 +110,7 @@ class _TaskPageState extends State<TaskPage> {
           ),
           Padding(
             padding: EdgeInsets.only(top: 15, bottom: 9),
-            child: Text("Minutes", style: labelStyle),
+            child: Text("Minutes (0-59)", style: labelStyle),
           ),
           FieldBox(
             child: FormTextField(
@@ -153,21 +153,25 @@ class _TaskPageState extends State<TaskPage> {
               ),
             ),
           ),
+          state.showEc
+              ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 15, bottom: 9),
+                    child: Text("EC", style: labelStyle),
+                  ),
+                  FieldBox(
+                    child: FormTextField(
+                      hintText: 'EC',
+                      controller: _ecController,
+                      onChanged: _onTextFieldChanged,
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                ])
+              : Container(),
           Padding(
             padding: EdgeInsets.only(top: 15, bottom: 9),
-            child: Text("EC", style: labelStyle),
-          ),
-          FieldBox(
-            child: FormTextField(
-              hintText: 'EC',
-              controller: _ecController,
-              onChanged: _onTextFieldChanged,
-              keyboardType: TextInputType.number,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 15, bottom: 9),
-            child: Text("Duration", style: labelStyle),
+            child: Text("Duration (seconds)", style: labelStyle),
           ),
           FieldBox(
             child: FormTextField(

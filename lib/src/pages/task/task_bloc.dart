@@ -20,9 +20,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   int? minutes;
   double? ec;
   int? duration;
-  String action = "irrigation";
+  String action;
 
-  TaskBloc(this.initial) : super(TaskState.initial());
+  TaskBloc(this.initial)
+      : action = initial?.action ?? "irrigation",
+        super(TaskState.initial());
 
   @override
   Stream<TaskState> mapEventToState(TaskEvent event) async* {
@@ -37,11 +39,22 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   }
 
   Stream<TaskState> _mapTaskTaskLoadedEventEventToState() async* {
-    yield state.update(isFetched: this.initial != null, initial: initial);
+    yield state.update(
+        isFetched: this.initial != null,
+        initial: initial,
+        showEc: action == "fertigation");
   }
 
   bool isValid() {
-    return hours != null && minutes != null && ec != null && duration != null;
+    return hours != null &&
+        hours! >= 0 &&
+        hours! < 24 &&
+        minutes != null &&
+        minutes! >= 0 &&
+        minutes! < 60 &&
+        (action == "irrigation" || ec != null) &&
+        duration != null &&
+        duration! > 0;
   }
 
   Stream<TaskState> _mapTaskTextFieldChangedEventToState(
@@ -58,10 +71,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   Stream<TaskState> _mapTaskActionChangedEventToState(
       TaskActionChangedEvent event) async* {
     action = event.action;
+    yield state.update(showEc: action == "fertigation");
   }
 
   Task task() {
-    return Task(hours!, minutes!, ec!, duration!, action);
+    return Task(hours!, minutes!, ec ?? 0.0, duration!, action);
   }
 
   void dispose() {}

@@ -7,6 +7,7 @@ class TaskState {
   final bool isFetched;
   final String error;
   final Task? initial;
+  final bool showEc;
 
   TaskState({
     required this.isValid,
@@ -15,6 +16,7 @@ class TaskState {
     required this.isFetched,
     required this.error,
     required this.initial,
+    required this.showEc,
   });
 
   factory TaskState.initial({
@@ -27,6 +29,7 @@ class TaskState {
       isFetched: false,
       error: '',
       initial: initial,
+      showEc: false,
     );
   }
 
@@ -37,6 +40,7 @@ class TaskState {
     bool? isFetched,
     String? error,
     Task? initial,
+    bool? showEc,
   }) {
     return TaskState(
       isValid: isValid ?? this.isValid,
@@ -45,12 +49,13 @@ class TaskState {
       isFetched: isFetched ?? this.isFetched,
       error: error ?? this.error,
       initial: initial ?? this.initial,
+      showEc: showEc ?? this.showEc,
     );
   }
 
   @override
   String toString() =>
-      "TaskState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, isFetched: $isFetched, error: $error, initial: $initial}";
+      "TaskState{isValid: $isValid, isSuccess: $isSuccess, isLoading: $isLoading, isFetched: $isFetched, error: $error, initial: $initial, showEc: $showEc}";
 
   @override
   bool operator ==(dynamic o) =>
@@ -60,9 +65,10 @@ class TaskState {
       o.isLoading == isLoading &&
       o.isFetched == isFetched &&
       o.error == error &&
-      o.initial == initial;
+      o.initial == initial &&
+      o.showEc == showEc;
 
   @override
-  int get hashCode =>
-      hashValues(isValid, isSuccess, isLoading, isFetched, error, initial);
+  int get hashCode => hashValues(
+      isValid, isSuccess, isLoading, isFetched, error, initial, showEc);
 }
