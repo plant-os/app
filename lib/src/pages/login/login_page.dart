@@ -54,7 +54,8 @@ class LoginPageState extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
-            child: Image.asset("assets/logo/withtext.png"),
+            child:
+                Image.asset("assets/logo/withtext.png", width: 144, height: 34),
           ),
           SizedBox(height: 43),
           Text(
@@ -101,17 +102,17 @@ class LoginPageState extends State<LoginPage> {
             ],
           ),
           SizedBox(height: 20),
-          Container(
-              height: 40,
-              child: TextButton(
-                  style: state.isValid
-                      ? TextButton.styleFrom(backgroundColor: Color(0xFF1FAD84))
-                      : TextButton.styleFrom(
-                          backgroundColor: Color(0xFFC4C4C4)),
-                  onPressed: state.isValid
-                      ? () => _loginBloc.add(LoginPressedEvent())
-                      : null,
-                  child: Center(child: Text("Sign in", style: btnLabelStyle)))),
+          TextButton(
+            style: state.isValid
+                ? TextButton.styleFrom(backgroundColor: Color(0xFF1FAD84))
+                : TextButton.styleFrom(backgroundColor: Color(0xFFC4C4C4)),
+            onPressed: state.isValid
+                ? () => _loginBloc.add(LoginPressedEvent())
+                : null,
+            child: Center(
+              child: Text("Sign in", style: btnLabelStyle),
+            ),
+          ),
           SizedBox(height: 20),
           Center(
             child: GestureDetector(

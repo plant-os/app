@@ -52,6 +52,7 @@ class DeviceService {
     return firestore
         .collection("devices")
         .where('Company.Id', isEqualTo: companyId)
+        .where('RegistryId', isEqualTo: "fertigation")
         .snapshots()
         .map((devices) => devices.docs
             .map((device) => parseDeviceFromJson(device.id, device.data()))
