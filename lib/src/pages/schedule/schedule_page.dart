@@ -111,11 +111,12 @@ class SchedulePageState extends State<SchedulePage> {
   Widget _buildTask(Task t, int index) {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Text("${sprintf("%02d:%02d", [t.hours, t.minutes])}"),
-      SizedBox(width: 8),
-      Text("${t.action}"),
-      Text(t.ec > 0 ? "${t.ec}|]" : ""),
-      SizedBox(width: 8),
-      Text("${t.duration}"),
+      SizedBox(width: 4),
+      Text(t.action == "irrigation" ? "Irrigation" : "Fertigation"),
+      SizedBox(width: 4),
+      Text(t.ec > 0 ? "ec:${t.ec}" : ""),
+      SizedBox(width: 4),
+      Text("${t.duration}s"),
       Spacer(),
       Row(children: [
         GestureDetector(

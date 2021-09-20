@@ -62,7 +62,26 @@ class _ProgramPageState extends State<ProgramPage> {
 
   Widget buildSchedule(Program p, Schedule s) {
     return CardElement(
-      child: Text(s.name),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(s.name),
+            SizedBox(height: 4),
+            Row(children: [
+              Image.asset("assets/icon/clock.png", width: 10, height: 10),
+              SizedBox(width: 4),
+              Text(
+                "Start day: ${s.startDay}",
+                style: TextStyle(
+                  color: Color(0xff9f9f9f),
+                  fontSize: 13,
+                  fontFamily: "Work Sans",
+                  fontWeight: FontWeight.normal,
+                ),
+              )
+            ]),
+          ]),
       onEditPressed: () => _handleEditSchedule(p, s),
       onDeletePressed: () => _handleDeleteSchedule(p, s),
     );

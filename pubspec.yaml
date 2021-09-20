@@ -60,6 +60,7 @@ flutter:
     - assets/icon/logout.png
     - assets/icon/devices.png
     - assets/icon/grows.png
+    - assets/icon/clock.png
     - assets/icon/transmit.png
     - assets/icon/calendar.png
     - assets/icon/arrow_down.png
