@@ -60,13 +60,11 @@ class _GrowPageState extends State<GrowPage> {
 
     if (state.error.isNotEmpty) {
       print("showing error message: ${state.error}");
-      Scaffold.of(context).showSnackBar(SnackBar(
-        backgroundColor: Colors.red,
-        content: Text(
-          state.error,
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
-      ));
+      showDialog(
+        context: context,
+        builder: (BuildContext context) =>
+            AlertDialog(title: Text("${state.error}")),
+      );
     } else if (state.isFetched) {
       _nameController.text = state.grow.name;
 
