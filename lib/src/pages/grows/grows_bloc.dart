@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -16,9 +17,13 @@ class GrowsBloc extends Bloc<GrowsEvent, GrowsState> {
   UserService userService = UserService();
   ProgramsService programsService = ProgramsService();
 
+  StreamSubscription<List<Grow>>? sub;
+
   GrowsBloc() : super(GrowsState.initial());
 
-  void dispose() {}
+  void dispose() {
+    sub?.cancel();
+  }
 
   @override
   Stream<GrowsState> mapEventToState(GrowsEvent event) async* {
@@ -50,7 +55,7 @@ class GrowsBloc extends Bloc<GrowsEvent, GrowsState> {
       } else {
         // Whenever the collection changes we pipe the new list into a
         // GrowsLoadedEvent event to update the state.
-        programsService
+        sub = programsService
             .listGrows(currentUser.company!.id)
             .listen((grows) => add(GrowsLoadedEvent(grows)));
       }

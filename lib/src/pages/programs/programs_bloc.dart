@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -16,9 +17,13 @@ class ProgramsBloc extends Bloc<ProgramsEvent, ProgramsState> {
   UserService userService = UserService();
   ProgramsService programsService = ProgramsService();
 
+  StreamSubscription<List<Program>>? sub;
+
   ProgramsBloc() : super(ProgramsState.initial());
 
-  void dispose() {}
+  void dispose() {
+    sub?.cancel();
+  }
 
   @override
   Stream<ProgramsState> mapEventToState(ProgramsEvent event) async* {
@@ -50,7 +55,7 @@ class ProgramsBloc extends Bloc<ProgramsEvent, ProgramsState> {
       } else {
         // Whenever the list of programs changes we pipe the new list into a
         // ProgramsLoaded event.
-        programsService.list(currentUser.company!.id).listen((programs) {
+        sub = programsService.list(currentUser.company!.id).listen((programs) {
           add(ProgramsLoaded(programs));
         });
       }

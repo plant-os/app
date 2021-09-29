@@ -45,6 +45,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> _mapLoggedOutToState() async* {
     yield AuthUnauthenticatedState();
-    _authService.logout();
   }
 }

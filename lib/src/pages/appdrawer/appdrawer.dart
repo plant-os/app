@@ -193,6 +193,9 @@ class _AppDrawerState extends State<AppDrawer> {
               Spacer(),
               GestureDetector(
                 onTap: () {
+                  // FIXME(simon): As soon as we call log out any open database
+                  // channels will error out. We should dispose those widgets
+                  // before actually logging out.
                   _bloc.add(AppDrawerPressLogoutEvent());
 
                   // Then close the drawer

@@ -17,12 +17,15 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
   UserService userService = UserService();
   DeviceService deviceService = DeviceService();
 
+  StreamSubscription<List<Device>>? sub;
+
   Timer? timer;
 
   DevicesBloc() : super(DevicesState.initial());
 
   void dispose() {
     timer?.cancel();
+    sub?.cancel();
   }
 
   @override
@@ -57,7 +60,7 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
       } else {
         // Whenever the collection changes we pipe the new list into a
         // DevicesLoadedEvent event to update the state.
-        deviceService
+        sub = deviceService
             .list(currentUser.company!.id)
             .listen((grows) => add(DevicesLoadedEvent(grows)));
       }
