@@ -7,12 +7,12 @@ class DeviceService {
 
   DeviceStateModel parseDeviceStateFromJson(Map<String, dynamic> json) {
     return DeviceStateModel(
-      json['humidity'].toDouble(),
-      json['ec'].toDouble(),
-      json['smoothed_ec'].toDouble(),
+      (json['humidity'] ?? 0.0).toDouble(),
+      (json['ec'] ?? 0.0).toDouble(),
+      (json['smoothed_ec'] ?? 0.0).toDouble(),
       json['ec_status'],
-      json['temperature'].toDouble(),
-      json['rtd'].toDouble(),
+      (json['temperature'] ?? 0.0).toDouble(),
+      (json['rtd'] ?? 0.0).toDouble(),
       json['version'],
       json['i0'],
       json['i1'],
