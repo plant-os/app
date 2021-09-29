@@ -189,7 +189,7 @@ class SchedulePageState extends State<SchedulePage> {
                 SizedBox(height: 14),
                 SecondaryButton(
                   text: '+ Add Task',
-                  onPressed: _addTaskPressed,
+                  onPressed: state.tasks.length < 15 ? _addTaskPressed : null,
                 ),
               ],
             ),
