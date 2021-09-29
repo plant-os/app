@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/user.dart';
@@ -49,8 +50,9 @@ class AppDrawerBloc extends Bloc<AppDrawerEvent, AppDrawerState> {
           user: currentUser,
         );
       }
-    } catch (e) {
+    } catch (e, s) {
       print(e);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield state.update(
         isLoading: false,
         isFetched: false,

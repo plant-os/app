@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/device.dart';
@@ -60,7 +61,8 @@ class DevicesBloc extends Bloc<DevicesEvent, DevicesState> {
             .list(currentUser.company!.id)
             .listen((grows) => add(DevicesLoadedEvent(grows)));
       }
-    } catch (e) {
+    } catch (e, s) {
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield state.update(
         isLoading: false,
         error: "Failed to list devices: $e",

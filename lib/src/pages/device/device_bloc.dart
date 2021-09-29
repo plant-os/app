@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,7 +59,8 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
       deviceService.get(deviceId).listen((device) {
         add(DeviceChangedEvent(device));
       });
-    } catch (e) {
+    } catch (e, s) {
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield state.update(
         isLoading: false,
         error: "Failed to fetch device: $e",
@@ -125,7 +127,8 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
           isLoading: false,
         );
       }
-    } catch (e) {
+    } catch (e, s) {
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield state.update(
         isLoading: false,
         error: "Failed to send command: $e",

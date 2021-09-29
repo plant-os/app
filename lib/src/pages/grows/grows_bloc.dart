@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/grow.dart';
@@ -53,7 +54,8 @@ class GrowsBloc extends Bloc<GrowsEvent, GrowsState> {
             .listGrows(currentUser.company!.id)
             .listen((grows) => add(GrowsLoadedEvent(grows)));
       }
-    } catch (e) {
+    } catch (e, s) {
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield state.update(
         isLoading: false,
         error: "Failed to list programs: $e",

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/device.dart';
@@ -81,7 +82,8 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
           grow: grow,
         );
       }
-    } catch (e) {
+    } catch (e, s) {
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield state.update(
         isLoading: false,
         error: "Failed to list programs: $e",
@@ -159,8 +161,9 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
         isSuccess: true,
         isLoading: false,
       );
-    } catch (e) {
+    } catch (e, s) {
       print(e);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield state.update(
         isLoading: false,
         isSuccess: false,
@@ -186,8 +189,9 @@ class GrowBloc extends Bloc<GrowEvent, GrowState> {
         isSuccess: true,
         isLoading: false,
       );
-    } catch (e) {
+    } catch (e, s) {
       print(e);
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield state.update(
         isLoading: false,
         isSuccess: false,

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantos/src/models/schedule.dart';
@@ -82,7 +83,8 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
         isLoading: false,
         isSuccess: true,
       );
-    } catch (e) {
+    } catch (e, s) {
+      FirebaseCrashlytics.instance.recordError(e, s);
       yield state.update(
         isLoading: false,
         error: "$e",
