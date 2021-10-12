@@ -1,4 +1,6 @@
-# plantos
+<p align="center">
+<img width="150" src="https://dashboard.plant-os.com/assets/secondary-logo.svg"/>
+</p>
 
 The plantOS mobile app.
 
