@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,6 +57,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginState.initial(
         isValid: _isFormValidated(),
       );
+    } catch (e, s) {
+      FirebaseCrashlytics.instance.recordError(e, s);
+      print(e);
     }
   }
 }
