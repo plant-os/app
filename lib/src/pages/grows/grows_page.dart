@@ -23,7 +23,6 @@ class GrowsPage extends StatefulWidget {
 
 class _GrowsPageState extends State<GrowsPage> {
   late GrowsBloc bloc;
-  Loading? _loading;
 
   @override
   void initState() {
@@ -110,10 +109,7 @@ class _GrowsPageState extends State<GrowsPage> {
   }
 
   void _blocListener(BuildContext context, GrowsState state) {
-    if (state.isLoading) {
-      _loading = Loading(context);
-    } else if (state.error.isNotEmpty) {
-      _loading?.close();
+    if (state.error.isNotEmpty) {
       print("showing error message: ${state.error}");
       Scaffold.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.red,
@@ -122,8 +118,6 @@ class _GrowsPageState extends State<GrowsPage> {
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
       ));
-    } else {
-      _loading?.close();
     }
   }
 
@@ -151,14 +145,16 @@ class _GrowsPageState extends State<GrowsPage> {
                   children: [
                     Text("Grows", style: titleStyle),
                     Expanded(
-                      child: SingleChildScrollView(
-                        padding: EdgeInsets.only(top: 22),
-                        child: Column(
-                          children: state.grows
-                              .map((grow) => _buildGrowRow(grow))
-                              .toList(),
-                        ),
-                      ),
+                      child: state.isLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : SingleChildScrollView(
+                              padding: EdgeInsets.only(top: 22),
+                              child: Column(
+                                children: state.grows
+                                    .map((grow) => _buildGrowRow(grow))
+                                    .toList(),
+                              ),
+                            ),
                     ),
                     SizedBox(height: 30),
                     NewButton(
