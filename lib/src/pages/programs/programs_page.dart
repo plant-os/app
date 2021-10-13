@@ -25,7 +25,6 @@ class ProgramsPage extends StatefulWidget {
 
 class _ProgramsPageState extends State<ProgramsPage> {
   late ProgramsBloc bloc;
-  Loading? _loading;
 
   @override
   void initState() {
@@ -72,12 +71,15 @@ class _ProgramsPageState extends State<ProgramsPage> {
           children: [
             Text("Programs", style: titleStyle),
             Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(top: 22),
-                child: Column(
-                  children: state.programs.map((e) => buildProgram(e)).toList(),
-                ),
-              ),
+              child: state.isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : SingleChildScrollView(
+                      padding: EdgeInsets.only(top: 22),
+                      child: Column(
+                        children:
+                            state.programs.map((e) => buildProgram(e)).toList(),
+                      ),
+                    ),
             ),
             NewButton(
               child: Text("New Program"),
@@ -90,10 +92,7 @@ class _ProgramsPageState extends State<ProgramsPage> {
   }
 
   void _blocListener(BuildContext context, ProgramsState state) {
-    if (state.isLoading) {
-      _loading = Loading(context);
-    } else if (state.error.isNotEmpty) {
-      _loading?.close();
+    if (state.error.isNotEmpty) {
       print("showing error message: ${state.error}");
       Scaffold.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.red,
@@ -102,8 +101,6 @@ class _ProgramsPageState extends State<ProgramsPage> {
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
       ));
-    } else {
-      _loading?.close();
     }
   }
 
