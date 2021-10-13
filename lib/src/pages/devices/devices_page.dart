@@ -22,7 +22,6 @@ class DevicesPage extends StatefulWidget {
 
 class _DevicesPageState extends State<DevicesPage> {
   late DevicesBloc bloc;
-  Loading? _loading;
 
   @override
   void initState() {
@@ -192,11 +191,7 @@ class _DevicesPageState extends State<DevicesPage> {
   }
 
   void _blocListener(BuildContext context, DevicesState state) {
-    if (state.isLoading) {
-      _loading = Loading(context);
-    } else if (state.error.isNotEmpty) {
-      _loading?.close();
-      _loading = null;
+    if (state.error.isNotEmpty) {
       print("showing error message: ${state.error}");
       Scaffold.of(context).showSnackBar(SnackBar(
         backgroundColor: Colors.red,
@@ -205,9 +200,6 @@ class _DevicesPageState extends State<DevicesPage> {
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
       ));
-    } else {
-      _loading?.close();
-      _loading = null;
     }
   }
 
@@ -236,14 +228,16 @@ class _DevicesPageState extends State<DevicesPage> {
                   children: [
                     Text("Devices", style: titleStyle),
                     Expanded(
-                      child: SingleChildScrollView(
-                        padding: EdgeInsets.only(top: 22),
-                        child: Column(
-                          children: state.devices
-                              .map((grow) => _buildDeviceRow(state, grow))
-                              .toList(),
-                        ),
-                      ),
+                      child: state.isLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : SingleChildScrollView(
+                              padding: EdgeInsets.only(top: 22),
+                              child: Column(
+                                children: state.devices
+                                    .map((grow) => _buildDeviceRow(state, grow))
+                                    .toList(),
+                              ),
+                            ),
                     ),
                   ],
                 ),
