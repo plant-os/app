@@ -164,7 +164,8 @@ class _TaskPageState extends State<TaskPage> {
                       hintText: 'EC',
                       controller: _ecController,
                       onChanged: _onTextFieldChanged,
-                      keyboardType: TextInputType.number,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
                     ),
                   ),
                 ])
