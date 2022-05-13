@@ -58,9 +58,9 @@ class Dashboard {
   final bool outdoor;
 
   Dashboard.fromJson(Map<String, dynamic> json)
-      : fertigation = json['Fertigation'] ?? null,
-        indoor = json['Indoor'] ?? null,
-        outdoor = json['Outdoor'] ?? null;
+      : fertigation = json['Fertigation'] ?? true,
+        indoor = json['Indoor'] ?? false,
+        outdoor = json['Outdoor'] ?? false;
 
   Map<String, dynamic> toJson() =>
       {'Fertigation': fertigation, 'Indoor': indoor, 'Outdoor': outdoor};
@@ -74,9 +74,9 @@ class Role {
   final bool worker;
 
   Role.fromJson(Map<String, dynamic> json)
-      : admin = json['Admin'] ?? null,
-        worker = json['Worker'] ?? null,
-        owner = json['Owner'] ?? null;
+      : admin = json['Admin'] ?? false,
+        worker = json['Worker'] ?? false,
+        owner = json['Owner'] ?? false;
 
   Map<String, dynamic> toJson() =>
       {'Admin': admin, 'Worker': worker, 'Owner': owner};
